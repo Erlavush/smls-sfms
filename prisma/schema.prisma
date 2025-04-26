@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Define the possible roles for users
+enum Role {
+  FACULTY
+  ADMIN
+}
+
+// Define the User model
+model User {
+  id        String   @id @default(cuid()) // Unique ID for the user (using cuid)
+  name      String?                       // User's name (optional for now)
+  email     String   @unique                 // User's email, must be unique
+  password  String                        // Hashed password (we will hash it before saving)
+  role      Role     @default(FACULTY)     // User's role (defaults to FACULTY)
+  createdAt DateTime @default(now())         // Timestamp when the user was created
+  updatedAt DateTime @updatedAt            // Timestamp when the user was last updated
+
+  // Add relationships to other models later if needed
+  // e.g., documents Document[]
+}
+
+// Add other models like Document, etc. later below
