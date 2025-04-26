@@ -1,11 +1,54 @@
 // src/app/page.tsx
-import React from "react";
+'use client'; // Needs to be a client component to use the hook
+
+import React from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Link from 'next/link'; // Import Link
 
 export default function HomePage() {
-  return (
-    <div>
-      <h1>Welcome to SMLS-SFMS!</h1>
-      <p>The application is running.</p>
-    </div>
-  );
+    // Use the useSession hook to get session data
+    const { data: session, status } = useSession();
+
+    // status can be 'loading', 'authenticated', or 'unauthenticated'
+
+    return (
+        <div className="p-6">
+            <h1 className="text-2xl font-semibold mb-4 text-[#003153]">Welcome to SMLS-SFMS!</h1>
+
+            {status === 'loading' && (
+                <p className="text-gray-500">Loading session...</p>
+            )}
+
+            {status === 'authenticated' && session?.user && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <p>Signed in as: <strong>{session.user.email}</strong></p>
+                    {/* We added 'role' to the session in authOptions callbacks */}
+                    <p>Role: <strong>{(session.user as any).role}</strong></p>
+                    <button
+                        onClick={() => signOut()} // Call signOut from next-auth/react
+                        className="mt-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded shadow"
+                    >
+                        Sign Out
+                    </button>
+                </div>
+            )}
+
+            {status === 'unauthenticated' && (
+                 <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <p>You are not signed in.</p>
+                    <Link href="/login"> {/* Use Link for client-side navigation */}
+                       <button
+                          className="mt-2 px-4 py-2 bg-[#003153] hover:bg-[#002742] text-white rounded shadow"
+                       >
+                           Sign In
+                       </button>
+                    </Link>
+                 </div>
+            )}
+
+             <p className="mt-4">This is the homepage content.</p>
+             {/* We can add links to other sections later */}
+
+        </div>
+    );
 }

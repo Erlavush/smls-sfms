@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import "./globals.css"; // Import global styles
+import "./globals.css";
+import NextAuthProvider from "@/components/providers/NextAuthProvider"; // Import the provider
 
 export const metadata: Metadata = {
   title: "SMLS-SFMS",
@@ -15,9 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* Layout UI can go here (e.g., header, sidebar if needed globally) */}
-        <main>{children}</main> {/* Page content will be injected here */}
-        {/* Footer can go here */}
+        {/* Wrap the main content (or entire body content) with the provider */}
+        <NextAuthProvider>
+           {/* You can add global layout elements like Header/Footer here if needed */}
+           {/* Make sure they are inside NextAuthProvider if they need session data */}
+           <main>{children}</main> {/* Page content */}
+        </NextAuthProvider>
       </body>
     </html>
   );
