@@ -1,6 +1,6 @@
 // src/app/(faculty)/dashboard/page.tsx
 'use client'; // Mark as Client Component to potentially use hooks later
-
+import Link from 'next/link';
 import React from 'react';
 import { useSession } from 'next-auth/react'; // Can use this to show user info
 
@@ -39,20 +39,20 @@ export default function FacultyDashboardPage() {
 
             {/* Example placeholder sections */}
             <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <div className="rounded border border-gray-200 bg-white p-4 shadow">
-                    <h2 className="mb-2 text-lg font-medium text-[#003153]">My Profile</h2>
-                    <p className="text-sm text-gray-600">View or update your profile details.</p>
-                    {/* Link to profile page later */}
-                </div>
-                <div className="rounded border border-gray-200 bg-white p-4 shadow">
+                {/* Wrap Profile card with Link */}
+                <Link href="/profile" className="block rounded border border-gray-200 bg-white p-4 shadow transition hover:shadow-lg">
+                     <h2 className="mb-2 text-lg font-medium text-[#003153]">My Profile</h2>
+                     <p className="text-sm text-gray-600">View or update your profile details.</p>
+                </Link>
+                {/* End Profile card Link */}
+
+                <div className="rounded border border-gray-200 bg-white p-4 shadow"> {/* Document Card - Add link later */}
                     <h2 className="mb-2 text-lg font-medium text-[#003153]">My Documents</h2>
                     <p className="text-sm text-gray-600">Upload and manage your credentials.</p>
-                     {/* Link to documents page later */}
                 </div>
-                 <div className="rounded border border-gray-200 bg-white p-4 shadow">
+                <div className="rounded border border-gray-200 bg-white p-4 shadow"> {/* Events Card */}
                     <h2 className="mb-2 text-lg font-medium text-[#003153]">Upcoming Events</h2>
                     <p className="text-sm text-gray-600">View relevant seminars or deadlines.</p>
-                     {/* Placeholder content */}
                 </div>
             </div>
         </div>
