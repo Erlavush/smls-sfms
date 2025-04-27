@@ -144,7 +144,8 @@ exports.Prisma.ProfessionalLicenseScalarFieldEnum = {
   expiration: 'expiration',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  licenseFileUrl: 'licenseFileUrl'
 };
 
 exports.Prisma.WorkExperienceScalarFieldEnum = {
@@ -155,7 +156,8 @@ exports.Prisma.WorkExperienceScalarFieldEnum = {
   inclusiveYears: 'inclusiveYears',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  proofUrl: 'proofUrl'
 };
 
 exports.Prisma.ProfessionalAffiliationScalarFieldEnum = {
@@ -165,7 +167,8 @@ exports.Prisma.ProfessionalAffiliationScalarFieldEnum = {
   inclusiveYears: 'inclusiveYears',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  membershipProofUrl: 'membershipProofUrl'
 };
 
 exports.Prisma.AwardRecognitionScalarFieldEnum = {
@@ -175,7 +178,8 @@ exports.Prisma.AwardRecognitionScalarFieldEnum = {
   yearReceived: 'yearReceived',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  certificateUrl: 'certificateUrl'
 };
 
 exports.Prisma.ProfessionalDevelopmentScalarFieldEnum = {
@@ -196,7 +200,8 @@ exports.Prisma.CommunityInvolvementScalarFieldEnum = {
   locationDate: 'locationDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  proofUrl: 'proofUrl'
 };
 
 exports.Prisma.PublicationScalarFieldEnum = {
@@ -204,9 +209,11 @@ exports.Prisma.PublicationScalarFieldEnum = {
   researchTitle: 'researchTitle',
   journal: 'journal',
   datePublished: 'datePublished',
+  doiLink: 'doiLink',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  pdfUrl: 'pdfUrl'
 };
 
 exports.Prisma.ConferencePresentationScalarFieldEnum = {
@@ -216,7 +223,8 @@ exports.Prisma.ConferencePresentationScalarFieldEnum = {
   dateLocation: 'dateLocation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  proofUrl: 'proofUrl'
 };
 
 exports.Prisma.SortOrder = {

@@ -2,66 +2,62 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import type { JWT } from "next-auth/jwt"; // Import JWT type if needed
+import type { JWT } from "next-auth/jwt";
 
 // Export the default middleware function configured with withAuth
 export default withAuth(
     // `withAuth` augments your `Request` with the user's token.
+    // This inner function runs ONLY if the user is authenticated (token exists).
     function middleware(req) {
-        // This function runs ONLY if the user is authenticated (token exists)
-        // console.log("Token in middleware:", req.nextauth.token); // Log token for debugging
+        const token = req.nextauth.token as JWT & { role?: string }; // Token is guaranteed here
+        const { pathname } = req.nextUrl;
 
-        const token = req.nextauth.token as JWT & { role?: string }; // Cast token to access custom properties
-        const { pathname } = req.nextUrl; // Get the requested path
+        // --- NEW: Redirect authenticated users from homepage ---
+        // If the user is authenticated (which they are if this function runs)
+        // and they are trying to access the root path ('/'), redirect them.
+        if (pathname === '/') {
+            const userRole = token.role; // Get role from token
+            // Determine target dashboard based on role
+            const targetUrl = userRole === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
+            console.log(`Authenticated user on '/', redirecting to ${targetUrl}`);
+            // Redirect to the appropriate dashboard
+            return NextResponse.redirect(new URL(targetUrl, req.url));
+        }
+        // --- END NEW ---
 
-        // --- Role-Based Access Control ---
+        // --- Role-Based Access Control for /admin ---
         // If user is trying to access an admin route
         if (pathname.startsWith('/admin')) {
             // Check if the user has the ADMIN role
             if (token?.role !== 'ADMIN') {
-                // If not admin, redirect them (e.g., to faculty dashboard or an unauthorized page)
+                // If not admin, redirect them to the faculty dashboard
                 console.warn(`Unauthorized access attempt to ${pathname} by user role: ${token?.role}`);
-                 // Redirect non-admins away from /admin routes
-                 // Option 1: Redirect to faculty dashboard
                  return NextResponse.redirect(new URL('/dashboard', req.url));
-                 // Option 2: Redirect to a specific 'unauthorized' page (if you create one)
-                 // return NextResponse.redirect(new URL('/unauthorized', req.url));
             }
             // If user is ADMIN and accessing /admin, allow the request
-             return NextResponse.next(); // Continue processing the request
+             return NextResponse.next();
         }
 
         // --- General Authenticated Access ---
-        // For any other authenticated route (like /dashboard, /profile, /documents)
-        // If the user is authenticated (which they are if this function runs),
+        // For any other authenticated route covered by the matcher (like /dashboard, /profile)
         // allow the request to proceed.
-        // You could add checks here if FACULTY role is explicitly required for /dashboard etc.
-        // if (pathname.startsWith('/dashboard') || pathname.startsWith('/profile') /*...*/) {
-        //    if (token?.role !== 'FACULTY' && token?.role !== 'ADMIN') { // Example check
-        //        return NextResponse.redirect(new URL('/unauthorized', req.url));
-        //    }
-        // }
-
-        // Allow the request to proceed for authenticated users on non-admin routes covered by the matcher
         return NextResponse.next();
     },
     {
         callbacks: {
-            // This callback determines IF the middleware function above runs.
-            // It runs if the token exists (user is logged in).
-            authorized: ({ token }) => !!token // !! converts truthy/falsy value to boolean
+            // This callback ensures the middleware function above runs ONLY if a valid token exists.
+            authorized: ({ token }) => !!token
         },
         pages: {
-            // Use the same signIn page as defined in your authOptions
+            // Redirect users to /login if they need to sign in (UNCHANGED)
             signIn: "/login",
-            // You could add an error page if needed
-            // error: "/auth/error",
         },
     }
 );
 
 // --- Route Matching ---
-// Specifies which paths this middleware should run on.
+// Ensure this middleware runs on the homepage ('/') for authenticated users,
+// as well as the protected routes. Exclude API, static files, images, favicon, and the login page itself.
 export const config = {
     matcher: [
         /*
@@ -70,14 +66,20 @@ export const config = {
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
-         * - /login (the login page itself)
-         * - / (the public homepage, if desired - remove if homepage needs auth)
+         * - login (the login page itself)
+         * The negative lookahead `(?!...)` correctly excludes these.
+         * The pattern `.*` after the lookahead WILL match the root path '/'.
          */
         '/((?!api|_next/static|_next/image|favicon.ico|login).*)',
-        // Explicitly include top-level protected routes if needed and not covered above
-        '/dashboard/:path*', // Match /dashboard and any sub-paths
-        '/profile/:path*',   // Match /profile and any sub-paths
-        '/documents/:path*', // Match /documents and any sub-paths
-        '/admin/:path*',     // Match /admin and any sub-paths
+
+        // Explicitly adding '/' is not strictly necessary due to the pattern above,
+        // but doesn't hurt for clarity if preferred.
+        // '/',
+
+        // Keep explicit protected paths if you prefer strictness, though the pattern covers them.
+        '/dashboard/:path*',
+        '/profile/:path*',
+        '/documents/:path*',
+        '/admin/:path*',
     ],
 };

@@ -4286,6 +4286,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    licenseFileUrl: string | null
   }
 
   export type ProfessionalLicenseMaxAggregateOutputType = {
@@ -4297,6 +4298,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    licenseFileUrl: string | null
   }
 
   export type ProfessionalLicenseCountAggregateOutputType = {
@@ -4308,6 +4310,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    licenseFileUrl: number
     _all: number
   }
 
@@ -4321,6 +4324,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    licenseFileUrl?: true
   }
 
   export type ProfessionalLicenseMaxAggregateInputType = {
@@ -4332,6 +4336,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    licenseFileUrl?: true
   }
 
   export type ProfessionalLicenseCountAggregateInputType = {
@@ -4343,6 +4348,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    licenseFileUrl?: true
     _all?: true
   }
 
@@ -4427,6 +4433,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    licenseFileUrl: string | null
     _count: ProfessionalLicenseCountAggregateOutputType | null
     _min: ProfessionalLicenseMinAggregateOutputType | null
     _max: ProfessionalLicenseMaxAggregateOutputType | null
@@ -4455,6 +4462,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    licenseFileUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalLicense"]>
 
@@ -4467,6 +4475,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    licenseFileUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalLicense"]>
 
@@ -4479,6 +4488,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    licenseFileUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalLicense"]>
 
@@ -4491,9 +4501,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    licenseFileUrl?: boolean
   }
 
-  export type ProfessionalLicenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examination" | "monthYear" | "licenseNumber" | "expiration" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["professionalLicense"]>
+  export type ProfessionalLicenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examination" | "monthYear" | "licenseNumber" | "expiration" | "createdAt" | "updatedAt" | "userId" | "licenseFileUrl", ExtArgs["result"]["professionalLicense"]>
   export type ProfessionalLicenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -4518,6 +4529,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      licenseFileUrl: string | null
     }, ExtArgs["result"]["professionalLicense"]>
     composites: {}
   }
@@ -4950,6 +4962,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"ProfessionalLicense", 'DateTime'>
     readonly updatedAt: FieldRef<"ProfessionalLicense", 'DateTime'>
     readonly userId: FieldRef<"ProfessionalLicense", 'String'>
+    readonly licenseFileUrl: FieldRef<"ProfessionalLicense", 'String'>
   }
     
 
@@ -5381,6 +5394,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    proofUrl: string | null
   }
 
   export type WorkExperienceMaxAggregateOutputType = {
@@ -5392,6 +5406,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    proofUrl: string | null
   }
 
   export type WorkExperienceCountAggregateOutputType = {
@@ -5403,6 +5418,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    proofUrl: number
     _all: number
   }
 
@@ -5416,6 +5432,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
   }
 
   export type WorkExperienceMaxAggregateInputType = {
@@ -5427,6 +5444,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
   }
 
   export type WorkExperienceCountAggregateInputType = {
@@ -5438,6 +5456,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
     _all?: true
   }
 
@@ -5522,6 +5541,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    proofUrl: string | null
     _count: WorkExperienceCountAggregateOutputType | null
     _min: WorkExperienceMinAggregateOutputType | null
     _max: WorkExperienceMaxAggregateOutputType | null
@@ -5550,6 +5570,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workExperience"]>
 
@@ -5562,6 +5583,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workExperience"]>
 
@@ -5574,6 +5596,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workExperience"]>
 
@@ -5586,9 +5609,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
   }
 
-  export type WorkExperienceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "institution" | "position" | "natureOfWork" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["workExperience"]>
+  export type WorkExperienceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "institution" | "position" | "natureOfWork" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId" | "proofUrl", ExtArgs["result"]["workExperience"]>
   export type WorkExperienceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5613,6 +5637,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      proofUrl: string | null
     }, ExtArgs["result"]["workExperience"]>
     composites: {}
   }
@@ -6045,6 +6070,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"WorkExperience", 'DateTime'>
     readonly updatedAt: FieldRef<"WorkExperience", 'DateTime'>
     readonly userId: FieldRef<"WorkExperience", 'String'>
+    readonly proofUrl: FieldRef<"WorkExperience", 'String'>
   }
     
 
@@ -6475,6 +6501,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    membershipProofUrl: string | null
   }
 
   export type ProfessionalAffiliationMaxAggregateOutputType = {
@@ -6485,6 +6512,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    membershipProofUrl: string | null
   }
 
   export type ProfessionalAffiliationCountAggregateOutputType = {
@@ -6495,6 +6523,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    membershipProofUrl: number
     _all: number
   }
 
@@ -6507,6 +6536,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    membershipProofUrl?: true
   }
 
   export type ProfessionalAffiliationMaxAggregateInputType = {
@@ -6517,6 +6547,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    membershipProofUrl?: true
   }
 
   export type ProfessionalAffiliationCountAggregateInputType = {
@@ -6527,6 +6558,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    membershipProofUrl?: true
     _all?: true
   }
 
@@ -6610,6 +6642,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    membershipProofUrl: string | null
     _count: ProfessionalAffiliationCountAggregateOutputType | null
     _min: ProfessionalAffiliationMinAggregateOutputType | null
     _max: ProfessionalAffiliationMaxAggregateOutputType | null
@@ -6637,6 +6670,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    membershipProofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalAffiliation"]>
 
@@ -6648,6 +6682,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    membershipProofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalAffiliation"]>
 
@@ -6659,6 +6694,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    membershipProofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalAffiliation"]>
 
@@ -6670,9 +6706,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    membershipProofUrl?: boolean
   }
 
-  export type ProfessionalAffiliationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organization" | "position" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["professionalAffiliation"]>
+  export type ProfessionalAffiliationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organization" | "position" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId" | "membershipProofUrl", ExtArgs["result"]["professionalAffiliation"]>
   export type ProfessionalAffiliationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6696,6 +6733,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      membershipProofUrl: string | null
     }, ExtArgs["result"]["professionalAffiliation"]>
     composites: {}
   }
@@ -7127,6 +7165,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"ProfessionalAffiliation", 'DateTime'>
     readonly updatedAt: FieldRef<"ProfessionalAffiliation", 'DateTime'>
     readonly userId: FieldRef<"ProfessionalAffiliation", 'String'>
+    readonly membershipProofUrl: FieldRef<"ProfessionalAffiliation", 'String'>
   }
     
 
@@ -7567,6 +7606,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    certificateUrl: string | null
   }
 
   export type AwardRecognitionMaxAggregateOutputType = {
@@ -7577,6 +7617,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    certificateUrl: string | null
   }
 
   export type AwardRecognitionCountAggregateOutputType = {
@@ -7587,6 +7628,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    certificateUrl: number
     _all: number
   }
 
@@ -7607,6 +7649,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    certificateUrl?: true
   }
 
   export type AwardRecognitionMaxAggregateInputType = {
@@ -7617,6 +7660,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    certificateUrl?: true
   }
 
   export type AwardRecognitionCountAggregateInputType = {
@@ -7627,6 +7671,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    certificateUrl?: true
     _all?: true
   }
 
@@ -7724,6 +7769,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    certificateUrl: string | null
     _count: AwardRecognitionCountAggregateOutputType | null
     _avg: AwardRecognitionAvgAggregateOutputType | null
     _sum: AwardRecognitionSumAggregateOutputType | null
@@ -7753,6 +7799,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    certificateUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["awardRecognition"]>
 
@@ -7764,6 +7811,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    certificateUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["awardRecognition"]>
 
@@ -7775,6 +7823,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    certificateUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["awardRecognition"]>
 
@@ -7786,9 +7835,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    certificateUrl?: boolean
   }
 
-  export type AwardRecognitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "awardName" | "awardingBody" | "yearReceived" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["awardRecognition"]>
+  export type AwardRecognitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "awardName" | "awardingBody" | "yearReceived" | "createdAt" | "updatedAt" | "userId" | "certificateUrl", ExtArgs["result"]["awardRecognition"]>
   export type AwardRecognitionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7812,6 +7862,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      certificateUrl: string | null
     }, ExtArgs["result"]["awardRecognition"]>
     composites: {}
   }
@@ -8243,6 +8294,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"AwardRecognition", 'DateTime'>
     readonly updatedAt: FieldRef<"AwardRecognition", 'DateTime'>
     readonly userId: FieldRef<"AwardRecognition", 'String'>
+    readonly certificateUrl: FieldRef<"AwardRecognition", 'String'>
   }
     
 
@@ -9768,6 +9820,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    proofUrl: string | null
   }
 
   export type CommunityInvolvementMaxAggregateOutputType = {
@@ -9778,6 +9831,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    proofUrl: string | null
   }
 
   export type CommunityInvolvementCountAggregateOutputType = {
@@ -9788,6 +9842,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    proofUrl: number
     _all: number
   }
 
@@ -9800,6 +9855,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
   }
 
   export type CommunityInvolvementMaxAggregateInputType = {
@@ -9810,6 +9866,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
   }
 
   export type CommunityInvolvementCountAggregateInputType = {
@@ -9820,6 +9877,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
     _all?: true
   }
 
@@ -9903,6 +9961,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    proofUrl: string | null
     _count: CommunityInvolvementCountAggregateOutputType | null
     _min: CommunityInvolvementMinAggregateOutputType | null
     _max: CommunityInvolvementMaxAggregateOutputType | null
@@ -9930,6 +9989,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["communityInvolvement"]>
 
@@ -9941,6 +10001,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["communityInvolvement"]>
 
@@ -9952,6 +10013,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["communityInvolvement"]>
 
@@ -9963,9 +10025,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
   }
 
-  export type CommunityInvolvementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "engagementTitle" | "role" | "locationDate" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["communityInvolvement"]>
+  export type CommunityInvolvementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "engagementTitle" | "role" | "locationDate" | "createdAt" | "updatedAt" | "userId" | "proofUrl", ExtArgs["result"]["communityInvolvement"]>
   export type CommunityInvolvementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -9989,6 +10052,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      proofUrl: string | null
     }, ExtArgs["result"]["communityInvolvement"]>
     composites: {}
   }
@@ -10420,6 +10484,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"CommunityInvolvement", 'DateTime'>
     readonly updatedAt: FieldRef<"CommunityInvolvement", 'DateTime'>
     readonly userId: FieldRef<"CommunityInvolvement", 'String'>
+    readonly proofUrl: FieldRef<"CommunityInvolvement", 'String'>
   }
     
 
@@ -10847,9 +10912,11 @@ export namespace Prisma {
     researchTitle: string | null
     journal: string | null
     datePublished: Date | null
+    doiLink: string | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    pdfUrl: string | null
   }
 
   export type PublicationMaxAggregateOutputType = {
@@ -10857,9 +10924,11 @@ export namespace Prisma {
     researchTitle: string | null
     journal: string | null
     datePublished: Date | null
+    doiLink: string | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    pdfUrl: string | null
   }
 
   export type PublicationCountAggregateOutputType = {
@@ -10867,9 +10936,11 @@ export namespace Prisma {
     researchTitle: number
     journal: number
     datePublished: number
+    doiLink: number
     createdAt: number
     updatedAt: number
     userId: number
+    pdfUrl: number
     _all: number
   }
 
@@ -10879,9 +10950,11 @@ export namespace Prisma {
     researchTitle?: true
     journal?: true
     datePublished?: true
+    doiLink?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
+    pdfUrl?: true
   }
 
   export type PublicationMaxAggregateInputType = {
@@ -10889,9 +10962,11 @@ export namespace Prisma {
     researchTitle?: true
     journal?: true
     datePublished?: true
+    doiLink?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
+    pdfUrl?: true
   }
 
   export type PublicationCountAggregateInputType = {
@@ -10899,9 +10974,11 @@ export namespace Prisma {
     researchTitle?: true
     journal?: true
     datePublished?: true
+    doiLink?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
+    pdfUrl?: true
     _all?: true
   }
 
@@ -10982,9 +11059,11 @@ export namespace Prisma {
     researchTitle: string
     journal: string
     datePublished: Date
+    doiLink: string | null
     createdAt: Date
     updatedAt: Date
     userId: string
+    pdfUrl: string | null
     _count: PublicationCountAggregateOutputType | null
     _min: PublicationMinAggregateOutputType | null
     _max: PublicationMaxAggregateOutputType | null
@@ -11009,9 +11088,11 @@ export namespace Prisma {
     researchTitle?: boolean
     journal?: boolean
     datePublished?: boolean
+    doiLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    pdfUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publication"]>
 
@@ -11020,9 +11101,11 @@ export namespace Prisma {
     researchTitle?: boolean
     journal?: boolean
     datePublished?: boolean
+    doiLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    pdfUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publication"]>
 
@@ -11031,9 +11114,11 @@ export namespace Prisma {
     researchTitle?: boolean
     journal?: boolean
     datePublished?: boolean
+    doiLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    pdfUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publication"]>
 
@@ -11042,12 +11127,14 @@ export namespace Prisma {
     researchTitle?: boolean
     journal?: boolean
     datePublished?: boolean
+    doiLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    pdfUrl?: boolean
   }
 
-  export type PublicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "researchTitle" | "journal" | "datePublished" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["publication"]>
+  export type PublicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "researchTitle" | "journal" | "datePublished" | "doiLink" | "createdAt" | "updatedAt" | "userId" | "pdfUrl", ExtArgs["result"]["publication"]>
   export type PublicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -11068,9 +11155,11 @@ export namespace Prisma {
       researchTitle: string
       journal: string
       datePublished: Date
+      doiLink: string | null
       createdAt: Date
       updatedAt: Date
       userId: string
+      pdfUrl: string | null
     }, ExtArgs["result"]["publication"]>
     composites: {}
   }
@@ -11499,9 +11588,11 @@ export namespace Prisma {
     readonly researchTitle: FieldRef<"Publication", 'String'>
     readonly journal: FieldRef<"Publication", 'String'>
     readonly datePublished: FieldRef<"Publication", 'DateTime'>
+    readonly doiLink: FieldRef<"Publication", 'String'>
     readonly createdAt: FieldRef<"Publication", 'DateTime'>
     readonly updatedAt: FieldRef<"Publication", 'DateTime'>
     readonly userId: FieldRef<"Publication", 'String'>
+    readonly pdfUrl: FieldRef<"Publication", 'String'>
   }
     
 
@@ -11932,6 +12023,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    proofUrl: string | null
   }
 
   export type ConferencePresentationMaxAggregateOutputType = {
@@ -11942,6 +12034,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    proofUrl: string | null
   }
 
   export type ConferencePresentationCountAggregateOutputType = {
@@ -11952,6 +12045,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    proofUrl: number
     _all: number
   }
 
@@ -11964,6 +12058,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
   }
 
   export type ConferencePresentationMaxAggregateInputType = {
@@ -11974,6 +12069,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
   }
 
   export type ConferencePresentationCountAggregateInputType = {
@@ -11984,6 +12080,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    proofUrl?: true
     _all?: true
   }
 
@@ -12067,6 +12164,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    proofUrl: string | null
     _count: ConferencePresentationCountAggregateOutputType | null
     _min: ConferencePresentationMinAggregateOutputType | null
     _max: ConferencePresentationMaxAggregateOutputType | null
@@ -12094,6 +12192,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conferencePresentation"]>
 
@@ -12105,6 +12204,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conferencePresentation"]>
 
@@ -12116,6 +12216,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conferencePresentation"]>
 
@@ -12127,9 +12228,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    proofUrl?: boolean
   }
 
-  export type ConferencePresentationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paperTitle" | "eventName" | "dateLocation" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["conferencePresentation"]>
+  export type ConferencePresentationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paperTitle" | "eventName" | "dateLocation" | "createdAt" | "updatedAt" | "userId" | "proofUrl", ExtArgs["result"]["conferencePresentation"]>
   export type ConferencePresentationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -12153,6 +12255,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      proofUrl: string | null
     }, ExtArgs["result"]["conferencePresentation"]>
     composites: {}
   }
@@ -12584,6 +12687,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"ConferencePresentation", 'DateTime'>
     readonly updatedAt: FieldRef<"ConferencePresentation", 'DateTime'>
     readonly userId: FieldRef<"ConferencePresentation", 'String'>
+    readonly proofUrl: FieldRef<"ConferencePresentation", 'String'>
   }
     
 
@@ -13043,7 +13147,8 @@ export namespace Prisma {
     expiration: 'expiration',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    licenseFileUrl: 'licenseFileUrl'
   };
 
   export type ProfessionalLicenseScalarFieldEnum = (typeof ProfessionalLicenseScalarFieldEnum)[keyof typeof ProfessionalLicenseScalarFieldEnum]
@@ -13057,7 +13162,8 @@ export namespace Prisma {
     inclusiveYears: 'inclusiveYears',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    proofUrl: 'proofUrl'
   };
 
   export type WorkExperienceScalarFieldEnum = (typeof WorkExperienceScalarFieldEnum)[keyof typeof WorkExperienceScalarFieldEnum]
@@ -13070,7 +13176,8 @@ export namespace Prisma {
     inclusiveYears: 'inclusiveYears',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    membershipProofUrl: 'membershipProofUrl'
   };
 
   export type ProfessionalAffiliationScalarFieldEnum = (typeof ProfessionalAffiliationScalarFieldEnum)[keyof typeof ProfessionalAffiliationScalarFieldEnum]
@@ -13083,7 +13190,8 @@ export namespace Prisma {
     yearReceived: 'yearReceived',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    certificateUrl: 'certificateUrl'
   };
 
   export type AwardRecognitionScalarFieldEnum = (typeof AwardRecognitionScalarFieldEnum)[keyof typeof AwardRecognitionScalarFieldEnum]
@@ -13110,7 +13218,8 @@ export namespace Prisma {
     locationDate: 'locationDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    proofUrl: 'proofUrl'
   };
 
   export type CommunityInvolvementScalarFieldEnum = (typeof CommunityInvolvementScalarFieldEnum)[keyof typeof CommunityInvolvementScalarFieldEnum]
@@ -13121,9 +13230,11 @@ export namespace Prisma {
     researchTitle: 'researchTitle',
     journal: 'journal',
     datePublished: 'datePublished',
+    doiLink: 'doiLink',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    pdfUrl: 'pdfUrl'
   };
 
   export type PublicationScalarFieldEnum = (typeof PublicationScalarFieldEnum)[keyof typeof PublicationScalarFieldEnum]
@@ -13136,7 +13247,8 @@ export namespace Prisma {
     dateLocation: 'dateLocation',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    proofUrl: 'proofUrl'
   };
 
   export type ConferencePresentationScalarFieldEnum = (typeof ConferencePresentationScalarFieldEnum)[keyof typeof ConferencePresentationScalarFieldEnum]
@@ -13379,6 +13491,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     updatedAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     userId?: StringFilter<"ProfessionalLicense"> | string
+    licenseFileUrl?: StringNullableFilter<"ProfessionalLicense"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13391,6 +13504,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    licenseFileUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13406,6 +13520,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     updatedAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     userId?: StringFilter<"ProfessionalLicense"> | string
+    licenseFileUrl?: StringNullableFilter<"ProfessionalLicense"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "licenseNumber">
 
@@ -13418,6 +13533,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    licenseFileUrl?: SortOrderInput | SortOrder
     _count?: ProfessionalLicenseCountOrderByAggregateInput
     _max?: ProfessionalLicenseMaxOrderByAggregateInput
     _min?: ProfessionalLicenseMinOrderByAggregateInput
@@ -13435,6 +13551,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ProfessionalLicense"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProfessionalLicense"> | Date | string
     userId?: StringWithAggregatesFilter<"ProfessionalLicense"> | string
+    licenseFileUrl?: StringNullableWithAggregatesFilter<"ProfessionalLicense"> | string | null
   }
 
   export type WorkExperienceWhereInput = {
@@ -13449,6 +13566,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"WorkExperience"> | Date | string
     updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
     userId?: StringFilter<"WorkExperience"> | string
+    proofUrl?: StringNullableFilter<"WorkExperience"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13461,6 +13579,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13476,6 +13595,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"WorkExperience"> | Date | string
     updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
     userId?: StringFilter<"WorkExperience"> | string
+    proofUrl?: StringNullableFilter<"WorkExperience"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13488,6 +13608,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrderInput | SortOrder
     _count?: WorkExperienceCountOrderByAggregateInput
     _max?: WorkExperienceMaxOrderByAggregateInput
     _min?: WorkExperienceMinOrderByAggregateInput
@@ -13505,6 +13626,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"WorkExperience"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"WorkExperience"> | Date | string
     userId?: StringWithAggregatesFilter<"WorkExperience"> | string
+    proofUrl?: StringNullableWithAggregatesFilter<"WorkExperience"> | string | null
   }
 
   export type ProfessionalAffiliationWhereInput = {
@@ -13518,6 +13640,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     updatedAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringFilter<"ProfessionalAffiliation"> | string
+    membershipProofUrl?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13529,6 +13652,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    membershipProofUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13543,6 +13667,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     updatedAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringFilter<"ProfessionalAffiliation"> | string
+    membershipProofUrl?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13554,6 +13679,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    membershipProofUrl?: SortOrderInput | SortOrder
     _count?: ProfessionalAffiliationCountOrderByAggregateInput
     _max?: ProfessionalAffiliationMaxOrderByAggregateInput
     _min?: ProfessionalAffiliationMinOrderByAggregateInput
@@ -13570,6 +13696,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ProfessionalAffiliation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringWithAggregatesFilter<"ProfessionalAffiliation"> | string
+    membershipProofUrl?: StringNullableWithAggregatesFilter<"ProfessionalAffiliation"> | string | null
   }
 
   export type AwardRecognitionWhereInput = {
@@ -13583,6 +13710,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     updatedAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     userId?: StringFilter<"AwardRecognition"> | string
+    certificateUrl?: StringNullableFilter<"AwardRecognition"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13594,6 +13722,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    certificateUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13608,6 +13737,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     updatedAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     userId?: StringFilter<"AwardRecognition"> | string
+    certificateUrl?: StringNullableFilter<"AwardRecognition"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13619,6 +13749,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    certificateUrl?: SortOrderInput | SortOrder
     _count?: AwardRecognitionCountOrderByAggregateInput
     _avg?: AwardRecognitionAvgOrderByAggregateInput
     _max?: AwardRecognitionMaxOrderByAggregateInput
@@ -13637,6 +13768,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"AwardRecognition"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AwardRecognition"> | Date | string
     userId?: StringWithAggregatesFilter<"AwardRecognition"> | string
+    certificateUrl?: StringNullableWithAggregatesFilter<"AwardRecognition"> | string | null
   }
 
   export type ProfessionalDevelopmentWhereInput = {
@@ -13720,6 +13852,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     updatedAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     userId?: StringFilter<"CommunityInvolvement"> | string
+    proofUrl?: StringNullableFilter<"CommunityInvolvement"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13731,6 +13864,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13745,6 +13879,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     updatedAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     userId?: StringFilter<"CommunityInvolvement"> | string
+    proofUrl?: StringNullableFilter<"CommunityInvolvement"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13756,6 +13891,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrderInput | SortOrder
     _count?: CommunityInvolvementCountOrderByAggregateInput
     _max?: CommunityInvolvementMaxOrderByAggregateInput
     _min?: CommunityInvolvementMinOrderByAggregateInput
@@ -13772,6 +13908,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"CommunityInvolvement"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"CommunityInvolvement"> | Date | string
     userId?: StringWithAggregatesFilter<"CommunityInvolvement"> | string
+    proofUrl?: StringNullableWithAggregatesFilter<"CommunityInvolvement"> | string | null
   }
 
   export type PublicationWhereInput = {
@@ -13782,9 +13919,11 @@ export namespace Prisma {
     researchTitle?: StringFilter<"Publication"> | string
     journal?: StringFilter<"Publication"> | string
     datePublished?: DateTimeFilter<"Publication"> | Date | string
+    doiLink?: StringNullableFilter<"Publication"> | string | null
     createdAt?: DateTimeFilter<"Publication"> | Date | string
     updatedAt?: DateTimeFilter<"Publication"> | Date | string
     userId?: StringFilter<"Publication"> | string
+    pdfUrl?: StringNullableFilter<"Publication"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13793,9 +13932,11 @@ export namespace Prisma {
     researchTitle?: SortOrder
     journal?: SortOrder
     datePublished?: SortOrder
+    doiLink?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    pdfUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13807,9 +13948,11 @@ export namespace Prisma {
     researchTitle?: StringFilter<"Publication"> | string
     journal?: StringFilter<"Publication"> | string
     datePublished?: DateTimeFilter<"Publication"> | Date | string
+    doiLink?: StringNullableFilter<"Publication"> | string | null
     createdAt?: DateTimeFilter<"Publication"> | Date | string
     updatedAt?: DateTimeFilter<"Publication"> | Date | string
     userId?: StringFilter<"Publication"> | string
+    pdfUrl?: StringNullableFilter<"Publication"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13818,9 +13961,11 @@ export namespace Prisma {
     researchTitle?: SortOrder
     journal?: SortOrder
     datePublished?: SortOrder
+    doiLink?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    pdfUrl?: SortOrderInput | SortOrder
     _count?: PublicationCountOrderByAggregateInput
     _max?: PublicationMaxOrderByAggregateInput
     _min?: PublicationMinOrderByAggregateInput
@@ -13834,9 +13979,11 @@ export namespace Prisma {
     researchTitle?: StringWithAggregatesFilter<"Publication"> | string
     journal?: StringWithAggregatesFilter<"Publication"> | string
     datePublished?: DateTimeWithAggregatesFilter<"Publication"> | Date | string
+    doiLink?: StringNullableWithAggregatesFilter<"Publication"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Publication"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Publication"> | Date | string
     userId?: StringWithAggregatesFilter<"Publication"> | string
+    pdfUrl?: StringNullableWithAggregatesFilter<"Publication"> | string | null
   }
 
   export type ConferencePresentationWhereInput = {
@@ -13850,6 +13997,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     updatedAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     userId?: StringFilter<"ConferencePresentation"> | string
+    proofUrl?: StringNullableFilter<"ConferencePresentation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13861,6 +14009,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13875,6 +14024,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     updatedAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     userId?: StringFilter<"ConferencePresentation"> | string
+    proofUrl?: StringNullableFilter<"ConferencePresentation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13886,6 +14036,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrderInput | SortOrder
     _count?: ConferencePresentationCountOrderByAggregateInput
     _max?: ConferencePresentationMaxOrderByAggregateInput
     _min?: ConferencePresentationMinOrderByAggregateInput
@@ -13902,6 +14053,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ConferencePresentation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ConferencePresentation"> | Date | string
     userId?: StringWithAggregatesFilter<"ConferencePresentation"> | string
+    proofUrl?: StringNullableWithAggregatesFilter<"ConferencePresentation"> | string | null
   }
 
   export type UserCreateInput = {
@@ -14101,6 +14253,7 @@ export namespace Prisma {
     expiration: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    licenseFileUrl?: string | null
     user: UserCreateNestedOneWithoutProfessionalLicensesInput
   }
 
@@ -14113,6 +14266,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    licenseFileUrl?: string | null
   }
 
   export type ProfessionalLicenseUpdateInput = {
@@ -14123,6 +14277,7 @@ export namespace Prisma {
     expiration?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalLicensesNestedInput
   }
 
@@ -14135,6 +14290,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseCreateManyInput = {
@@ -14146,6 +14302,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    licenseFileUrl?: string | null
   }
 
   export type ProfessionalLicenseUpdateManyMutationInput = {
@@ -14156,6 +14313,7 @@ export namespace Prisma {
     expiration?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseUncheckedUpdateManyInput = {
@@ -14167,6 +14325,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceCreateInput = {
@@ -14177,6 +14336,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
     user: UserCreateNestedOneWithoutWorkExperiencesInput
   }
 
@@ -14189,6 +14349,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    proofUrl?: string | null
   }
 
   export type WorkExperienceUpdateInput = {
@@ -14199,6 +14360,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutWorkExperiencesNestedInput
   }
 
@@ -14211,6 +14373,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceCreateManyInput = {
@@ -14222,6 +14385,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    proofUrl?: string | null
   }
 
   export type WorkExperienceUpdateManyMutationInput = {
@@ -14232,6 +14396,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUncheckedUpdateManyInput = {
@@ -14243,6 +14408,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationCreateInput = {
@@ -14252,6 +14418,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    membershipProofUrl?: string | null
     user: UserCreateNestedOneWithoutProfessionalAffiliationsInput
   }
 
@@ -14263,6 +14430,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    membershipProofUrl?: string | null
   }
 
   export type ProfessionalAffiliationUpdateInput = {
@@ -14272,6 +14440,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalAffiliationsNestedInput
   }
 
@@ -14283,6 +14452,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationCreateManyInput = {
@@ -14293,6 +14463,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    membershipProofUrl?: string | null
   }
 
   export type ProfessionalAffiliationUpdateManyMutationInput = {
@@ -14302,6 +14473,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUncheckedUpdateManyInput = {
@@ -14312,6 +14484,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionCreateInput = {
@@ -14321,6 +14494,7 @@ export namespace Prisma {
     yearReceived: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    certificateUrl?: string | null
     user: UserCreateNestedOneWithoutAwardsRecognitionsInput
   }
 
@@ -14332,6 +14506,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    certificateUrl?: string | null
   }
 
   export type AwardRecognitionUpdateInput = {
@@ -14341,6 +14516,7 @@ export namespace Prisma {
     yearReceived?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutAwardsRecognitionsNestedInput
   }
 
@@ -14352,6 +14528,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionCreateManyInput = {
@@ -14362,6 +14539,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    certificateUrl?: string | null
   }
 
   export type AwardRecognitionUpdateManyMutationInput = {
@@ -14371,6 +14549,7 @@ export namespace Prisma {
     yearReceived?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUncheckedUpdateManyInput = {
@@ -14381,6 +14560,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentCreateInput = {
@@ -14466,6 +14646,7 @@ export namespace Prisma {
     locationDate: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
     user: UserCreateNestedOneWithoutCommunityInvolvementsInput
   }
 
@@ -14477,6 +14658,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    proofUrl?: string | null
   }
 
   export type CommunityInvolvementUpdateInput = {
@@ -14486,6 +14668,7 @@ export namespace Prisma {
     locationDate?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutCommunityInvolvementsNestedInput
   }
 
@@ -14497,6 +14680,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementCreateManyInput = {
@@ -14507,6 +14691,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    proofUrl?: string | null
   }
 
   export type CommunityInvolvementUpdateManyMutationInput = {
@@ -14516,6 +14701,7 @@ export namespace Prisma {
     locationDate?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementUncheckedUpdateManyInput = {
@@ -14526,6 +14712,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationCreateInput = {
@@ -14533,8 +14720,10 @@ export namespace Prisma {
     researchTitle: string
     journal: string
     datePublished: Date | string
+    doiLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    pdfUrl?: string | null
     user: UserCreateNestedOneWithoutPublicationsInput
   }
 
@@ -14543,9 +14732,11 @@ export namespace Prisma {
     researchTitle: string
     journal: string
     datePublished: Date | string
+    doiLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    pdfUrl?: string | null
   }
 
   export type PublicationUpdateInput = {
@@ -14553,8 +14744,10 @@ export namespace Prisma {
     researchTitle?: StringFieldUpdateOperationsInput | string
     journal?: StringFieldUpdateOperationsInput | string
     datePublished?: DateTimeFieldUpdateOperationsInput | Date | string
+    doiLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutPublicationsNestedInput
   }
 
@@ -14563,9 +14756,11 @@ export namespace Prisma {
     researchTitle?: StringFieldUpdateOperationsInput | string
     journal?: StringFieldUpdateOperationsInput | string
     datePublished?: DateTimeFieldUpdateOperationsInput | Date | string
+    doiLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationCreateManyInput = {
@@ -14573,9 +14768,11 @@ export namespace Prisma {
     researchTitle: string
     journal: string
     datePublished: Date | string
+    doiLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    pdfUrl?: string | null
   }
 
   export type PublicationUpdateManyMutationInput = {
@@ -14583,8 +14780,10 @@ export namespace Prisma {
     researchTitle?: StringFieldUpdateOperationsInput | string
     journal?: StringFieldUpdateOperationsInput | string
     datePublished?: DateTimeFieldUpdateOperationsInput | Date | string
+    doiLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUncheckedUpdateManyInput = {
@@ -14592,9 +14791,11 @@ export namespace Prisma {
     researchTitle?: StringFieldUpdateOperationsInput | string
     journal?: StringFieldUpdateOperationsInput | string
     datePublished?: DateTimeFieldUpdateOperationsInput | Date | string
+    doiLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationCreateInput = {
@@ -14604,6 +14805,7 @@ export namespace Prisma {
     dateLocation: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
     user: UserCreateNestedOneWithoutConferencePresentationsInput
   }
 
@@ -14615,6 +14817,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    proofUrl?: string | null
   }
 
   export type ConferencePresentationUpdateInput = {
@@ -14624,6 +14827,7 @@ export namespace Prisma {
     dateLocation?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutConferencePresentationsNestedInput
   }
 
@@ -14635,6 +14839,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationCreateManyInput = {
@@ -14645,6 +14850,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    proofUrl?: string | null
   }
 
   export type ConferencePresentationUpdateManyMutationInput = {
@@ -14654,6 +14860,7 @@ export namespace Prisma {
     dateLocation?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUncheckedUpdateManyInput = {
@@ -14664,6 +14871,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -14980,6 +15188,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    licenseFileUrl?: SortOrder
   }
 
   export type ProfessionalLicenseMaxOrderByAggregateInput = {
@@ -14991,6 +15200,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    licenseFileUrl?: SortOrder
   }
 
   export type ProfessionalLicenseMinOrderByAggregateInput = {
@@ -15002,6 +15212,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    licenseFileUrl?: SortOrder
   }
 
   export type WorkExperienceCountOrderByAggregateInput = {
@@ -15013,6 +15224,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type WorkExperienceMaxOrderByAggregateInput = {
@@ -15024,6 +15236,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type WorkExperienceMinOrderByAggregateInput = {
@@ -15035,6 +15248,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type ProfessionalAffiliationCountOrderByAggregateInput = {
@@ -15045,6 +15259,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    membershipProofUrl?: SortOrder
   }
 
   export type ProfessionalAffiliationMaxOrderByAggregateInput = {
@@ -15055,6 +15270,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    membershipProofUrl?: SortOrder
   }
 
   export type ProfessionalAffiliationMinOrderByAggregateInput = {
@@ -15065,6 +15281,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    membershipProofUrl?: SortOrder
   }
 
   export type AwardRecognitionCountOrderByAggregateInput = {
@@ -15075,6 +15292,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    certificateUrl?: SortOrder
   }
 
   export type AwardRecognitionAvgOrderByAggregateInput = {
@@ -15089,6 +15307,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    certificateUrl?: SortOrder
   }
 
   export type AwardRecognitionMinOrderByAggregateInput = {
@@ -15099,6 +15318,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    certificateUrl?: SortOrder
   }
 
   export type AwardRecognitionSumOrderByAggregateInput = {
@@ -15146,6 +15366,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type CommunityInvolvementMaxOrderByAggregateInput = {
@@ -15156,6 +15377,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type CommunityInvolvementMinOrderByAggregateInput = {
@@ -15166,6 +15388,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type PublicationCountOrderByAggregateInput = {
@@ -15173,9 +15396,11 @@ export namespace Prisma {
     researchTitle?: SortOrder
     journal?: SortOrder
     datePublished?: SortOrder
+    doiLink?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    pdfUrl?: SortOrder
   }
 
   export type PublicationMaxOrderByAggregateInput = {
@@ -15183,9 +15408,11 @@ export namespace Prisma {
     researchTitle?: SortOrder
     journal?: SortOrder
     datePublished?: SortOrder
+    doiLink?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    pdfUrl?: SortOrder
   }
 
   export type PublicationMinOrderByAggregateInput = {
@@ -15193,9 +15420,11 @@ export namespace Prisma {
     researchTitle?: SortOrder
     journal?: SortOrder
     datePublished?: SortOrder
+    doiLink?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    pdfUrl?: SortOrder
   }
 
   export type ConferencePresentationCountOrderByAggregateInput = {
@@ -15206,6 +15435,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type ConferencePresentationMaxOrderByAggregateInput = {
@@ -15216,6 +15446,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type ConferencePresentationMinOrderByAggregateInput = {
@@ -15226,6 +15457,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    proofUrl?: SortOrder
   }
 
   export type AcademicQualificationCreateNestedManyWithoutUserInput = {
@@ -15948,6 +16180,7 @@ export namespace Prisma {
     expiration: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    licenseFileUrl?: string | null
   }
 
   export type ProfessionalLicenseUncheckedCreateWithoutUserInput = {
@@ -15958,6 +16191,7 @@ export namespace Prisma {
     expiration: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    licenseFileUrl?: string | null
   }
 
   export type ProfessionalLicenseCreateOrConnectWithoutUserInput = {
@@ -15977,6 +16211,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type WorkExperienceUncheckedCreateWithoutUserInput = {
@@ -15987,6 +16222,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type WorkExperienceCreateOrConnectWithoutUserInput = {
@@ -16005,6 +16241,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    membershipProofUrl?: string | null
   }
 
   export type ProfessionalAffiliationUncheckedCreateWithoutUserInput = {
@@ -16014,6 +16251,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    membershipProofUrl?: string | null
   }
 
   export type ProfessionalAffiliationCreateOrConnectWithoutUserInput = {
@@ -16032,6 +16270,7 @@ export namespace Prisma {
     yearReceived: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    certificateUrl?: string | null
   }
 
   export type AwardRecognitionUncheckedCreateWithoutUserInput = {
@@ -16041,6 +16280,7 @@ export namespace Prisma {
     yearReceived: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    certificateUrl?: string | null
   }
 
   export type AwardRecognitionCreateOrConnectWithoutUserInput = {
@@ -16088,6 +16328,7 @@ export namespace Prisma {
     locationDate: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type CommunityInvolvementUncheckedCreateWithoutUserInput = {
@@ -16097,6 +16338,7 @@ export namespace Prisma {
     locationDate: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type CommunityInvolvementCreateOrConnectWithoutUserInput = {
@@ -16113,8 +16355,10 @@ export namespace Prisma {
     researchTitle: string
     journal: string
     datePublished: Date | string
+    doiLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    pdfUrl?: string | null
   }
 
   export type PublicationUncheckedCreateWithoutUserInput = {
@@ -16122,8 +16366,10 @@ export namespace Prisma {
     researchTitle: string
     journal: string
     datePublished: Date | string
+    doiLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    pdfUrl?: string | null
   }
 
   export type PublicationCreateOrConnectWithoutUserInput = {
@@ -16142,6 +16388,7 @@ export namespace Prisma {
     dateLocation: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type ConferencePresentationUncheckedCreateWithoutUserInput = {
@@ -16151,6 +16398,7 @@ export namespace Prisma {
     dateLocation: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type ConferencePresentationCreateOrConnectWithoutUserInput = {
@@ -16221,6 +16469,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     updatedAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     userId?: StringFilter<"ProfessionalLicense"> | string
+    licenseFileUrl?: StringNullableFilter<"ProfessionalLicense"> | string | null
   }
 
   export type WorkExperienceUpsertWithWhereUniqueWithoutUserInput = {
@@ -16251,6 +16500,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"WorkExperience"> | Date | string
     updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
     userId?: StringFilter<"WorkExperience"> | string
+    proofUrl?: StringNullableFilter<"WorkExperience"> | string | null
   }
 
   export type ProfessionalAffiliationUpsertWithWhereUniqueWithoutUserInput = {
@@ -16280,6 +16530,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     updatedAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringFilter<"ProfessionalAffiliation"> | string
+    membershipProofUrl?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
   }
 
   export type AwardRecognitionUpsertWithWhereUniqueWithoutUserInput = {
@@ -16309,6 +16560,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     updatedAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     userId?: StringFilter<"AwardRecognition"> | string
+    certificateUrl?: StringNullableFilter<"AwardRecognition"> | string | null
   }
 
   export type ProfessionalDevelopmentUpsertWithWhereUniqueWithoutUserInput = {
@@ -16368,6 +16620,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     updatedAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     userId?: StringFilter<"CommunityInvolvement"> | string
+    proofUrl?: StringNullableFilter<"CommunityInvolvement"> | string | null
   }
 
   export type PublicationUpsertWithWhereUniqueWithoutUserInput = {
@@ -16394,9 +16647,11 @@ export namespace Prisma {
     researchTitle?: StringFilter<"Publication"> | string
     journal?: StringFilter<"Publication"> | string
     datePublished?: DateTimeFilter<"Publication"> | Date | string
+    doiLink?: StringNullableFilter<"Publication"> | string | null
     createdAt?: DateTimeFilter<"Publication"> | Date | string
     updatedAt?: DateTimeFilter<"Publication"> | Date | string
     userId?: StringFilter<"Publication"> | string
+    pdfUrl?: StringNullableFilter<"Publication"> | string | null
   }
 
   export type ConferencePresentationUpsertWithWhereUniqueWithoutUserInput = {
@@ -16426,6 +16681,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     updatedAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     userId?: StringFilter<"ConferencePresentation"> | string
+    proofUrl?: StringNullableFilter<"ConferencePresentation"> | string | null
   }
 
   export type UserCreateWithoutAcademicQualificationsInput = {
@@ -17239,6 +17495,7 @@ export namespace Prisma {
     expiration: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    licenseFileUrl?: string | null
   }
 
   export type WorkExperienceCreateManyUserInput = {
@@ -17249,6 +17506,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type ProfessionalAffiliationCreateManyUserInput = {
@@ -17258,6 +17516,7 @@ export namespace Prisma {
     inclusiveYears: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    membershipProofUrl?: string | null
   }
 
   export type AwardRecognitionCreateManyUserInput = {
@@ -17267,6 +17526,7 @@ export namespace Prisma {
     yearReceived: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    certificateUrl?: string | null
   }
 
   export type ProfessionalDevelopmentCreateManyUserInput = {
@@ -17286,6 +17546,7 @@ export namespace Prisma {
     locationDate: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type PublicationCreateManyUserInput = {
@@ -17293,8 +17554,10 @@ export namespace Prisma {
     researchTitle: string
     journal: string
     datePublished: Date | string
+    doiLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    pdfUrl?: string | null
   }
 
   export type ConferencePresentationCreateManyUserInput = {
@@ -17304,6 +17567,7 @@ export namespace Prisma {
     dateLocation: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofUrl?: string | null
   }
 
   export type AcademicQualificationUpdateWithoutUserInput = {
@@ -17347,6 +17611,7 @@ export namespace Prisma {
     expiration?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseUncheckedUpdateWithoutUserInput = {
@@ -17357,6 +17622,7 @@ export namespace Prisma {
     expiration?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseUncheckedUpdateManyWithoutUserInput = {
@@ -17367,6 +17633,7 @@ export namespace Prisma {
     expiration?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUpdateWithoutUserInput = {
@@ -17377,6 +17644,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUncheckedUpdateWithoutUserInput = {
@@ -17387,6 +17655,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUncheckedUpdateManyWithoutUserInput = {
@@ -17397,6 +17666,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUpdateWithoutUserInput = {
@@ -17406,6 +17676,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUncheckedUpdateWithoutUserInput = {
@@ -17415,6 +17686,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUncheckedUpdateManyWithoutUserInput = {
@@ -17424,6 +17696,7 @@ export namespace Prisma {
     inclusiveYears?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUpdateWithoutUserInput = {
@@ -17433,6 +17706,7 @@ export namespace Prisma {
     yearReceived?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUncheckedUpdateWithoutUserInput = {
@@ -17442,6 +17716,7 @@ export namespace Prisma {
     yearReceived?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUncheckedUpdateManyWithoutUserInput = {
@@ -17451,6 +17726,7 @@ export namespace Prisma {
     yearReceived?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentUpdateWithoutUserInput = {
@@ -17490,6 +17766,7 @@ export namespace Prisma {
     locationDate?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementUncheckedUpdateWithoutUserInput = {
@@ -17499,6 +17776,7 @@ export namespace Prisma {
     locationDate?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementUncheckedUpdateManyWithoutUserInput = {
@@ -17508,6 +17786,7 @@ export namespace Prisma {
     locationDate?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUpdateWithoutUserInput = {
@@ -17515,8 +17794,10 @@ export namespace Prisma {
     researchTitle?: StringFieldUpdateOperationsInput | string
     journal?: StringFieldUpdateOperationsInput | string
     datePublished?: DateTimeFieldUpdateOperationsInput | Date | string
+    doiLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUncheckedUpdateWithoutUserInput = {
@@ -17524,8 +17805,10 @@ export namespace Prisma {
     researchTitle?: StringFieldUpdateOperationsInput | string
     journal?: StringFieldUpdateOperationsInput | string
     datePublished?: DateTimeFieldUpdateOperationsInput | Date | string
+    doiLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUncheckedUpdateManyWithoutUserInput = {
@@ -17533,8 +17816,10 @@ export namespace Prisma {
     researchTitle?: StringFieldUpdateOperationsInput | string
     journal?: StringFieldUpdateOperationsInput | string
     datePublished?: DateTimeFieldUpdateOperationsInput | Date | string
+    doiLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUpdateWithoutUserInput = {
@@ -17544,6 +17829,7 @@ export namespace Prisma {
     dateLocation?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUncheckedUpdateWithoutUserInput = {
@@ -17553,6 +17839,7 @@ export namespace Prisma {
     dateLocation?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUncheckedUpdateManyWithoutUserInput = {
@@ -17562,6 +17849,7 @@ export namespace Prisma {
     dateLocation?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

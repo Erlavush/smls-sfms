@@ -53,22 +53,25 @@ model AcademicQualification {
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // --- ADDED FIELD for supporting document ---
+  // Supporting document field
   diplomaFileUrl String? // Optional field to store URL/path of uploaded diploma/transcript
 }
 
 model ProfessionalLicense {
   id          String   @id @default(cuid())
   examination String   // e.g., "Medical Technologist Licensure Examination"
-  monthYear   String   // e.g., "August 2023" (Consider DateTime if precise date needed)
+  monthYear   String   // e.g., "August 2023"
   licenseNumber String @unique // License number should be unique
-  expiration  DateTime // Date the license expires
+  expiration  DateTime // Date the license expires (REQUIRED)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   // Relation to User
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED: Supporting document field ---
+  licenseFileUrl String?
 }
 
 model WorkExperience {
@@ -76,13 +79,16 @@ model WorkExperience {
   institution String   // e.g., "San Pedro College", "Davao Doctors Hospital"
   position   String   // e.g., "Faculty", "Medical Technologist"
   natureOfWork String?  // Optional description
-  inclusiveYears String // e.g., "2020-Present", "2018-2020" (Consider start/end Dates if needed)
+  inclusiveYears String // e.g., "2020-Present", "2018-2020"
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   // Relation to User
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED: Supporting document field ---
+  proofUrl String?
 }
 
 model ProfessionalAffiliation {
@@ -96,6 +102,9 @@ model ProfessionalAffiliation {
   // Relation to User
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED: Supporting document field ---
+  membershipProofUrl String?
 }
 
 model AwardRecognition {
@@ -109,6 +118,9 @@ model AwardRecognition {
    // Relation to User
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED: Supporting document field ---
+  certificateUrl String?
 }
 
 model ProfessionalDevelopment {
@@ -121,7 +133,7 @@ model ProfessionalDevelopment {
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-   // --- ADDED FIELD for supporting document ---
+  // Supporting document field
   certificateFileUrl String? // Optional field to store URL/path of uploaded certificate
 }
 
@@ -136,6 +148,9 @@ model CommunityInvolvement {
    // Relation to User
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED: Supporting document field ---
+  proofUrl String?
 }
 
 // --- Research Related Models ---
@@ -144,13 +159,16 @@ model Publication {
   researchTitle String
   journal       String   // Name of the journal
   datePublished DateTime // Date of publication
-  // Optional fields: volume, issue, pages, DOI, link etc.
+  doiLink       String?  // Optional: Link to DOI
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
    // Relation to User
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED: Supporting document field ---
+  pdfUrl String? // Optional: URL/path to uploaded PDF copy
 }
 
 model ConferencePresentation {
@@ -164,6 +182,9 @@ model ConferencePresentation {
   // Relation to User
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED: Supporting document field ---
+  proofUrl String? // Optional: URL/path to certificate/program page
 }
 
 // --- Add other models below as needed ---
