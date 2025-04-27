@@ -22,7 +22,7 @@ To develop an automated system for managing faculty CVs, skills, credentials, an
 *   Basic Add/Delete/Save (including file uploads/deletes for new items) functional for **Academic Qualifications** section via server actions and FormData.
 *   Other sections and Admin features are under development.
 
-
+'''
 smls-sfms/
 ├── .env.local                  # Environment variables
 ├── .gitignore
@@ -139,3 +139,4 @@ smls-sfms/
 │       └── index.ts            # Shared type definitions (Updated for Status)
 ├── tailwind.config.ts          # Tailwind config (Updated for Font)
 └── tsconfig.json               # TypeScript config
+'''
