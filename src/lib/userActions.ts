@@ -2,39 +2,57 @@
 'use server'; // Mark this file as containing Server Actions
 
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Adjust path if needed
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import prisma from '@/lib/prisma';
-// Import types from the correct generated location
 import type {
-    User, // Keep User if needed
-    AcademicQualification,
-    ProfessionalLicense,
-    WorkExperience,
-    ProfessionalAffiliation,
-    AwardRecognition,
-    ProfessionalDevelopment,
-    CommunityInvolvement,
-    Publication,
-    ConferencePresentation
+    User, AcademicQualification, ProfessionalLicense, WorkExperience,
+    ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
+    CommunityInvolvement, Publication, ConferencePresentation
  } from '@/generated/prisma';
 import { revalidatePath } from 'next/cache';
 import fs from 'fs/promises'; // Import Node.js file system promises API
 import path from 'path';     // Import Node.js path module
 import { v4 as uuidv4 } from 'uuid'; // Import UUID generator
 
+// Type received from the frontend JSON string (doesn't include File objects)
+type IncomingAcademicQualification = Omit<AcademicQualification, '_selectedFile'> & {
+    _isNew?: boolean;
+    // ID might be the temporary UUID for new items
+};
+
 // --- Helper Function to ensure upload directory exists ---
 async function ensureUploadDirExists(subDir: string, userId: string): Promise<string> {
-    // Create a user-specific directory path within public/uploads/<subDir>
     const userDirPath = path.join(process.cwd(), 'public', 'uploads', subDir, userId);
     try {
-        await fs.mkdir(userDirPath, { recursive: true }); // Create directory if it doesn't exist
-        console.log(`Ensured directory exists: ${userDirPath}`);
+        await fs.mkdir(userDirPath, { recursive: true });
+        // console.log(`Ensured directory exists: ${userDirPath}`); // Keep commented unless debugging
         return userDirPath;
     } catch (error) {
         console.error(`Error creating upload directory (${subDir}):`, error);
-        throw new Error(`Could not create upload directory for ${subDir}.`); // Re-throw error
+        throw new Error(`Could not create upload directory for ${subDir}.`);
     }
 }
+
+// --- Helper Function for safe file deletion ---
+async function safeDeleteFile(filePath: string | null | undefined) {
+    if (!filePath || !filePath.startsWith('/uploads/')) {
+        // console.log(`Skipping deletion for invalid or non-local path: ${filePath}`);
+        return;
+    }
+    try {
+        const localFilePath = path.join(process.cwd(), 'public', filePath);
+        await fs.unlink(localFilePath);
+        console.log(`Successfully deleted file: ${localFilePath}`);
+    } catch (error: any) {
+        // Log error if file not found (ENOENT) or other issues, but don't throw
+        if (error.code === 'ENOENT') {
+            console.warn(`File not found, skipping delete: ${filePath}`);
+        } else {
+            console.error(`Error deleting file ${filePath}:`, error.message);
+        }
+    }
+}
+
 
 // --- Get Profile Data Action ---
 interface GetUserProfileDataResponse {
@@ -125,7 +143,7 @@ export async function getMyProfileData(): Promise<GetUserProfileDataResponse> {
 }
 
 
-// --- Add Qualification Action ---
+// --- Add Qualification Action (Can be potentially removed later if updateMyProfile handles everything) ---
 interface AddQualificationResponse {
     success: boolean;
     qualification?: AcademicQualification; // Return the created qualification on success
@@ -176,24 +194,13 @@ export async function addMyQualification(
         // 4. Handle File Upload (if provided)
         if (diplomaFile && diplomaFile.size > 0) {
             console.log("Diploma file found:", diplomaFile.name, diplomaFile.size);
-
-            // Ensure user's upload directory exists
             const uploadDir = await ensureUploadDirExists('qualifications', userId); // Pass subdirectory
-
-            // Generate a unique filename
             const fileExtension = path.extname(diplomaFile.name);
             const uniqueFilename = `${uuidv4()}${fileExtension}`;
             const filePath = path.join(uploadDir, uniqueFilename);
-
-            // Convert file buffer for saving
             const fileBuffer = Buffer.from(await diplomaFile.arrayBuffer());
-
-            // Save the file locally
             await fs.writeFile(filePath, fileBuffer);
             console.log(`File saved locally to: ${filePath}`);
-
-            // Store the RELATIVE path for accessing via URL later
-            // IMPORTANT: Use forward slashes for URL paths
             fileUrl = `/uploads/qualifications/${userId}/${uniqueFilename}`;
             console.log(`Storing relative path: ${fileUrl}`);
 
@@ -204,12 +211,8 @@ export async function addMyQualification(
         // 5. Create qualification in database
         const newQualification = await prisma.academicQualification.create({
             data: {
-                degree,
-                institution,
-                program,
-                yearCompleted,
-                userId, // Link to the logged-in user
-                diplomaFileUrl: fileUrl, // Save the relative path or null/undefined
+                degree, institution, program, yearCompleted, userId,
+                diplomaFileUrl: fileUrl,
             },
         });
 
@@ -223,13 +226,13 @@ export async function addMyQualification(
     } catch (error) {
         console.error("Error adding academic qualification:", error);
          // TODO: Optionally delete the locally uploaded file if DB operation fails
+        await safeDeleteFile(fileUrl); // Attempt to delete if DB fails after upload
         return { success: false, error: 'Failed to add qualification' };
     }
 }
 
 
-// --- Delete Qualification Action ---
-
+// --- Delete Qualification Action (Can be potentially removed later) ---
 interface DeleteQualificationResponse {
     success: boolean;
     error?: string;
@@ -242,64 +245,29 @@ export async function deleteMyQualification(
     const session = await getServerSession(authOptions);
     const userId = (session?.user as any)?.id;
 
-    if (!userId) {
-        return { success: false, error: 'Not authenticated' };
-    }
-
-    if (!qualificationId) {
-        return { success: false, error: 'Qualification ID is required' };
-    }
+    if (!userId) { return { success: false, error: 'Not authenticated' }; }
+    if (!qualificationId) { return { success: false, error: 'Qualification ID is required' }; }
 
     try {
         // 2. Find the qualification to ensure it belongs to the user AND get file path
-        // Use prisma instance imported at the top
         const qualification = await prisma.academicQualification.findUnique({
-            where: {
-                id: qualificationId,
-                userId: userId // Ensure user owns this record directly in the query
-            },
+            where: { id: qualificationId, userId: userId }
         });
 
-        // Check if qualification exists (and belongs to user implicitly due to where clause)
         if (!qualification) {
             console.warn(`Qualification ${qualificationId} not found or user ${userId} does not own it.`);
              return { success: false, error: 'Qualification not found or you do not have permission.' };
         }
-
         const filePathToDelete = qualification.diplomaFileUrl; // Get the stored path/URL
 
         // 3. Delete the qualification record from the database
-        // Use prisma instance imported at the top
         await prisma.academicQualification.delete({
-            where: {
-                id: qualificationId,
-                // Optional: userId check again if needed, but covered by findUnique above
-            },
+            where: { id: qualificationId }
         });
          console.log(`Deleted qualification record ${qualificationId} for user ${userId}`);
 
         // 4. Delete the associated file from local storage (if path exists)
-        if (filePathToDelete) {
-             try {
-                // Construct the full local path from the relative URL path stored
-                if (filePathToDelete.startsWith('/uploads/')) {
-                     const localFilePath = path.join(process.cwd(), 'public', filePathToDelete);
-                     // Check if file exists before trying to delete
-                     try {
-                         await fs.access(localFilePath); // Check existence
-                         await fs.unlink(localFilePath); // Delete the file
-                         console.log(`Deleted associated file: ${localFilePath}`);
-                     } catch (accessError: any) {
-                          console.warn(`File not found or inaccessible, skipping delete: ${localFilePath} - Error: ${accessError.message}`);
-                     }
-                } else {
-                     console.warn(`Skipping file deletion for non-local path pattern: ${filePathToDelete}`);
-                }
-             } catch (fileError: any) {
-                // Log error if file deletion fails, but don't fail the overall action
-                console.error(`Error deleting file ${filePathToDelete}:`, fileError.message);
-             }
-        }
+        await safeDeleteFile(filePathToDelete); // Use helper
 
         // 5. Revalidate the profile page cache
         revalidatePath('/profile');
@@ -313,12 +281,159 @@ export async function deleteMyQualification(
     }
 }
 
-// --- Placeholder for Update Profile Action (handles save changes) ---
-// export async function updateMyProfile(changes: /* Define a complex type for changes */) {
-//    'use server';
-//    // 1. Get User ID
-//    // 2. Use prisma.$transaction to perform multiple creates, updates, deletes
-//    // 3. Handle file uploads/deletions within transaction if possible or carefully sequence
-//    // 4. Revalidate paths
-//    // 5. Return success/error
-// }
+
+// --- Update Profile Action (Accepts FormData) ---
+interface UpdateProfileResponse {
+    success: boolean;
+    error?: string;
+}
+
+export async function updateMyProfile(
+    formData: FormData // <-- Accept FormData
+): Promise<UpdateProfileResponse> {
+    'use server';
+
+    // 1. Authentication & Authorization
+    const session = await getServerSession(authOptions);
+    const userId = (session?.user as any)?.id;
+    if (!userId) { return { success: false, error: 'Not authenticated' }; }
+    console.log(`updateMyProfile called for user: ${userId}`);
+
+    // 2. Extract and Parse Data from FormData
+    const qualificationsJson = formData.get('academicQualifications_json') as string | null;
+    let incomingQualifications: IncomingAcademicQualification[] = [];
+
+    if (qualificationsJson) {
+        try {
+            incomingQualifications = JSON.parse(qualificationsJson);
+            if (!Array.isArray(incomingQualifications)) { throw new Error("Parsed academic qualifications is not an array."); }
+        } catch (e: any) {
+            console.error("Error parsing academicQualifications_json:", e);
+            return { success: false, error: "Invalid data format received." };
+        }
+    } else {
+        console.log("No academic qualifications JSON data provided in form data.");
+        // If ONLY this section is handled, this might be an error. If multiple sections, maybe okay.
+    }
+
+    // TODO: Extract other sections (e.g., professionalLicenses_json) similarly
+
+    // --- Temporary storage for file operations outside transaction ---
+    let filesToDelete: (string | null | undefined)[] = [];
+    let createdFileUrls: { tempId: string, url: string }[] = []; // Store temp ID and final URL
+
+    try {
+        const result = await prisma.$transaction(async (tx) => {
+            // --- Process Academic Qualifications ---
+            const currentQualifications = await tx.academicQualification.findMany({
+                where: { userId: userId },
+                select: { id: true, diplomaFileUrl: true }
+            });
+            const currentQualificationIds = new Set(currentQualifications.map(q => q.id));
+            const currentQualificationMap = new Map(currentQualifications.map(q => [q.id, q]));
+
+            const incomingQualificationIds = new Set(incomingQualifications.filter(q => !q._isNew).map(q => q.id));
+            const qualificationIdsToDeleteInternal: string[] = []; // IDs to delete in DB
+
+            // Identify items to delete (DB records)
+            for (const currentQual of currentQualifications) {
+                if (!incomingQualificationIds.has(currentQual.id)) {
+                    qualificationIdsToDeleteInternal.push(currentQual.id);
+                    filesToDelete.push(currentQual.diplomaFileUrl); // Add file path to delete list (for later)
+                }
+            }
+
+            // Perform Deletions (DB only within transaction)
+            if (qualificationIdsToDeleteInternal.length > 0) {
+                console.log("Deleting qualification records:", qualificationIdsToDeleteInternal);
+                await tx.academicQualification.deleteMany({
+                    where: { id: { in: qualificationIdsToDeleteInternal }, userId: userId }
+                });
+            }
+
+            // Perform Creations/Updates
+            for (const incomingQual of incomingQualifications) {
+                if (incomingQual._isNew) {
+                    // --- Create New Item ---
+                    if (!incomingQual.degree || !incomingQual.institution || !incomingQual.program || !incomingQual.yearCompleted) {
+                         throw new Error(`Missing required fields for new qualification: ${JSON.stringify(incomingQual)}`);
+                    }
+
+                    // --- Handle File Upload ---
+                    let newFileUrl: string | null = null;
+                    const fileKey = `academicQualification_file_${incomingQual.id}`; // Key used in frontend
+                    const file = formData.get(fileKey) as File | null;
+
+                    if (file) {
+                        console.log(`Processing file for new item ${incomingQual.id}: ${file.name}`);
+                        // Perform actual file saving NOW (before DB create)
+                        try {
+                            const uploadDir = await ensureUploadDirExists('qualifications', userId);
+                            const fileExtension = path.extname(file.name);
+                            const uniqueFilename = `${uuidv4()}${fileExtension}`;
+                            const filePath = path.join(uploadDir, uniqueFilename);
+                            const fileBuffer = Buffer.from(await file.arrayBuffer());
+                            await fs.writeFile(filePath, fileBuffer); // Save the file
+                            newFileUrl = `/uploads/qualifications/${userId}/${uniqueFilename}`; // Relative URL path
+                            console.log(`File saved for ${incomingQual.id}: ${newFileUrl}`);
+                        } catch (uploadError: any) {
+                            console.error(`Error uploading file for new qualification ${incomingQual.id}:`, uploadError);
+                            throw new Error(`Failed to upload file for qualification: ${incomingQual.degree}`);
+                        }
+                    }
+
+                    // Create record in DB
+                    await tx.academicQualification.create({
+                        data: {
+                            degree: incomingQual.degree,
+                            institution: incomingQual.institution,
+                            program: incomingQual.program,
+                            yearCompleted: incomingQual.yearCompleted,
+                            diplomaFileUrl: newFileUrl, // Use the saved URL
+                            userId: userId,
+                        }
+                    });
+                     console.log(`Created qualification: ${incomingQual.degree}`);
+
+                } else {
+                    // --- Update Existing Item (Placeholder) ---
+                     if (currentQualificationIds.has(incomingQual.id)) {
+                         // TODO: Implement update logic here
+                         console.log(`Item ${incomingQual.id} exists. Update logic needed.`);
+                     } else {
+                         console.warn(`Incoming existing qualification ID ${incomingQual.id} not found in DB. Skipping.`);
+                     }
+                }
+            }
+
+            // --- TODO: Process other sections similarly ---
+
+            return { success: true }; // Return success from transaction block
+        }); // End transaction
+
+        // --- Perform File Deletions (Outside Transaction, after success) ---
+        if (result.success && filesToDelete.length > 0) {
+            console.log("Attempting to delete files for removed records:", filesToDelete);
+            for (const fileUrl of filesToDelete) {
+                await safeDeleteFile(fileUrl); // Use helper function
+            }
+        }
+
+        // Revalidate Path if successful
+        if (result.success) {
+            revalidatePath('/profile');
+            console.log("Profile revalidated successfully.");
+        }
+
+        return { success: result.success };
+
+    } catch (error: any) {
+        console.error("Error updating profile:", error);
+        // If an error occurred during file upload or DB operation within the transaction,
+        // the transaction should have rolled back. We might still have uploaded files
+        // from *before* the failing operation. Implementing cleanup for partial uploads
+        // during transaction failure is complex and might require tracking uploads before DB ops.
+        // For now, log the error and return failure.
+        return { success: false, error: error.message || 'Failed to update profile data' };
+    }
+}

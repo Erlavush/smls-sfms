@@ -1,21 +1,22 @@
+// src/app/(faculty)/profile/page.tsx
 'use client';
 
-import React, { useState, useEffect, useCallback, useTransition } from 'react';
+import React, { useState, useEffect, useCallback, useTransition, ChangeEvent } from 'react';
 import { useSession } from 'next-auth/react';
-import { getMyProfileData } from '@/lib/userActions';
+// Import the server actions
+import { getMyProfileData, updateMyProfile } from '@/lib/userActions';
 import type {
-    User, // Make sure User type is imported if needed, or adjust ProfileData interface
-    AcademicQualification, ProfessionalLicense, WorkExperience,
+    User, AcademicQualification, ProfessionalLicense, WorkExperience,
     ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
     CommunityInvolvement, Publication, ConferencePresentation
-} from '@/generated/prisma'; // Assuming prisma client types are here
+} from '@/generated/prisma';
 import {
-    PlusIcon, PencilSquareIcon, XCircleIcon, CheckCircleIcon, AcademicCapIcon, BriefcaseIcon, // Added more icons
-    IdentificationIcon, StarIcon, SparklesIcon, UsersIcon, DocumentTextIcon, PresentationChartBarIcon, TrashIcon
+    PlusIcon, PencilSquareIcon, XCircleIcon, CheckCircleIcon, AcademicCapIcon, BriefcaseIcon,
+    IdentificationIcon, StarIcon, SparklesIcon, UsersIcon, DocumentTextIcon, PresentationChartBarIcon, TrashIcon, PencilIcon, PaperClipIcon
 } from '@heroicons/react/24/outline';
+import { v4 as uuidv4 } from 'uuid';
 
-
-// Type for the complete fetched profile data structure
+// Interface for the complete fetched profile data structure
 interface ProfileData {
     user: { id: string; name: string | null; email: string | null; role: string | null; } | null;
     academicQualifications: AcademicQualification[];
@@ -31,34 +32,42 @@ interface ProfileData {
 }
 
 // Define all possible categories and their corresponding data keys and titles/icons
-// Define icons for each category
 const categoryMetadata = {
     academicQualifications: { title: 'Academic Qualifications', icon: AcademicCapIcon },
     professionalLicenses: { title: 'Professional Licenses', icon: IdentificationIcon },
     workExperiences: { title: 'Work Experience', icon: BriefcaseIcon },
-    professionalAffiliations: { title: 'Professional Affiliations', icon: UsersIcon }, // Example icon
-    awardsRecognitions: { title: 'Awards & Recognitions', icon: StarIcon }, // Example icon
-    professionalDevelopments: { title: 'Professional Development', icon: SparklesIcon }, // Example icon
-    communityInvolvements: { title: 'Community Involvement', icon: UsersIcon }, // Reusing example icon
-    publications: { title: 'Publications', icon: DocumentTextIcon }, // Example icon
-    conferencePresentations: { title: 'Conference Presentations', icon: PresentationChartBarIcon }, // Example icon
+    professionalAffiliations: { title: 'Professional Affiliations', icon: UsersIcon },
+    awardsRecognitions: { title: 'Awards & Recognitions', icon: StarIcon },
+    professionalDevelopments: { title: 'Professional Development', icon: SparklesIcon },
+    communityInvolvements: { title: 'Community Involvement', icon: UsersIcon },
+    publications: { title: 'Publications', icon: DocumentTextIcon },
+    conferencePresentations: { title: 'Conference Presentations', icon: PresentationChartBarIcon },
 } as const;
 
 type CategoryKey = keyof typeof categoryMetadata;
-// Type for data structure during editing (might be needed later)
+// Type for the editable data structure (includes all lists)
 type EditableProfileData = Omit<ProfileData, 'user' | 'error'>;
 
 // Helper to format date strings or return N/A
 const formatDate = (date: string | Date | null | undefined): string => {
     if (!date) return 'N/A';
     try {
-        // Attempt to format assuming it's a valid date string or Date object
         return new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
     } catch (e) {
-        console.error("Error formatting date:", date, e); // Log error
+        console.error("Error formatting date:", date, e);
         return 'Invalid Date';
     }
 };
+
+// Add type for the temporary item structure with file
+type TempAcademicQualification = AcademicQualification & {
+    _isNew?: boolean;
+    _selectedFile?: File | null; // Temporary holder for the selected file object
+};
+
+// Union type for items within the editable data state
+type EditableItem = TempAcademicQualification | ProfessionalLicense | WorkExperience | any; // Use 'any' or specific Temp types
+
 
 export default function ProfilePage() {
     const { status: sessionStatus } = useSession();
@@ -71,7 +80,8 @@ export default function ProfilePage() {
     const [isPending, startTransition] = useTransition();
     const [editError, setEditError] = useState<string | null>(null);
     const [editSuccess, setEditSuccess] = useState<string | null>(null);
-    const [editableData, setEditableData] = useState<EditableProfileData | null>(null); // Keep for later edit implementation
+    // State to hold the data being edited
+    const [editableData, setEditableData] = useState<EditableProfileData | null>(null);
 
     // Visible Categories State
     const [visibleCategories, setVisibleCategories] = useState<Set<CategoryKey>>(new Set());
@@ -80,7 +90,7 @@ export default function ProfilePage() {
     // --- Fetch data ---
     const fetchProfileData = useCallback(async (showLoading = true) => {
         if (showLoading) setIsLoading(true);
-        setPageError(null); setEditError(null); setEditSuccess(null);
+        setPageError(null); setEditError(null); setEditSuccess(null); // Reset messages on fetch
         try {
             const data = await getMyProfileData();
             if (data.error) {
@@ -96,7 +106,11 @@ export default function ProfilePage() {
                     }
                 });
                 setVisibleCategories(initialVisible);
-                setIsEditing(false); setEditableData(null); // Reset edit state on fetch
+                // Reset edit state ONLY if we are NOT currently editing
+                // This prevents resetting edits if a background refresh happens
+                if (!isEditing) {
+                    setEditableData(null);
+                }
             }
         } catch (err) {
             console.error("Failed to fetch profile data:", err);
@@ -105,48 +119,45 @@ export default function ProfilePage() {
         } finally {
             if (showLoading) setIsLoading(false);
         }
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isEditing]); // Add isEditing dependency to prevent resetting state during edits
 
     // --- Initial Fetch and Session Handling ---
     useEffect(() => {
         if (sessionStatus === 'authenticated') {
-            // Fetch only if authenticated and data hasn't been loaded or explicitly requested
             if (!profileData && isLoading) {
                 fetchProfileData();
             } else if (profileData && isLoading) {
-                // If data exists but still loading, stop loading
                 setIsLoading(false);
             }
         } else if (sessionStatus === 'unauthenticated') {
             setIsLoading(false); setPageError("Access Denied. Please sign in."); setProfileData(null); setVisibleCategories(new Set());
         } else { // Session status is 'loading'
-            setIsLoading(true); // Keep loading true while session loads
+            setIsLoading(true);
         }
     }, [sessionStatus, profileData, isLoading, fetchProfileData]);
 
-    // --- Edit Mode Controls (Placeholders for functionality) ---
+    // --- Edit Mode Controls ---
     const handleEditToggle = () => {
         if (isEditing) { handleCancelEdit(); }
         else {
-            if (!profileData || !profileData.user) { // Ensure data exists before copying
+            if (!profileData || !profileData.user) {
                 setPageError("Cannot enter edit mode: Profile data is missing.");
                 return;
             }
             setIsEditing(true); setEditError(null); setEditSuccess(null);
-            // Deep copy data into editable state
             const dataToEdit: EditableProfileData = {
-                academicQualifications: JSON.parse(JSON.stringify(profileData.academicQualifications)),
-                professionalLicenses: JSON.parse(JSON.stringify(profileData.professionalLicenses)),
-                workExperiences: JSON.parse(JSON.stringify(profileData.workExperiences)),
-                professionalAffiliations: JSON.parse(JSON.stringify(profileData.professionalAffiliations)),
-                awardsRecognitions: JSON.parse(JSON.stringify(profileData.awardsRecognitions)),
-                professionalDevelopments: JSON.parse(JSON.stringify(profileData.professionalDevelopments)),
-                communityInvolvements: JSON.parse(JSON.stringify(profileData.communityInvolvements)),
-                publications: JSON.parse(JSON.stringify(profileData.publications)),
-                conferencePresentations: JSON.parse(JSON.stringify(profileData.conferencePresentations)),
+                academicQualifications: structuredClone(profileData.academicQualifications),
+                professionalLicenses: structuredClone(profileData.professionalLicenses),
+                workExperiences: structuredClone(profileData.workExperiences),
+                professionalAffiliations: structuredClone(profileData.professionalAffiliations),
+                awardsRecognitions: structuredClone(profileData.awardsRecognitions),
+                professionalDevelopments: structuredClone(profileData.professionalDevelopments),
+                communityInvolvements: structuredClone(profileData.communityInvolvements),
+                publications: structuredClone(profileData.publications),
+                conferencePresentations: structuredClone(profileData.conferencePresentations),
             };
             setEditableData(dataToEdit);
-            // Ensure all categories with items are visible when editing starts
             const categoriesToMakeVisible = new Set(visibleCategories);
             (Object.keys(dataToEdit) as CategoryKey[]).forEach(key => {
                 if (dataToEdit[key]?.length > 0) { categoriesToMakeVisible.add(key); }
@@ -154,29 +165,151 @@ export default function ProfilePage() {
             setVisibleCategories(categoriesToMakeVisible);
         }
     };
-    const handleCancelEdit = () => { setIsEditing(false); setEditableData(null); setEditError(null); setEditSuccess(null); }; // Reset editable state
-    const handleSaveChanges = () => { alert("Save Changes logic not implemented."); /* Add save logic later */ };
-    const handleAddCategory = (categoryKey: CategoryKey) => { setVisibleCategories(prev => new Set(prev).add(categoryKey)); setShowCategoryDropdown(false); };
-    const handleDeleteItem = (category: CategoryKey, id: string) => { alert(`Delete item ${id} from ${category} - logic not implemented.`); };
-    const handleAddItem = (category: CategoryKey) => { alert(`Add item to ${category} - logic not implemented.`); };
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setEditableData(null);
+        setEditError(null);
+        setEditSuccess(null);
+        // Optionally refetch or just rely on profileData state
+    };
 
+    // --- Save Changes Handler (Using FormData) ---
+    const handleSaveChanges = () => {
+        if (!editableData) {
+            setEditError("No changes to save.");
+            return;
+        }
+        setEditError(null); setEditSuccess(null);
+
+        startTransition(async () => {
+            try {
+                // Create FormData
+                const formData = new FormData();
+
+                // Append Academic Qualifications (JSON + Files)
+                const academicQualificationsData = editableData.academicQualifications as TempAcademicQualification[];
+                formData.append('academicQualifications_json', JSON.stringify(
+                    academicQualificationsData.map(item => {
+                        const { _selectedFile, ...rest } = item; // Exclude File object from JSON
+                        return rest;
+                    })
+                ));
+                academicQualificationsData.forEach((item) => {
+                    if (item._isNew && item._selectedFile) {
+                        formData.append(`academicQualification_file_${item.id}`, item._selectedFile);
+                    }
+                });
+
+                // TODO: Append other sections similarly when they become editable
+
+                // Call the server action with FormData
+                const result = await updateMyProfile(formData); // Action needs update to accept FormData
+
+                if (result.success) {
+                    setEditSuccess("Profile updated successfully!");
+                    setIsEditing(false);
+                    setEditableData(null);
+                    await fetchProfileData(false); // Refetch data silently
+                } else {
+                    setEditError(result.error || "Failed to save changes. Please try again.");
+                    // Keep editing mode active
+                }
+            } catch (err: any) {
+                console.error("Save changes error:", err);
+                setEditError(err.message || "An unexpected error occurred during save.");
+                // Keep editing mode active
+            }
+        });
+    };
+
+    const handleAddCategory = (categoryKey: CategoryKey) => {
+        setVisibleCategories(prev => new Set(prev).add(categoryKey));
+        setShowCategoryDropdown(false);
+    };
+
+    // --- Local Delete Handler ---
+    const handleDeleteItemLocally = (category: CategoryKey, id: string) => {
+        if (!editableData) return;
+        setEditableData(prevData => {
+             if (!prevData) return null;
+             const updatedEditableData = { ...prevData };
+             updatedEditableData[category] = (updatedEditableData[category] as any[]).filter(item => item.id !== id);
+             return updatedEditableData;
+        });
+    };
+
+    // --- Local Add Handler ---
+    const handleAddItemLocally = (category: CategoryKey) => {
+        if (!editableData || !profileData?.user?.id) return;
+        const newEditableData = { ...editableData };
+        const newItemId = uuidv4();
+        let placeholderItem: EditableItem;
+        switch (category) {
+            case 'academicQualifications':
+                placeholderItem = {
+                    id: newItemId, degree: '', institution: '', program: '', yearCompleted: new Date().getFullYear(), diplomaFileUrl: null,
+                    userId: profileData.user.id, createdAt: new Date(), updatedAt: new Date(), _isNew: true, _selectedFile: null
+                } as TempAcademicQualification;
+                break;
+            default: console.error(`Add handler not implemented for category: ${category}`); return;
+        }
+        if (!Array.isArray(newEditableData[category])) { newEditableData[category] = []; }
+        (newEditableData[category] as EditableItem[]) = [placeholderItem, ...(newEditableData[category] as EditableItem[])];
+        setEditableData(newEditableData);
+    };
+
+    // --- Input Change Handler ---
+    const handleInputChange = (
+        category: CategoryKey,
+        itemId: string,
+        fieldName: keyof AcademicQualification | string,
+        value: string | number
+    ) => {
+        if (category !== 'academicQualifications') { console.warn(`Input change handler not implemented for category: ${category}`); return; }
+        if (!editableData) return;
+        setEditableData(prevData => {
+            if (!prevData) return null;
+            const updatedCategoryData = structuredClone(prevData.academicQualifications) as TempAcademicQualification[];
+            const itemIndex = updatedCategoryData.findIndex(item => item.id === itemId);
+            if (itemIndex === -1) { console.warn(`Item ${itemId} not found`); return prevData; }
+            updatedCategoryData[itemIndex] = { ...updatedCategoryData[itemIndex], [fieldName]: value, updatedAt: new Date() };
+            return { ...prevData, academicQualifications: updatedCategoryData };
+        });
+    };
+
+    // --- File Change Handler ---
+    const handleFileChange = (
+        category: CategoryKey,
+        itemId: string,
+        file: File | null | undefined
+    ) => {
+        if (category !== 'academicQualifications') { console.warn(`File change handler not implemented for category: ${category}`); return; }
+        if (!editableData) return;
+        const MAX_FILE_SIZE = 5 * 1024 * 1024;
+        const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+        if (file && file.size > MAX_FILE_SIZE) { alert(`File size exceeds limit.`); return; }
+        if (file && !ALLOWED_TYPES.includes(file.type)) { alert('Invalid file type.'); return; }
+        setEditableData(prevData => {
+            if (!prevData) return null;
+            const updatedCategoryData = structuredClone(prevData.academicQualifications) as TempAcademicQualification[];
+            const itemIndex = updatedCategoryData.findIndex(item => item.id === itemId);
+            if (itemIndex === -1) return prevData;
+            updatedCategoryData[itemIndex] = { ...updatedCategoryData[itemIndex], _selectedFile: file ?? null, updatedAt: new Date() };
+            return { ...prevData, academicQualifications: updatedCategoryData };
+        });
+    };
 
     // --- Render Logic ---
-    // 1. Handle Loading State
     if (isLoading || sessionStatus === 'loading') {
         return <div className="p-6 animate-pulse">Loading profile...</div>;
     }
-
-    // 2. Handle Error / Unauthenticated / Missing Data States
-    //    THIS IS THE CORRECTED GUARD CLAUSE
     if (pageError || sessionStatus === 'unauthenticated' || !profileData || !profileData.user) {
-        return <div className="p-6 text-red-600">Error: {pageError || "Could not load profile data or access denied."}</div>;
+         return <div className="p-6 text-red-600">Error: {pageError || "Could not load profile data or access denied."}</div>;
     }
 
-    // 3. Data is loaded and user exists, proceed with rendering
-    //    We can now safely access profileData and profileData.user
-    const displayData = profileData; // Use profileData for display (read-only view)
-    const availableToAdd = (Object.keys(categoryMetadata) as CategoryKey[]).filter(key => !visibleCategories.has(key));
+    // Determine data source for rendering
+    const dataToDisplay = isEditing ? editableData : profileData;
+    const finalData = (isEditing && dataToDisplay) ? dataToDisplay : profileData;
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
@@ -188,149 +321,132 @@ export default function ProfilePage() {
                     <button onClick={handleEditToggle} disabled={isPending} className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 ${isEditing ? 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-600'}`}>
                         {isEditing ? <><XCircleIcon className="h-4 w-4" /> Cancel</> : <><PencilSquareIcon className="h-4 w-4" /> Edit Profile</>}
                     </button>
-                    {isEditing && (<button onClick={handleSaveChanges} disabled={isPending} className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-70"> {isPending ? ('Saving...') : (<><CheckCircleIcon className="h-4 w-4" /> Save Changes</>)} </button>)}
+                    {isEditing && (<button onClick={handleSaveChanges} disabled={isPending} className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-70">
+                        {isPending ? ('Saving...') : (<><CheckCircleIcon className="h-4 w-4" /> Save Changes</>)}
+                     </button>)}
                     {/* Add Section Dropdown */}
                     <div className="relative">
-                        <button onClick={() => setShowCategoryDropdown(!showCategoryDropdown)} disabled={isPending} className="inline-flex items-center gap-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70" aria-haspopup="true" aria-expanded={showCategoryDropdown}> <PlusIcon className="h-4 w-4" /> Add Section </button>
-                        {showCategoryDropdown && (<div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu"> <div className="py-1" role="none"> {availableToAdd.length > 0 ? (availableToAdd.map(key => (<button key={key} onClick={() => handleAddCategory(key)} className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> {categoryMetadata[key].title} </button>))) : (<p className="px-4 py-2 text-sm text-gray-500">All sections added.</p>)} </div> </div>)}
+                         <button onClick={() => setShowCategoryDropdown(!showCategoryDropdown)} disabled={isPending} className="inline-flex items-center gap-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70" aria-haspopup="true" aria-expanded={showCategoryDropdown}> <PlusIcon className="h-4 w-4" /> Add Section </button>
+                         {showCategoryDropdown && (
+                            <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu">
+                                <div className="py-1" role="none">
+                                    {(Object.keys(categoryMetadata) as CategoryKey[]).filter(key => !visibleCategories.has(key)).length > 0 ? (
+                                        (Object.keys(categoryMetadata) as CategoryKey[]).filter(key => !visibleCategories.has(key)).map(key => (
+                                            <button key={key} onClick={() => handleAddCategory(key)} className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                                {categoryMetadata[key].title}
+                                            </button>
+                                        ))
+                                    ) : (
+                                        <p className="px-4 py-2 text-sm text-gray-500">All sections added.</p>
+                                    )}
+                                </div>
+                            </div>
+                         )}
                     </div>
                 </div>
             </div>
             {/* --- Success/Error Messages --- */}
             {editSuccess && <div className="mb-4 rounded-md bg-green-50 p-4 text-sm font-medium text-green-800">{editSuccess}</div>}
             {editError && <div className="mb-4 rounded-md bg-red-50 p-4 text-sm font-medium text-red-800">{editError}</div>}
+            {pageError && !editError && <div className="mb-4 rounded-md bg-red-50 p-4 text-sm font-medium text-red-800">{pageError}</div>}
 
             {/* --- Basic Info Section --- */}
             <div className="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
                 <h2 className="mb-4 text-xl font-semibold text-gray-700">Basic Information</h2>
-                {/* SAFE TO ACCESS displayData.user here because of the check above */}
                 <div className="grid grid-cols-1 gap-x-4 gap-y-2 text-sm sm:grid-cols-2">
-                    <div><span className="font-medium text-gray-500">Name:</span> {displayData.user?.name ?? 'N/A'}</div>
-                    <div><span className="font-medium text-gray-500">Email:</span> {displayData.user?.email ?? 'N/A'}</div>
-                    <div><span className="font-medium text-gray-500">Role:</span> {displayData.user?.role ?? 'N/A'}</div>
+                    <div><span className="font-medium text-gray-500">Name:</span> {profileData.user.name ?? 'N/A'}</div>
+                    <div><span className="font-medium text-gray-500">Email:</span> {profileData.user.email ?? 'N/A'}</div>
+                    <div><span className="font-medium text-gray-500">Role:</span> {profileData.user.role ?? 'N/A'}</div>
                 </div>
             </div>
 
             {/* --- Dynamic Sections Area --- */}
-            {visibleCategories.size === 0 && !isLoading && (<div className="rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 p-6 text-center text-gray-500"> No profile sections added yet. Click "Add Section" above to get started. </div>)}
-            {/* --- Grid container for the cards --- */}
+            {visibleCategories.size === 0 && !isLoading && (
+                 <div className="rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 p-6 text-center text-gray-500"> No profile sections added yet. Click "Add Section" above to get started. </div>
+            )}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                 {/* Map over VISIBLE categories */}
                 {Array.from(visibleCategories).map(categoryKey => {
                     const categoryMeta = categoryMetadata[categoryKey];
-                    // Get data for the current category from the fetched profileData
-                    const categoryData = displayData[categoryKey] ?? []; // Use fetched data
+                    const categoryData = (finalData?.[categoryKey] ?? []) as any[]; // Use 'any' for map iteration
                     const CategoryIcon = categoryMeta.icon;
+                    const isNewItem = (item: any): boolean => !!item._isNew;
 
                     return (
                         <div key={categoryKey} className="flex flex-col rounded-lg border border-gray-200 bg-white shadow-md overflow-hidden">
                             {/* Card Header */}
                             <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-3">
-                                <div className="flex items-center gap-2">
-                                    <CategoryIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" />
-                                    <h2 className="text-lg font-semibold text-gray-700">{categoryMeta.title}</h2>
-                                </div>
-                                {/* Show Add button only in edit mode */}
-                                {isEditing && (<button onClick={() => handleAddItem(categoryKey)} className="rounded bg-indigo-50 p-1 text-indigo-600 hover:bg-indigo-100" title={`Add ${categoryMeta.title}`}> <PlusIcon className="h-4 w-4" /> </button>)}
+                                <div className="flex items-center gap-2"> <CategoryIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> <h2 className="text-lg font-semibold text-gray-700">{categoryMeta.title}</h2> </div>
+                                {isEditing && ( <button onClick={() => handleAddItemLocally(categoryKey)} className="rounded bg-indigo-50 p-1 text-indigo-600 hover:bg-indigo-100" title={`Add ${categoryMeta.title}`} disabled={categoryKey !== 'academicQualifications' /* Only enable Add for handled category */}> <PlusIcon className="h-4 w-4" /> </button> )}
                             </div>
-                            {/* Card Body - Display fetched data */}
+                            {/* Card Body */}
                             <div className="flex-grow p-4 text-sm text-gray-700">
-                                {categoryData.length === 0 ? (
-                                    <p className="italic text-gray-400">No items recorded for this section.</p>
-                                ) : (
-                                    <ul className="space-y-4"> {/* Increased spacing between items */}
-                                        {/* Map over the actual data for this category */}
-                                        {categoryData.map((item: any, index: number) => ( // Use 'any' for now, or create a union type
-                                            <li key={item.id || index} className="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0 relative group"> {/* Added relative/group for delete button positioning */}
+                                {categoryData.length === 0 ? ( <p className="italic text-gray-400">No items recorded.</p> ) : (
+                                    <ul className="space-y-4">
+                                        {categoryData.map((item: EditableItem, index: number) => ( // Use union type or any
+                                            <li key={item.id || index} className={`border-b border-gray-100 pb-3 last:border-b-0 last:pb-0 relative group ${isNewItem(item) ? 'bg-green-50 p-3 rounded border border-dashed border-green-300' : ''}`}>
 
-                                                {/* === RENDER DATA BASED ON CATEGORY === */}
-                                                {/* Academic Qualifications */}
-                                                {categoryKey === 'academicQualifications' && (
+                                                {/* --- RENDER FORM OR DISPLAY --- */}
+                                                {isEditing && isNewItem(item) && categoryKey === 'academicQualifications' ? (
+                                                    // --- NEW ITEM FORM (AcademicQualification) ---
+                                                    <div className="space-y-3">
+                                                        <p className="text-xs font-semibold text-green-700">New Qualification</p>
+                                                        {/* Inputs */}
+                                                        <div> <label htmlFor={`degree-${item.id}`} className="block text-xs font-medium text-gray-600 mb-1">Degree*</label> <input type="text" id={`degree-${item.id}`} name="degree" value={item.degree || ''} onChange={(e) => handleInputChange(categoryKey, item.id, 'degree', e.target.value)} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm disabled:opacity-70" placeholder="e.g., Bachelor of Science" required disabled={isPending} /> </div>
+                                                        <div> <label htmlFor={`institution-${item.id}`} className="block text-xs font-medium text-gray-600 mb-1">Institution*</label> <input type="text" id={`institution-${item.id}`} name="institution" value={item.institution || ''} onChange={(e) => handleInputChange(categoryKey, item.id, 'institution', e.target.value)} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm disabled:opacity-70" placeholder="e.g., San Pedro College" required disabled={isPending} /> </div>
+                                                        <div> <label htmlFor={`program-${item.id}`} className="block text-xs font-medium text-gray-600 mb-1">Program/Major*</label> <input type="text" id={`program-${item.id}`} name="program" value={item.program || ''} onChange={(e) => handleInputChange(categoryKey, item.id, 'program', e.target.value)} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm disabled:opacity-70" placeholder="e.g., Medical Laboratory Science" required disabled={isPending} /> </div>
+                                                        <div> <label htmlFor={`yearCompleted-${item.id}`} className="block text-xs font-medium text-gray-600 mb-1">Year Completed*</label> <input type="number" id={`yearCompleted-${item.id}`} name="yearCompleted" value={item.yearCompleted || ''} onChange={(e) => handleInputChange(categoryKey, item.id, 'yearCompleted', parseInt(e.target.value, 10) || '')} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm disabled:opacity-70" placeholder="YYYY" required min="1900" max={new Date().getFullYear() + 5} disabled={isPending} /> </div>
+                                                        {/* File Input */}
+                                                        <div> <label htmlFor={`diplomaFile-${item.id}`} className="block text-xs font-medium text-gray-600 mb-1">Upload Diploma/Transcript (Optional)</label> <input type="file" id={`diplomaFile-${item.id}`} name="diplomaFile" onChange={(e) => handleFileChange(categoryKey, item.id, e.target.files?.[0])} className="block w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 disabled:opacity-70" accept=".pdf,.png,.jpg,.jpeg" disabled={isPending} />
+                                                            {item._selectedFile && ( <div className="mt-1.5 flex items-center gap-1 text-xs text-gray-600"> <PaperClipIcon className="h-3 w-3 flex-shrink-0" /> <span>{item._selectedFile.name}</span> <button type="button" onClick={() => handleFileChange(categoryKey, item.id, null)} className="ml-1 text-red-500 hover:text-red-700" title="Remove file" disabled={isPending}>×</button> </div> )}
+                                                            <p className="text-xs text-gray-500 mt-1">Max 5MB. PDF, PNG, JPG.</p>
+                                                         </div>
+                                                    </div>
+                                                ) : (
+                                                    // --- DISPLAY EXISTING ITEM ---
                                                     <>
-                                                        <p className="font-semibold text-gray-800">{item.degree || 'N/A'}</p>
-                                                        <p className="text-gray-600">{item.institution || 'N/A'}{item.program ? ` - ${item.program}` : ''}</p>
-                                                        <p className="text-xs text-gray-500 mt-1">Completed: {item.yearCompleted || 'N/A'}</p>
-                                                        {item.diplomaFileUrl && <a href={item.diplomaFileUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline mt-1 block">View Document</a>}
-                                                    </>
-                                                )}
-                                                {/* Professional Licenses */}
-                                                {categoryKey === 'professionalLicenses' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.examination || 'N/A'}</p>
-                                                        <p className="text-gray-600">Number: {item.licenseNumber || 'N/A'}</p>
-                                                        <p className="text-xs text-gray-500 mt-1">Issued: {item.monthYear || 'N/A'} | Expires: {formatDate(item.expiration)}</p>
-                                                    </>
-                                                )}
-                                                {/* Work Experience */}
-                                                {categoryKey === 'workExperiences' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.position || 'N/A'}</p>
-                                                        <p className="text-gray-600">{item.institution || 'N/A'}</p>
-                                                        {item.natureOfWork && <p className="text-xs text-gray-500 italic mt-1">{item.natureOfWork}</p>}
-                                                        <p className="text-xs text-gray-500 mt-1">Years: {item.inclusiveYears || 'N/A'}</p>
-                                                    </>
-                                                )}
-                                                {/* Professional Affiliations */}
-                                                {categoryKey === 'professionalAffiliations' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.organization || 'N/A'}</p>
-                                                        {item.position && <p className="text-gray-600">Position: {item.position}</p>}
-                                                        <p className="text-xs text-gray-500 mt-1">Years: {item.inclusiveYears || 'N/A'}</p>
-                                                    </>
-                                                )}
-                                                {/* Awards & Recognitions */}
-                                                {categoryKey === 'awardsRecognitions' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.awardName || 'N/A'}</p>
-                                                        <p className="text-gray-600">Awarded by: {item.awardingBody || 'N/A'}</p>
-                                                        <p className="text-xs text-gray-500 mt-1">Year: {item.yearReceived || 'N/A'}</p>
-                                                    </>
-                                                )}
-                                                {/* Professional Development */}
-                                                {categoryKey === 'professionalDevelopments' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.title || 'N/A'}</p>
-                                                        <p className="text-gray-600">Organizer: {item.organizer || 'N/A'}</p>
-                                                        <p className="text-xs text-gray-500 mt-1">Date/Location: {item.dateLocation || 'N/A'}</p>
-                                                        {item.certificateFileUrl && <a href={item.certificateFileUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline mt-1 block">View Certificate</a>}
-                                                    </>
-                                                )}
-                                                {/* Community Involvement */}
-                                                {categoryKey === 'communityInvolvements' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.engagementTitle || 'N/A'}</p>
-                                                        <p className="text-gray-600">Role: {item.role || 'N/A'}</p>
-                                                        <p className="text-xs text-gray-500 mt-1">Date/Location: {item.locationDate || 'N/A'}</p>
-                                                    </>
-                                                )}
-                                                {/* Publications */}
-                                                {categoryKey === 'publications' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.researchTitle || 'N/A'}</p>
-                                                        <p className="text-gray-600">Journal: {item.journal || 'N/A'}</p>
-                                                        <p className="text-xs text-gray-500 mt-1">Published: {formatDate(item.datePublished)}</p>
-                                                        {/* Add link/DOI later if needed */}
-                                                    </>
-                                                )}
-                                                {/* Conference Presentations */}
-                                                {categoryKey === 'conferencePresentations' && (
-                                                    <>
-                                                        <p className="font-semibold text-gray-800">{item.paperTitle || 'N/A'}</p>
-                                                        <p className="text-gray-600">Event: {item.eventName || 'N/A'}</p>
-                                                        <p className="text-xs text-gray-500 mt-1">Date/Location: {item.dateLocation || 'N/A'}</p>
+                                                        {/* Display logic for Academic Qualifications */}
+                                                        {categoryKey === 'academicQualifications' && (
+                                                            <>
+                                                                <p className="font-semibold text-gray-800">{item.degree || 'N/A'}</p>
+                                                                <p className="text-gray-600">{item.institution || 'N/A'}{item.program ? ` - ${item.program}` : ''}</p>
+                                                                <p className="text-xs text-gray-500 mt-1">Completed: {item.yearCompleted || 'N/A'}</p>
+                                                                {item.diplomaFileUrl && <a href={item.diplomaFileUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline mt-1 block">View Document</a>}
+                                                            </>
+                                                        )}
+                                                        {/* Display logic for Professional Licenses */}
+                                                        {categoryKey === 'professionalLicenses' && (
+                                                             <>
+                                                                <p className="font-semibold text-gray-800">{item.examination || 'N/A'}</p>
+                                                                <p className="text-gray-600">Number: {item.licenseNumber || 'N/A'}</p>
+                                                                <p className="text-xs text-gray-500 mt-1">Issued: {item.monthYear || 'N/A'} | Expires: {formatDate(item.expiration)}</p>
+                                                             </>
+                                                        )}
+                                                        {/* Display logic for other categories */}
+                                                        {categoryKey === 'workExperiences' && ( <p className="text-xs italic text-gray-400">[Work Experience Display]</p> )}
+                                                        {categoryKey === 'professionalAffiliations' && ( <p className="text-xs italic text-gray-400">[Affiliations Display]</p> )}
+                                                        {categoryKey === 'awardsRecognitions' && ( <p className="text-xs italic text-gray-400">[Awards Display]</p> )}
+                                                        {categoryKey === 'professionalDevelopments' && ( <p className="text-xs italic text-gray-400">[Prof. Dev. Display]</p> )}
+                                                        {categoryKey === 'communityInvolvements' && ( <p className="text-xs italic text-gray-400">[Community Display]</p> )}
+                                                        {categoryKey === 'publications' && ( <p className="text-xs italic text-gray-400">[Publications Display]</p> )}
+                                                        {categoryKey === 'conferencePresentations' && ( <p className="text-xs italic text-gray-400">[Presentations Display]</p> )}
                                                     </>
                                                 )}
 
-                                                {/* Delete Button - Show only in edit mode */}
+                                                {/* Action Buttons */}
                                                 {isEditing && (
-                                                    <button
-                                                        onClick={() => handleDeleteItem(categoryKey, item.id)}
-                                                        className="absolute top-1 right-1 p-0.5 rounded bg-red-50 text-red-500 opacity-0 group-hover:opacity-100 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-1 transition-opacity"
-                                                        title={`Delete this ${categoryMeta.title} item`}
-                                                    >
-                                                        <TrashIcon className="h-4 w-4" />
-                                                        <span className="sr-only">Delete</span>
-                                                    </button>
+                                                    <div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        {/* Edit Button */}
+                                                        {!isNewItem(item) && (
+                                                            <button onClick={() => alert(`Edit item ${item.id} - not implemented yet`)} className="p-0.5 rounded bg-blue-50 text-blue-500 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1" title={`Edit this ${categoryMeta.title} item`} disabled={isPending || categoryKey !== 'academicQualifications'}>
+                                                                <PencilIcon className="h-4 w-4" /> <span className="sr-only">Edit</span>
+                                                            </button>
+                                                        )}
+                                                        {/* Delete Button */}
+                                                        <button onClick={() => handleDeleteItemLocally(categoryKey, item.id)} className="p-0.5 rounded bg-red-50 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-1" title={`Delete this ${categoryMeta.title} item`} disabled={isPending || categoryKey !== 'academicQualifications'}>
+                                                            <TrashIcon className="h-4 w-4" /> <span className="sr-only">Delete</span>
+                                                        </button>
+                                                    </div>
                                                 )}
                                             </li>
                                         ))}
@@ -341,7 +457,6 @@ export default function ProfilePage() {
                     );
                 })}
             </div>
-
         </div>
     );
 }
