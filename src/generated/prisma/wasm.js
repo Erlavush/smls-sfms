@@ -124,6 +124,101 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AcademicQualificationScalarFieldEnum = {
+  id: 'id',
+  degree: 'degree',
+  institution: 'institution',
+  program: 'program',
+  yearCompleted: 'yearCompleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  diplomaFileUrl: 'diplomaFileUrl'
+};
+
+exports.Prisma.ProfessionalLicenseScalarFieldEnum = {
+  id: 'id',
+  examination: 'examination',
+  monthYear: 'monthYear',
+  licenseNumber: 'licenseNumber',
+  expiration: 'expiration',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.WorkExperienceScalarFieldEnum = {
+  id: 'id',
+  institution: 'institution',
+  position: 'position',
+  natureOfWork: 'natureOfWork',
+  inclusiveYears: 'inclusiveYears',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.ProfessionalAffiliationScalarFieldEnum = {
+  id: 'id',
+  organization: 'organization',
+  position: 'position',
+  inclusiveYears: 'inclusiveYears',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.AwardRecognitionScalarFieldEnum = {
+  id: 'id',
+  awardName: 'awardName',
+  awardingBody: 'awardingBody',
+  yearReceived: 'yearReceived',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.ProfessionalDevelopmentScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  organizer: 'organizer',
+  dateLocation: 'dateLocation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  certificateFileUrl: 'certificateFileUrl'
+};
+
+exports.Prisma.CommunityInvolvementScalarFieldEnum = {
+  id: 'id',
+  engagementTitle: 'engagementTitle',
+  role: 'role',
+  locationDate: 'locationDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.PublicationScalarFieldEnum = {
+  id: 'id',
+  researchTitle: 'researchTitle',
+  journal: 'journal',
+  datePublished: 'datePublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.ConferencePresentationScalarFieldEnum = {
+  id: 'id',
+  paperTitle: 'paperTitle',
+  eventName: 'eventName',
+  dateLocation: 'dateLocation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -139,7 +234,16 @@ exports.Role = exports.$Enums.Role = {
 };
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  AcademicQualification: 'AcademicQualification',
+  ProfessionalLicense: 'ProfessionalLicense',
+  WorkExperience: 'WorkExperience',
+  ProfessionalAffiliation: 'ProfessionalAffiliation',
+  AwardRecognition: 'AwardRecognition',
+  ProfessionalDevelopment: 'ProfessionalDevelopment',
+  CommunityInvolvement: 'CommunityInvolvement',
+  Publication: 'Publication',
+  ConferencePresentation: 'ConferencePresentation'
 };
 
 /**

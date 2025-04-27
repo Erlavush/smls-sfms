@@ -1,5 +1,8 @@
+// postcss.config.mjs (Using export default for ES Module compatibility)
 const config = {
-  plugins: ["@tailwindcss/postcss"],
+  plugins: {
+    tailwindcss: {}, // For v3
+    autoprefixer: {}, // For v3
+  }
 };
-
-export default config;
+export default config; // Use export default

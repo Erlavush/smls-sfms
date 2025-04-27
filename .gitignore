@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# Local Uploads (Development Only!)
+/public/uploads/
+
 # next.js
 /.next/
 /out/

@@ -1,34 +1,10 @@
-/* src/app/globals.css */
-
-/* Import Tailwind's base styles (preflight) for v4 */
-@import "tailwindcss/preflight";
-
-/* Include Tailwind's utility classes for v4 */
+/* src/app/globals.css (Updated for v3) */
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
-/* Your custom styles and CSS variables */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* Define fonts if needed, e.g., using next/font */
-  /* --font-sans: ...; */
-  /* --font-mono: ...; */
-}
-
-
+/* Add minimal body styling */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  /* Consider using your defined font variable here if set up */
-  /* font-family: var(--font-sans), Arial, Helvetica, sans-serif; */
-  font-family: Arial, Helvetica, sans-serif; /* Or keep the basic fallback */
+   font-family: sans-serif; /* Basic default font */
+   /* Add other base styles if needed */
 }
-
-/* You can add custom utility layers or component styles below if needed */
-/* Example:
-@layer utilities {
-  .my-custom-utility {
-    @apply ...;
-  }
-}
-*/

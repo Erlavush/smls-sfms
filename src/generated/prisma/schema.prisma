@@ -27,8 +27,143 @@ model User {
   createdAt DateTime @default(now()) // Timestamp when the user was created
   updatedAt DateTime @updatedAt // Timestamp when the user was last updated
 
-  // Add relationships to other models later if needed
-  // e.g., documents Document[]
+  // --- Relationships to CV Models (One User has Many...) ---
+  academicQualifications   AcademicQualification[]
+  professionalLicenses     ProfessionalLicense[]
+  workExperiences          WorkExperience[]
+  professionalAffiliations ProfessionalAffiliation[]
+  awardsRecognitions       AwardRecognition[]
+  professionalDevelopments ProfessionalDevelopment[]
+  communityInvolvements    CommunityInvolvement[]
+  publications             Publication[]
+  conferencePresentations  ConferencePresentation[]
+  // --- End Relationships ---
 }
 
-// Add other models like Document, etc. later below
+// --- CV Related Models ---
+
+model AcademicQualification {
+  id            String   @id @default(cuid())
+  degree        String
+  institution   String
+  program       String
+  yearCompleted Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED FIELD for supporting document ---
+  diplomaFileUrl String? // Optional field to store URL/path of uploaded diploma/transcript
+}
+
+model ProfessionalLicense {
+  id            String   @id @default(cuid())
+  examination   String // e.g., "Medical Technologist Licensure Examination"
+  monthYear     String // e.g., "August 2023" (Consider DateTime if precise date needed)
+  licenseNumber String   @unique // License number should be unique
+  expiration    DateTime // Date the license expires
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WorkExperience {
+  id             String   @id @default(cuid())
+  institution    String // e.g., "San Pedro College", "Davao Doctors Hospital"
+  position       String // e.g., "Faculty", "Medical Technologist"
+  natureOfWork   String? // Optional description
+  inclusiveYears String // e.g., "2020-Present", "2018-2020" (Consider start/end Dates if needed)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProfessionalAffiliation {
+  id             String   @id @default(cuid())
+  organization   String // e.g., "PAMET", "PASMETH"
+  position       String? // Optional: "Member", "Officer", etc.
+  inclusiveYears String // e.g., "2019-Present"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AwardRecognition {
+  id           String   @id @default(cuid())
+  awardName    String // Name of the award/recognition
+  awardingBody String // Organization/Institution that gave the award
+  yearReceived Int // Year the award was received
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProfessionalDevelopment {
+  id           String   @id @default(cuid())
+  title        String
+  organizer    String
+  dateLocation String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED FIELD for supporting document ---
+  certificateFileUrl String? // Optional field to store URL/path of uploaded certificate
+}
+
+model CommunityInvolvement {
+  id              String   @id @default(cuid())
+  engagementTitle String // e.g., "Medical Mission Barangay X", "Blood Donation Drive"
+  role            String // e.g., "Volunteer", "Organizer"
+  locationDate    String // e.g., "Barangay X / May 5, 2024"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// --- Research Related Models ---
+model Publication {
+  id            String   @id @default(cuid())
+  researchTitle String
+  journal       String // Name of the journal
+  datePublished DateTime // Date of publication
+  // Optional fields: volume, issue, pages, DOI, link etc.
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ConferencePresentation {
+  id           String   @id @default(cuid())
+  paperTitle   String
+  eventName    String // Name of the conference/event
+  dateLocation String // e.g., "June 2024 / Manila"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// --- Add other models below as needed ---

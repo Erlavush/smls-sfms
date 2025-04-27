@@ -14,6 +14,9 @@
 # testing
 /coverage
 
+# Local Uploads (Development Only!)
+/public/uploads/
+
 # next.js
 /.next/
 /out/
@@ -76,12 +79,43 @@ export default eslintConfig;
 --- END FILE: next-env.d.ts ---
 
 --- START FILE: next.config.ts ---
+// next.config.ts
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // The 'images' configuration block
+  images: {
+    // Keep your existing SVG settings if needed
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+
+    // Configure allowed external image domains here
+    remotePatterns: [
+      // Keep existing patterns if you still need them (e.g., for ucarecdn)
+      {
+        protocol: 'https',
+        hostname: 'ucarecdn.com', // Google logo source
+        port: '',
+        pathname: '/**', // Allow any path on this host
+      },
+
+      // --- THIS IS THE NEW PATTERN YOU NEED TO ADD ---
+      {
+        protocol: 'https',                // Protocol used by the site (usually https)
+        hostname: 'www.spcdavao.edu.ph',  // The specific domain name
+        port: '',                         // Leave empty for default ports (80/443)
+        pathname: '/wp-content/uploads/**', // Allow images specifically from the uploads path
+                                          // Using '/**' would allow any path, '/wp-content/uploads/**' is slightly more specific/secure
+      },
+      // --- END OF NEW PATTERN ---
+
+      // Add any other domains you might need here in the future
+    ],
+  },
+  // Add other Next.js configurations here if you have them (e.g., reactStrictMode)
 };
 
+// Export the configuration object
 export default nextConfig;
 
 
@@ -93,31 +127,35 @@ export default nextConfig;
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/client": "^6.6.0",
+    "@types/uuid": "^10.0.0",
     "bcrypt": "^5.1.1",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
+    "postcss": "^8.5.3",
     "prisma": "^6.6.0",
-    "tailwindcss": "^4",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
 }
@@ -126,11 +164,14 @@ export default nextConfig;
 --- END FILE: package.json ---
 
 --- START FILE: postcss.config.mjs ---
+// postcss.config.mjs (Using export default for ES Module compatibility)
 const config = {
-  plugins: ["@tailwindcss/postcss"],
+  plugins: {
+    tailwindcss: {}, // For v3
+    autoprefixer: {}, // For v3
+  }
 };
-
-export default config;
+export default config; // Use export default
 
 
 --- END FILE: postcss.config.mjs ---
@@ -143,6 +184,28 @@ Next Auth
 
 
 --- END FILE: README.md ---
+
+--- START FILE: tailwind.config.ts ---
+// tailwind.config.ts (Should be okay for v3)
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      // Keep extensions minimal for now
+    },
+  },
+  plugins: [],
+}
+export default config
+
+
+--- END FILE: tailwind.config.ts ---
 
 --- START FILE: tsconfig.json ---
 {
@@ -206,11 +269,146 @@ model User {
   createdAt DateTime @default(now())         // Timestamp when the user was created
   updatedAt DateTime @updatedAt            // Timestamp when the user was last updated
 
-  // Add relationships to other models later if needed
-  // e.g., documents Document[]
+  // --- Relationships to CV Models (One User has Many...) ---
+  academicQualifications AcademicQualification[]
+  professionalLicenses   ProfessionalLicense[]
+  workExperiences        WorkExperience[]
+  professionalAffiliations ProfessionalAffiliation[]
+  awardsRecognitions     AwardRecognition[]
+  professionalDevelopments ProfessionalDevelopment[]
+  communityInvolvements  CommunityInvolvement[]
+  publications           Publication[]
+  conferencePresentations ConferencePresentation[]
+  // --- End Relationships ---
 }
 
-// Add other models like Document, etc. later below
+// --- CV Related Models ---
+
+model AcademicQualification {
+  id          String   @id @default(cuid())
+  degree      String
+  institution String
+  program     String
+  yearCompleted Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- ADDED FIELD for supporting document ---
+  diplomaFileUrl String? // Optional field to store URL/path of uploaded diploma/transcript
+}
+
+model ProfessionalLicense {
+  id          String   @id @default(cuid())
+  examination String   // e.g., "Medical Technologist Licensure Examination"
+  monthYear   String   // e.g., "August 2023" (Consider DateTime if precise date needed)
+  licenseNumber String @unique // License number should be unique
+  expiration  DateTime // Date the license expires
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WorkExperience {
+  id         String   @id @default(cuid())
+  institution String   // e.g., "San Pedro College", "Davao Doctors Hospital"
+  position   String   // e.g., "Faculty", "Medical Technologist"
+  natureOfWork String?  // Optional description
+  inclusiveYears String // e.g., "2020-Present", "2018-2020" (Consider start/end Dates if needed)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProfessionalAffiliation {
+  id        String   @id @default(cuid())
+  organization String // e.g., "PAMET", "PASMETH"
+  position  String?  // Optional: "Member", "Officer", etc.
+  inclusiveYears String // e.g., "2019-Present"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AwardRecognition {
+  id             String   @id @default(cuid())
+  awardName      String   // Name of the award/recognition
+  awardingBody   String   // Organization/Institution that gave the award
+  yearReceived   Int      // Year the award was received
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+   // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProfessionalDevelopment {
+  id          String   @id @default(cuid())
+  title       String
+  organizer   String
+  dateLocation String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+   // --- ADDED FIELD for supporting document ---
+  certificateFileUrl String? // Optional field to store URL/path of uploaded certificate
+}
+
+model CommunityInvolvement {
+  id          String   @id @default(cuid())
+  engagementTitle String // e.g., "Medical Mission Barangay X", "Blood Donation Drive"
+  role        String   // e.g., "Volunteer", "Organizer"
+  locationDate String  // e.g., "Barangay X / May 5, 2024"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+   // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// --- Research Related Models ---
+model Publication {
+  id            String   @id @default(cuid())
+  researchTitle String
+  journal       String   // Name of the journal
+  datePublished DateTime // Date of publication
+  // Optional fields: volume, issue, pages, DOI, link etc.
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+   // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ConferencePresentation {
+  id            String   @id @default(cuid())
+  paperTitle    String
+  eventName     String   // Name of the conference/event
+  dateLocation  String   // e.g., "June 2024 / Manila"
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// --- Add other models below as needed ---
 
 
 --- END FILE: prisma\schema.prisma ---
@@ -241,70 +439,257 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 --- END FILE: prisma\migrations\20250426170451_init_user_model\migration.sql ---
 
+--- START FILE: prisma\migrations\20250427041822_add_cv_models\migration.sql ---
+-- CreateTable
+CREATE TABLE "AcademicQualification" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "degree" TEXT NOT NULL,
+    "institution" TEXT NOT NULL,
+    "program" TEXT NOT NULL,
+    "yearCompleted" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "AcademicQualification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ProfessionalLicense" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "examination" TEXT NOT NULL,
+    "monthYear" TEXT NOT NULL,
+    "licenseNumber" TEXT NOT NULL,
+    "expiration" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "ProfessionalLicense_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "WorkExperience" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "institution" TEXT NOT NULL,
+    "position" TEXT NOT NULL,
+    "natureOfWork" TEXT,
+    "inclusiveYears" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "WorkExperience_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ProfessionalAffiliation" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "organization" TEXT NOT NULL,
+    "position" TEXT,
+    "inclusiveYears" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "ProfessionalAffiliation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "AwardRecognition" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "awardName" TEXT NOT NULL,
+    "awardingBody" TEXT NOT NULL,
+    "yearReceived" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "AwardRecognition_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ProfessionalDevelopment" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "title" TEXT NOT NULL,
+    "organizer" TEXT NOT NULL,
+    "dateLocation" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "ProfessionalDevelopment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "CommunityInvolvement" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "engagementTitle" TEXT NOT NULL,
+    "role" TEXT NOT NULL,
+    "locationDate" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "CommunityInvolvement_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Publication" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "researchTitle" TEXT NOT NULL,
+    "journal" TEXT NOT NULL,
+    "datePublished" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "Publication_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ConferencePresentation" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "paperTitle" TEXT NOT NULL,
+    "eventName" TEXT NOT NULL,
+    "dateLocation" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "ConferencePresentation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ProfessionalLicense_licenseNumber_key" ON "ProfessionalLicense"("licenseNumber");
+
+
+--- END FILE: prisma\migrations\20250427041822_add_cv_models\migration.sql ---
+
+--- START FILE: prisma\migrations\20250427044318_add_document_url_fields\migration.sql ---
+-- AlterTable
+ALTER TABLE "AcademicQualification" ADD COLUMN "diplomaFileUrl" TEXT;
+
+-- AlterTable
+ALTER TABLE "ProfessionalDevelopment" ADD COLUMN "certificateFileUrl" TEXT;
+
+
+--- END FILE: prisma\migrations\20250427044318_add_document_url_fields\migration.sql ---
+
+--- START FILE: src\middleware.ts ---
+// src/middleware.ts
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import type { JWT } from "next-auth/jwt"; // Import JWT type if needed
+
+// Export the default middleware function configured with withAuth
+export default withAuth(
+    // `withAuth` augments your `Request` with the user's token.
+    function middleware(req) {
+        // This function runs ONLY if the user is authenticated (token exists)
+        // console.log("Token in middleware:", req.nextauth.token); // Log token for debugging
+
+        const token = req.nextauth.token as JWT & { role?: string }; // Cast token to access custom properties
+        const { pathname } = req.nextUrl; // Get the requested path
+
+        // --- Role-Based Access Control ---
+        // If user is trying to access an admin route
+        if (pathname.startsWith('/admin')) {
+            // Check if the user has the ADMIN role
+            if (token?.role !== 'ADMIN') {
+                // If not admin, redirect them (e.g., to faculty dashboard or an unauthorized page)
+                console.warn(`Unauthorized access attempt to ${pathname} by user role: ${token?.role}`);
+                 // Redirect non-admins away from /admin routes
+                 // Option 1: Redirect to faculty dashboard
+                 return NextResponse.redirect(new URL('/dashboard', req.url));
+                 // Option 2: Redirect to a specific 'unauthorized' page (if you create one)
+                 // return NextResponse.redirect(new URL('/unauthorized', req.url));
+            }
+            // If user is ADMIN and accessing /admin, allow the request
+             return NextResponse.next(); // Continue processing the request
+        }
+
+        // --- General Authenticated Access ---
+        // For any other authenticated route (like /dashboard, /profile, /documents)
+        // If the user is authenticated (which they are if this function runs),
+        // allow the request to proceed.
+        // You could add checks here if FACULTY role is explicitly required for /dashboard etc.
+        // if (pathname.startsWith('/dashboard') || pathname.startsWith('/profile') /*...*/) {
+        //    if (token?.role !== 'FACULTY' && token?.role !== 'ADMIN') { // Example check
+        //        return NextResponse.redirect(new URL('/unauthorized', req.url));
+        //    }
+        // }
+
+        // Allow the request to proceed for authenticated users on non-admin routes covered by the matcher
+        return NextResponse.next();
+    },
+    {
+        callbacks: {
+            // This callback determines IF the middleware function above runs.
+            // It runs if the token exists (user is logged in).
+            authorized: ({ token }) => !!token // !! converts truthy/falsy value to boolean
+        },
+        pages: {
+            // Use the same signIn page as defined in your authOptions
+            signIn: "/login",
+            // You could add an error page if needed
+            // error: "/auth/error",
+        },
+    }
+);
+
+// --- Route Matching ---
+// Specifies which paths this middleware should run on.
+export const config = {
+    matcher: [
+        /*
+         * Match all request paths except for the ones starting with:
+         * - api (API routes including /api/auth)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         * - /login (the login page itself)
+         * - / (the public homepage, if desired - remove if homepage needs auth)
+         */
+        '/((?!api|_next/static|_next/image|favicon.ico|login).*)',
+        // Explicitly include top-level protected routes if needed and not covered above
+        '/dashboard/:path*', // Match /dashboard and any sub-paths
+        '/profile/:path*',   // Match /profile and any sub-paths
+        '/documents/:path*', // Match /documents and any sub-paths
+        '/admin/:path*',     // Match /admin and any sub-paths
+    ],
+};
+
+
+--- END FILE: src\middleware.ts ---
+
 --- START FILE: src\app\globals.css ---
-/* src/app/globals.css */
-
-/* Import Tailwind's base styles (preflight) for v4 */
-@import "tailwindcss/preflight";
-
-/* Include Tailwind's utility classes for v4 */
+/* src/app/globals.css (Updated for v3) */
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
-/* Your custom styles and CSS variables */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* Define fonts if needed, e.g., using next/font */
-  /* --font-sans: ...; */
-  /* --font-mono: ...; */
-}
-
-
+/* Add minimal body styling */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  /* Consider using your defined font variable here if set up */
-  /* font-family: var(--font-sans), Arial, Helvetica, sans-serif; */
-  font-family: Arial, Helvetica, sans-serif; /* Or keep the basic fallback */
+   font-family: sans-serif; /* Basic default font */
+   /* Add other base styles if needed */
 }
-
-/* You can add custom utility layers or component styles below if needed */
-/* Example:
-@layer utilities {
-  .my-custom-utility {
-    @apply ...;
-  }
-}
-*/
 
 
 --- END FILE: src\app\globals.css ---
 
 --- START FILE: src\app\layout.tsx ---
 // src/app/layout.tsx
+import "./globals.css"; // Ensure this is imported EARLY
 import type { Metadata } from "next";
-import "./globals.css";
-import NextAuthProvider from "@/components/providers/NextAuthProvider"; // Import the provider
+import NextAuthProvider from "@/components/providers/NextAuthProvider";
+// Removed font imports/setup
 
 export const metadata: Metadata = {
   title: "SMLS-SFMS",
   description: "Skills and Faculty Management System",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en">
+      {/* Simple body tag, no custom font classes */}
       <body>
-        {/* Wrap the main content (or entire body content) with the provider */}
-        <NextAuthProvider>
-           {/* You can add global layout elements like Header/Footer here if needed */}
-           {/* Make sure they are inside NextAuthProvider if they need session data */}
-           <main>{children}</main> {/* Page content */}
-        </NextAuthProvider>
+         <NextAuthProvider>
+           <main>{children}</main>
+         </NextAuthProvider>
       </body>
     </html>
   );
@@ -372,128 +757,192 @@ export default function HomePage() {
 
 --- END FILE: src\app\page.tsx ---
 
---- START FILE: src\app\(auth)\login\page.tsx ---
-// src/app/(auth)/login/page.tsx
-'use client'; // Mark this as a Client Component
+--- START FILE: src\app\(auth)\layout.tsx ---
+export const metadata = {
+  title: 'Next.js',
+  description: 'Generated by Next.js',
+}
 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+
+
+--- END FILE: src\app\(auth)\layout.tsx ---
+
+--- START FILE: src\app\(auth)\login\page.tsx ---
+'use client';
 import React, { useState, FormEvent } from 'react';
-import { signIn } from 'next-auth/react'; // We'll use this to trigger login
-import { useRouter } from 'next/navigation'; // To redirect after login
+import { signIn, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image'; // Ensure next/image is imported
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>(null); // To display login errors
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
+    // Handler for credential-based form submission (remains the same)
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent default form submission
-        setError(null); // Clear previous errors
+        // ... (submission logic remains the same)
+        event.preventDefault();
+        setError(null);
         setIsLoading(true);
-
         try {
-            // Attempt to sign in using the 'credentials' provider
             const result = await signIn('credentials', {
-                redirect: false, // Prevent NextAuth from automatically redirecting
-                email: email,
-                password: password,
+                redirect: false,
+                email,
+                password,
             });
 
-            setIsLoading(false);
-
             if (result?.error) {
-                // Handle errors (e.g., wrong password, user not found)
-                console.error("Sign In Error:", result.error);
-                setError("Invalid email or password. Please try again."); // Generic error message
+                setIsLoading(false);
+                setError("Invalid email or password. Please try again.");
+                console.error("SignIn Error:", result.error);
             } else if (result?.ok) {
-                // Sign in successful
-                console.log("Sign in successful!");
-                // Redirect to the faculty dashboard (or based on role later)
-                router.push('/dashboard'); // Or use router.replace('/dashboard')
-                // Force refresh page state after redirect to ensure layout updates etc.
-                router.refresh();
+                const session = await getSession();
+                const userRole = (session?.user as any)?.role;
+                console.log("Login successful, Role:", userRole);
+                router.push(userRole === 'ADMIN' ? '/admin/dashboard' : '/dashboard');
             } else {
-                 setError("An unknown error occurred during login.");
+                setIsLoading(false);
+                setError("Login failed due to an unknown error. Please try again.");
+                console.error("SignIn Unknown State:", result);
             }
-
-        } catch (error) {
+        } catch (err) {
             setIsLoading(false);
-            console.error("Login submission failed:", error);
-            setError("An unexpected error occurred. Please try again later.");
+            setError("An unexpected error occurred. Please check your connection and try again.");
+            console.error("Login Catch Error:", err);
         }
     };
 
+    // Placeholder handler for Google Sign-In button (remains the same)
+    const handleGoogleSignIn = () => {
+       alert("Google Sign-In is not configured yet.");
+    }
+
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100"> {/* Light gray background for contrast */}
-            <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md"> {/* White login card */}
-                <h1 className="mb-6 text-center text-3xl font-semibold text-[#003153]"> {/* SMLS Blue Heading */}
-                    SMLS-SFMS Login
-                </h1>
+        // Main container: Apply gradient background
+        <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 px-4 py-8 font-poppins">
 
-                <form onSubmit={handleSubmit}>
-                    {error && (
-                        <div className="mb-4 rounded border border-red-400 bg-red-100 p-3 text-center text-red-700">
-                            {error}
-                        </div>
-                    )}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="email"
-                            className="mb-2 block text-sm font-medium text-gray-700"
-                        >
-                            Email Address
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm focus:border-[#003153] focus:outline-none focus:ring-1 focus:ring-[#003153]" // Focus ring with SMLS blue
-                            placeholder="your.email@example.com"
-                            disabled={isLoading}
+            {/* Wrapper for the three-column layout on larger screens */}
+            <div className="flex w-full max-w-6xl items-center justify-center lg:justify-between">
+
+                 {/* Left Column (SPC Logo): Hidden on screens smaller than 'lg' */}
+                 <div className="hidden lg:flex lg:w-1/4 items-center justify-center p-4">
+                     <Image
+                        src="/spc-logo.png"
+                        alt="San Pedro College Logo"
+                        width={250}
+                        height={300}
+                        className="object-contain"
+                    />
+                 </div>
+
+                 {/* Center Column (Login Form Card) */}
+                 <div className="w-full max-w-md lg:w-1/2 lg:max-w-md lg:px-8 flex justify-center">
+                     {/* Container for the card */}
+                     <div className="w-full">
+                         {/* Gradient border effect - Using softer blues */}
+                         <div className="rounded-3xl bg-gradient-to-r from-sky-400 to-blue-500 p-1 shadow-2xl"> {/* Changed gradient, increased shadow */}
+                             {/* Inner white card - Kept white for contrast */}
+                            <div className="rounded-[22px] bg-white p-8 sm:p-10">
+
+                                <h1 className="cursor-default pb-6 text-center text-4xl font-bold text-gray-800"> {/* Slightly lighter text */}
+                                    Log in
+                                </h1>
+
+                                <form onSubmit={handleSubmit} className="space-y-5">
+                                    {error && (
+                                        <div className="rounded border border-red-300 bg-red-50 p-3 text-center text-sm font-medium text-red-700" role="alert">
+                                            {error}
+                                        </div>
+                                    )}
+                                    {/* Email Input */}
+                                    <div>
+                                        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-600">Email</label> {/* Lighter label */}
+                                        <input
+                                            id="email" name="email" type="email" placeholder="Email" required disabled={isLoading}
+                                            value={email} onChange={(e) => setEmail(e.target.value)}
+                                            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50" // Adjusted text color
+                                        />
+                                    </div>
+                                    {/* Password Input */}
+                                    <div>
+                                        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-600">Password</label> {/* Lighter label */}
+                                        <input
+                                            id="password" name="password" type="password" placeholder="Password" required disabled={isLoading}
+                                            value={password} onChange={(e) => setPassword(e.target.value)}
+                                            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50" // Adjusted text color
+                                        />
+                                    </div>
+                                    {/* Forget Password Link - Adjusted color */}
+                                    <div className="text-right">
+                                        <Link href="#" className="text-sm text-sky-600 hover:text-sky-700 hover:underline"> Forget your password? </Link>
+                                    </div>
+                                    {/* Submit Button - Matching softer gradient */}
+                                    <button
+                                        type="submit" disabled={isLoading}
+                                        className="mt-6 w-full rounded-lg bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-2.5 text-sm font-semibold uppercase tracking-wider text-white shadow-md transition duration-300 ease-in-out hover:from-sky-600 hover:to-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"> {/* Changed gradient and hover */}
+                                        {isLoading ? 'LOGGING IN...' : 'LOG IN'}
+                                    </button>
+                                </form>
+                                {/* Sign Up - Adjusted color */}
+                               <div className="mt-5 text-center text-sm">
+                                    <span className="text-gray-500">Don't have an account?{' '}</span> {/* Lighter text */}
+                                    <Link href="#" className="font-semibold text-sky-600 hover:text-sky-700 hover:underline"> Sign Up </Link>
+                               </div>
+                                {/* Separator - Adjusted color */}
+                               <div className="my-6 flex items-center">
+                                    <hr className="flex-grow border-t border-gray-300" /> {/* Slightly darker line */}
+                                    <span className="px-2 text-xs font-medium text-gray-500 uppercase">OR CONTINUE WITH</span> {/* Darker text */}
+                                    <hr className="flex-grow border-t border-gray-300" />
+                               </div>
+                                {/* Google Button - Kept neutral */}
+                               <div className="flex justify-center">
+                                    <button
+                                        onClick={handleGoogleSignIn} disabled={isLoading} title="Sign in with Google"
+                                        className="m-1 inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white p-2 shadow-sm transition duration-300 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-400 disabled:opacity-60">
+                                        <Image src="https://ucarecdn.com/8f25a2ba-bdcf-4ff1-b596-088f330416ef/" alt="Google" width={22} height={22} />
+                                    </button>
+                               </div>
+                                {/* Terms - Adjusted color and link color */}
+                                <div className="mt-6 text-center text-xs text-gray-500"> {/* Lighter text */}
+                                    <p> By signing in, you agree to our{' '} <Link className="font-medium text-sky-600 hover:underline" href="#">Terms</Link> {' '}and{' '} <Link className="font-medium text-sky-600 hover:underline" href="#">Privacy Policy</Link>. </p>
+                                </div>
+                            </div> {/* End Inner Card */}
+                        </div> {/* End Gradient Border */}
+                    </div> {/* End Form Container */}
+                 </div> {/* End Center Column */}
+
+                 {/* Right Column (SMLS Logo): Hidden on screens smaller than 'lg' */}
+                 <div className="hidden lg:flex lg:w-1/4 items-center justify-center p-4 relative">
+                     {/* ... optional background ... */}
+                     <div className="relative z-10">
+                        <Image
+                            src="/smls-logo.png"
+                            alt="School of Medical Laboratory Science Logo"
+                            width={200}
+                            height={200}
+                            className="object-contain"
                         />
-                    </div>
+                     </div>
+                 </div>
 
-                    <div className="mb-6">
-                        <label
-                            htmlFor="password"
-                            className="mb-2 block text-sm font-medium text-gray-700"
-                        >
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm focus:border-[#003153] focus:outline-none focus:ring-1 focus:ring-[#003153]" // Focus ring with SMLS blue
-                            placeholder="••••••••"
-                            disabled={isLoading}
-                        />
-                        {/* Optional: Add "Forgot Password?" link here */}
-                    </div>
+             </div> {/* End Three-column Wrapper */}
 
-                    <div>
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className={`w-full rounded-md px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#003153] focus:ring-offset-2 ${
-                                isLoading
-                                    ? 'cursor-not-allowed bg-gray-400'
-                                    : 'bg-[#003153] hover:bg-[#002742]' // SMLS Blue background, slightly darker on hover
-                            }`}
-                        >
-                            {isLoading ? 'Signing In...' : 'Sign In'}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        </div> // End Main Container
     );
 }
 
@@ -502,60 +951,130 @@ export default function LoginPage() {
 
 --- START FILE: src\app\(faculty)\dashboard\page.tsx ---
 // src/app/(faculty)/dashboard/page.tsx
-'use client'; // Mark as Client Component to potentially use hooks later
-
+'use client';
+import Link from 'next/link';
 import React from 'react';
-import { useSession } from 'next-auth/react'; // Can use this to show user info
+import { useSession } from 'next-auth/react';
+
+// Example: Using Heroicons (install @heroicons/react)
+// npm install @heroicons/react
+import {
+    UserCircleIcon,
+    DocumentTextIcon,
+    CalendarDaysIcon,
+    ArrowRightIcon
+} from '@heroicons/react/24/outline'; // Using outline style
 
 export default function FacultyDashboardPage() {
     const { data: session, status } = useSession();
 
-    // You can add loading state based on session status if needed
+    // --- Loading State ---
     if (status === 'loading') {
-        return <div className="p-6">Loading dashboard...</div>;
+        return (
+            <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-6 bg-gray-50"> {/* Added bg */}
+                {/* Basic Spinner Example */}
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <p className="ml-3 text-gray-600">Loading dashboard...</p>
+            </div>
+        );
     }
 
-    // Basic check if authenticated (though middleware/layout should handle this ideally)
+    // --- Unauthenticated State ---
     if (status === 'unauthenticated') {
-         // This shouldn't usually be reached if protected routes are set up correctly
-         // Redirecting or showing an error might be better.
-        return <div className="p-6">Access Denied. Please sign in.</div>;
+         return (
+             <div className="flex h-screen flex-col items-center justify-center p-6 text-center bg-gray-50">
+                 <p className="mb-4 text-xl font-semibold text-red-600">Access Denied</p>
+                 <p className="mb-6 text-gray-700">You must be signed in to view this page.</p>
+                 <Link href="/login">
+                     <button className="inline-flex items-center gap-2 rounded-md bg-[#003153] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-[#002742] focus:outline-none focus:ring-2 focus:ring-[#003153] focus:ring-offset-2">
+                         Go to Login
+                         <ArrowRightIcon className="h-4 w-4" />
+                     </button>
+                 </Link>
+             </div>
+        );
     }
 
-    // Get user role (added in callbacks)
+    // --- Authenticated State ---
     const userRole = (session?.user as any)?.role;
+    // More friendly greeting
+    const greetingName = session?.user?.name ? session.user.name.split(' ')[0] : (session?.user?.email ?? 'Faculty Member');
 
     return (
-        <div className="p-6">
-            <h1 className="mb-4 text-2xl font-semibold text-[#003153]">
-                Faculty Dashboard
-            </h1>
-
-            {session?.user && (
-                <p className="mb-4">
-                    Welcome, {session.user.name ?? session.user.email}!
-                    (Role: {userRole})
-                </p>
-            )}
-
-            <p>This is where faculty-specific information and actions will go.</p>
-
-            {/* Example placeholder sections */}
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <div className="rounded border border-gray-200 bg-white p-4 shadow">
-                    <h2 className="mb-2 text-lg font-medium text-[#003153]">My Profile</h2>
-                    <p className="text-sm text-gray-600">View or update your profile details.</p>
-                    {/* Link to profile page later */}
+        // Main container with background and padding
+        <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-6 lg:p-8">
+            <div className="mx-auto max-w-7xl">
+                {/* Header Section */}
+                <div className="mb-8 rounded-lg bg-white p-6 shadow-sm">
+                    <h1 className="text-2xl font-semibold leading-tight text-gray-800 sm:text-3xl">
+                        Welcome back, {greetingName}!
+                    </h1>
+                    <p className="mt-1 text-sm text-gray-500">
+                        Your central hub for managing skills and documents. (Role: {userRole || 'N/A'})
+                    </p>
                 </div>
-                <div className="rounded border border-gray-200 bg-white p-4 shadow">
-                    <h2 className="mb-2 text-lg font-medium text-[#003153]">My Documents</h2>
-                    <p className="text-sm text-gray-600">Upload and manage your credentials.</p>
-                     {/* Link to documents page later */}
-                </div>
-                 <div className="rounded border border-gray-200 bg-white p-4 shadow">
-                    <h2 className="mb-2 text-lg font-medium text-[#003153]">Upcoming Events</h2>
-                    <p className="text-sm text-gray-600">View relevant seminars or deadlines.</p>
-                     {/* Placeholder content */}
+
+                {/* Main Content Grid - More spacing */}
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+                    {/* Profile Card - Refined styling */}
+                    <Link href="/profile" className="group flex flex-col justify-between rounded-lg border border-transparent bg-white p-6 shadow-lg transition duration-300 ease-in-out hover:scale-[1.02] hover:shadow-blue-100 dark:bg-gray-800 dark:hover:shadow-blue-900/30">
+                        <div>
+                            <div className="mb-3 flex items-center gap-3">
+                                <UserCircleIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                                    My Profile
+                                </h2>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                View and manage your CV, qualifications, and personal details.
+                            </p>
+                        </div>
+                        <div className="mt-4 flex items-center justify-end text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:underline">
+                            Go to Profile
+                            <ArrowRightIcon className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                        </div>
+                    </Link>
+
+                    {/* Documents Card - Refined styling */}
+                     <Link href="/documents" className="group flex flex-col justify-between rounded-lg border border-transparent bg-white p-6 shadow-lg transition duration-300 ease-in-out hover:scale-[1.02] hover:shadow-green-100 dark:bg-gray-800 dark:hover:shadow-green-900/30">
+                        <div>
+                            <div className="mb-3 flex items-center gap-3">
+                                <DocumentTextIcon className="h-8 w-8 text-green-600 dark:text-green-400" />
+                                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                                    My Documents
+                                </h2>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Upload, view, and manage your supporting credentials and files.
+                            </p>
+                        </div>
+                        <div className="mt-4 flex items-center justify-end text-sm font-medium text-green-600 dark:text-green-400 group-hover:underline">
+                            Manage Documents
+                            <ArrowRightIcon className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                        </div>
+                     </Link>
+
+                    {/* Upcoming Events Card - Refined styling */}
+                     <div className="flex flex-col justify-between rounded-lg border border-transparent bg-white p-6 shadow-lg dark:bg-gray-800">
+                        <div>
+                            <div className="mb-3 flex items-center gap-3">
+                                <CalendarDaysIcon className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                                    Upcoming Events
+                                </h2>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                View relevant seminars, deadlines, or faculty meetings.
+                            </p>
+                        </div>
+                         <div className="mt-4 rounded-md border border-dashed border-gray-300 bg-gray-50 p-4 text-center text-sm italic text-gray-500 dark:border-gray-700 dark:bg-gray-700/50 dark:text-gray-400">
+                             No upcoming events scheduled.
+                         </div>
+                    </div>
+
+                     {/* Add more cards here following a similar pattern */}
+
                 </div>
             </div>
         </div>
@@ -566,12 +1085,453 @@ export default function FacultyDashboardPage() {
 --- END FILE: src\app\(faculty)\dashboard\page.tsx ---
 
 --- START FILE: src\app\(faculty)\documents\page.tsx ---
-[EMPTY FILE]
+// src/app/(faculty)/documents/page.tsx
+'use client';
+
+import React from 'react';
+import { useSession } from 'next-auth/react';
+
+// We might need specific types for document data later
+// import type { DocumentData } from '@/types';
+
+export default function DocumentsPage() {
+    const { data: session, status } = useSession();
+
+    if (status === 'loading') {
+        return <div className="p-6">Loading documents page...</div>;
+    }
+
+    if (status === 'unauthenticated') {
+        return <div className="p-6">Access Denied. Please sign in.</div>;
+    }
+
+    // Placeholder state for file handling (will expand later)
+    // const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    // const [uploading, setUploading] = useState(false);
+    // const [documents, setDocuments] = useState<DocumentData[]>([]); // To display existing docs
+
+    // Placeholder function for upload logic
+    const handleUpload = async (event: React.FormEvent) => {
+        event.preventDefault();
+        // TODO: Implement actual file upload logic
+        // - Get file from state
+        // - Validate file type/size
+        // - Send file to a backend API route or Server Action
+        // - Handle response (success/error)
+        // - Update the list of documents
+        alert('Upload functionality not implemented yet.');
+    };
+
+    return (
+        <div className="p-6">
+            <h1 className="mb-6 text-2xl font-semibold text-[#003153]">
+                My Documents & Credentials
+            </h1>
+
+            {/* Section for Uploading New Documents */}
+            <div className="mb-8 rounded border border-gray-200 bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-lg font-medium text-gray-800">Upload New Document</h2>
+                <form onSubmit={handleUpload}>
+                    <div className="mb-4">
+                        <label htmlFor="documentFile" className="mb-2 block text-sm font-medium text-gray-700">
+                            Select File (.pdf, .png, .jpg)
+                        </label>
+                        <input
+                            type="file"
+                            id="documentFile"
+                            name="documentFile"
+                            accept=".pdf,.png,.jpg,.jpeg" // Specify accepted formats
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:rounded file:border-0 file:bg-[#003153] file:px-4 file:py-2 file:text-white hover:file:bg-[#002742] disabled:opacity-50"
+                            // onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)}
+                            required
+                            disabled // Disable upload for now
+                        />
+                         {/* TODO: Add fields for document type/category (e.g., Academic, Seminar, Award) */}
+                    </div>
+                    <button
+                        type="submit"
+                        className="rounded bg-[#003153] px-4 py-2 text-white shadow hover:bg-[#002742] focus:outline-none focus:ring-2 focus:ring-[#003153] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        disabled // Disable upload for now
+                        // disabled={!selectedFile || uploading}
+                    >
+                        {/* {uploading ? 'Uploading...' : 'Upload Document'} */}
+                        Upload Document (Coming Soon)
+                    </button>
+                </form>
+            </div>
+
+            {/* Section for Displaying Existing Documents */}
+            <div className="rounded border border-gray-200 bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-lg font-medium text-gray-800">Uploaded Documents</h2>
+                {/* TODO: Fetch and display list of user's documents */}
+                <p className="text-gray-500">Your uploaded documents will appear here.</p>
+                 {/* Example structure for later:
+                 <ul className="space-y-2">
+                    {documents.map((doc) => (
+                        <li key={doc.id} className="flex justify-between items-center border-b pb-1">
+                            <span>{doc.fileName} ({doc.category})</span>
+                            <button className="text-red-500 hover:text-red-700 text-sm">Delete</button>
+                        </li>
+                    ))}
+                </ul>
+                */}
+            </div>
+        </div>
+    );
+}
+
 
 --- END FILE: src\app\(faculty)\documents\page.tsx ---
 
 --- START FILE: src\app\(faculty)\profile\page.tsx ---
-[EMPTY FILE]
+'use client';
+
+import React, { useState, useEffect, useCallback, useTransition } from 'react';
+import { useSession } from 'next-auth/react';
+import { getMyProfileData } from '@/lib/userActions';
+import type {
+    User, // Make sure User type is imported if needed, or adjust ProfileData interface
+    AcademicQualification, ProfessionalLicense, WorkExperience,
+    ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
+    CommunityInvolvement, Publication, ConferencePresentation
+} from '@/generated/prisma'; // Assuming prisma client types are here
+import {
+    PlusIcon, PencilSquareIcon, XCircleIcon, CheckCircleIcon, AcademicCapIcon, BriefcaseIcon, // Added more icons
+    IdentificationIcon, StarIcon, SparklesIcon, UsersIcon, DocumentTextIcon, PresentationChartBarIcon, TrashIcon
+} from '@heroicons/react/24/outline';
+
+
+// Type for the complete fetched profile data structure
+interface ProfileData {
+    user: { id: string; name: string | null; email: string | null; role: string | null; } | null;
+    academicQualifications: AcademicQualification[];
+    professionalLicenses: ProfessionalLicense[];
+    workExperiences: WorkExperience[];
+    professionalAffiliations: ProfessionalAffiliation[];
+    awardsRecognitions: AwardRecognition[];
+    professionalDevelopments: ProfessionalDevelopment[];
+    communityInvolvements: CommunityInvolvement[];
+    publications: Publication[];
+    conferencePresentations: ConferencePresentation[];
+    error?: string;
+}
+
+// Define all possible categories and their corresponding data keys and titles/icons
+// Define icons for each category
+const categoryMetadata = {
+    academicQualifications: { title: 'Academic Qualifications', icon: AcademicCapIcon },
+    professionalLicenses: { title: 'Professional Licenses', icon: IdentificationIcon },
+    workExperiences: { title: 'Work Experience', icon: BriefcaseIcon },
+    professionalAffiliations: { title: 'Professional Affiliations', icon: UsersIcon }, // Example icon
+    awardsRecognitions: { title: 'Awards & Recognitions', icon: StarIcon }, // Example icon
+    professionalDevelopments: { title: 'Professional Development', icon: SparklesIcon }, // Example icon
+    communityInvolvements: { title: 'Community Involvement', icon: UsersIcon }, // Reusing example icon
+    publications: { title: 'Publications', icon: DocumentTextIcon }, // Example icon
+    conferencePresentations: { title: 'Conference Presentations', icon: PresentationChartBarIcon }, // Example icon
+} as const;
+
+type CategoryKey = keyof typeof categoryMetadata;
+// Type for data structure during editing (might be needed later)
+type EditableProfileData = Omit<ProfileData, 'user' | 'error'>;
+
+// Helper to format date strings or return N/A
+const formatDate = (date: string | Date | null | undefined): string => {
+    if (!date) return 'N/A';
+    try {
+        // Attempt to format assuming it's a valid date string or Date object
+        return new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    } catch (e) {
+        console.error("Error formatting date:", date, e); // Log error
+        return 'Invalid Date';
+    }
+};
+
+export default function ProfilePage() {
+    const { status: sessionStatus } = useSession();
+    const [profileData, setProfileData] = useState<ProfileData | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [pageError, setPageError] = useState<string | null>(null);
+
+    // Edit Mode State
+    const [isEditing, setIsEditing] = useState(false);
+    const [isPending, startTransition] = useTransition();
+    const [editError, setEditError] = useState<string | null>(null);
+    const [editSuccess, setEditSuccess] = useState<string | null>(null);
+    const [editableData, setEditableData] = useState<EditableProfileData | null>(null); // Keep for later edit implementation
+
+    // Visible Categories State
+    const [visibleCategories, setVisibleCategories] = useState<Set<CategoryKey>>(new Set());
+    const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+
+    // --- Fetch data ---
+    const fetchProfileData = useCallback(async (showLoading = true) => {
+        if (showLoading) setIsLoading(true);
+        setPageError(null); setEditError(null); setEditSuccess(null);
+        try {
+            const data = await getMyProfileData();
+            if (data.error) {
+                setPageError(data.error); setProfileData(null); setVisibleCategories(new Set());
+            } else {
+                setProfileData(data);
+                // Initialize visible categories based on fetched data THAT HAS ITEMS
+                const initialVisible = new Set<CategoryKey>();
+                (Object.keys(categoryMetadata) as CategoryKey[]).forEach(key => {
+                    // Check if the key exists in data and the array has length > 0
+                    if (data[key] && Array.isArray(data[key]) && data[key].length > 0) {
+                        initialVisible.add(key);
+                    }
+                });
+                setVisibleCategories(initialVisible);
+                setIsEditing(false); setEditableData(null); // Reset edit state on fetch
+            }
+        } catch (err) {
+            console.error("Failed to fetch profile data:", err);
+            setPageError("An unexpected error occurred while fetching data.");
+            setProfileData(null); setVisibleCategories(new Set());
+        } finally {
+            if (showLoading) setIsLoading(false);
+        }
+    }, []);
+
+    // --- Initial Fetch and Session Handling ---
+    useEffect(() => {
+        if (sessionStatus === 'authenticated') {
+            // Fetch only if authenticated and data hasn't been loaded or explicitly requested
+            if (!profileData && isLoading) {
+                fetchProfileData();
+            } else if (profileData && isLoading) {
+                // If data exists but still loading, stop loading
+                setIsLoading(false);
+            }
+        } else if (sessionStatus === 'unauthenticated') {
+            setIsLoading(false); setPageError("Access Denied. Please sign in."); setProfileData(null); setVisibleCategories(new Set());
+        } else { // Session status is 'loading'
+            setIsLoading(true); // Keep loading true while session loads
+        }
+    }, [sessionStatus, profileData, isLoading, fetchProfileData]);
+
+    // --- Edit Mode Controls (Placeholders for functionality) ---
+    const handleEditToggle = () => {
+        if (isEditing) { handleCancelEdit(); }
+        else {
+            if (!profileData || !profileData.user) { // Ensure data exists before copying
+                setPageError("Cannot enter edit mode: Profile data is missing.");
+                return;
+            }
+            setIsEditing(true); setEditError(null); setEditSuccess(null);
+            // Deep copy data into editable state
+            const dataToEdit: EditableProfileData = {
+                academicQualifications: JSON.parse(JSON.stringify(profileData.academicQualifications)),
+                professionalLicenses: JSON.parse(JSON.stringify(profileData.professionalLicenses)),
+                workExperiences: JSON.parse(JSON.stringify(profileData.workExperiences)),
+                professionalAffiliations: JSON.parse(JSON.stringify(profileData.professionalAffiliations)),
+                awardsRecognitions: JSON.parse(JSON.stringify(profileData.awardsRecognitions)),
+                professionalDevelopments: JSON.parse(JSON.stringify(profileData.professionalDevelopments)),
+                communityInvolvements: JSON.parse(JSON.stringify(profileData.communityInvolvements)),
+                publications: JSON.parse(JSON.stringify(profileData.publications)),
+                conferencePresentations: JSON.parse(JSON.stringify(profileData.conferencePresentations)),
+            };
+            setEditableData(dataToEdit);
+            // Ensure all categories with items are visible when editing starts
+            const categoriesToMakeVisible = new Set(visibleCategories);
+            (Object.keys(dataToEdit) as CategoryKey[]).forEach(key => {
+                if (dataToEdit[key]?.length > 0) { categoriesToMakeVisible.add(key); }
+            });
+            setVisibleCategories(categoriesToMakeVisible);
+        }
+    };
+    const handleCancelEdit = () => { setIsEditing(false); setEditableData(null); setEditError(null); setEditSuccess(null); }; // Reset editable state
+    const handleSaveChanges = () => { alert("Save Changes logic not implemented."); /* Add save logic later */ };
+    const handleAddCategory = (categoryKey: CategoryKey) => { setVisibleCategories(prev => new Set(prev).add(categoryKey)); setShowCategoryDropdown(false); };
+    const handleDeleteItem = (category: CategoryKey, id: string) => { alert(`Delete item ${id} from ${category} - logic not implemented.`); };
+    const handleAddItem = (category: CategoryKey) => { alert(`Add item to ${category} - logic not implemented.`); };
+
+
+    // --- Render Logic ---
+    // 1. Handle Loading State
+    if (isLoading || sessionStatus === 'loading') {
+        return <div className="p-6 animate-pulse">Loading profile...</div>;
+    }
+
+    // 2. Handle Error / Unauthenticated / Missing Data States
+    //    THIS IS THE CORRECTED GUARD CLAUSE
+    if (pageError || sessionStatus === 'unauthenticated' || !profileData || !profileData.user) {
+        return <div className="p-6 text-red-600">Error: {pageError || "Could not load profile data or access denied."}</div>;
+    }
+
+    // 3. Data is loaded and user exists, proceed with rendering
+    //    We can now safely access profileData and profileData.user
+    const displayData = profileData; // Use profileData for display (read-only view)
+    const availableToAdd = (Object.keys(categoryMetadata) as CategoryKey[]).filter(key => !visibleCategories.has(key));
+
+    return (
+        <div className="p-6 bg-gray-50 min-h-screen">
+            {/* --- Header --- */}
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
+                <h1 className="text-3xl font-bold text-gray-800">My Profile</h1>
+                <div className="flex items-center gap-2 flex-wrap">
+                    {/* Edit/Cancel/Save Buttons */}
+                    <button onClick={handleEditToggle} disabled={isPending} className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 ${isEditing ? 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-600'}`}>
+                        {isEditing ? <><XCircleIcon className="h-4 w-4" /> Cancel</> : <><PencilSquareIcon className="h-4 w-4" /> Edit Profile</>}
+                    </button>
+                    {isEditing && (<button onClick={handleSaveChanges} disabled={isPending} className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-70"> {isPending ? ('Saving...') : (<><CheckCircleIcon className="h-4 w-4" /> Save Changes</>)} </button>)}
+                    {/* Add Section Dropdown */}
+                    <div className="relative">
+                        <button onClick={() => setShowCategoryDropdown(!showCategoryDropdown)} disabled={isPending} className="inline-flex items-center gap-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70" aria-haspopup="true" aria-expanded={showCategoryDropdown}> <PlusIcon className="h-4 w-4" /> Add Section </button>
+                        {showCategoryDropdown && (<div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu"> <div className="py-1" role="none"> {availableToAdd.length > 0 ? (availableToAdd.map(key => (<button key={key} onClick={() => handleAddCategory(key)} className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> {categoryMetadata[key].title} </button>))) : (<p className="px-4 py-2 text-sm text-gray-500">All sections added.</p>)} </div> </div>)}
+                    </div>
+                </div>
+            </div>
+            {/* --- Success/Error Messages --- */}
+            {editSuccess && <div className="mb-4 rounded-md bg-green-50 p-4 text-sm font-medium text-green-800">{editSuccess}</div>}
+            {editError && <div className="mb-4 rounded-md bg-red-50 p-4 text-sm font-medium text-red-800">{editError}</div>}
+
+            {/* --- Basic Info Section --- */}
+            <div className="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-xl font-semibold text-gray-700">Basic Information</h2>
+                {/* SAFE TO ACCESS displayData.user here because of the check above */}
+                <div className="grid grid-cols-1 gap-x-4 gap-y-2 text-sm sm:grid-cols-2">
+                    <div><span className="font-medium text-gray-500">Name:</span> {displayData.user?.name ?? 'N/A'}</div>
+                    <div><span className="font-medium text-gray-500">Email:</span> {displayData.user?.email ?? 'N/A'}</div>
+                    <div><span className="font-medium text-gray-500">Role:</span> {displayData.user?.role ?? 'N/A'}</div>
+                </div>
+            </div>
+
+            {/* --- Dynamic Sections Area --- */}
+            {visibleCategories.size === 0 && !isLoading && (<div className="rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 p-6 text-center text-gray-500"> No profile sections added yet. Click "Add Section" above to get started. </div>)}
+            {/* --- Grid container for the cards --- */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {/* Map over VISIBLE categories */}
+                {Array.from(visibleCategories).map(categoryKey => {
+                    const categoryMeta = categoryMetadata[categoryKey];
+                    // Get data for the current category from the fetched profileData
+                    const categoryData = displayData[categoryKey] ?? []; // Use fetched data
+                    const CategoryIcon = categoryMeta.icon;
+
+                    return (
+                        <div key={categoryKey} className="flex flex-col rounded-lg border border-gray-200 bg-white shadow-md overflow-hidden">
+                            {/* Card Header */}
+                            <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-3">
+                                <div className="flex items-center gap-2">
+                                    <CategoryIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" />
+                                    <h2 className="text-lg font-semibold text-gray-700">{categoryMeta.title}</h2>
+                                </div>
+                                {/* Show Add button only in edit mode */}
+                                {isEditing && (<button onClick={() => handleAddItem(categoryKey)} className="rounded bg-indigo-50 p-1 text-indigo-600 hover:bg-indigo-100" title={`Add ${categoryMeta.title}`}> <PlusIcon className="h-4 w-4" /> </button>)}
+                            </div>
+                            {/* Card Body - Display fetched data */}
+                            <div className="flex-grow p-4 text-sm text-gray-700">
+                                {categoryData.length === 0 ? (
+                                    <p className="italic text-gray-400">No items recorded for this section.</p>
+                                ) : (
+                                    <ul className="space-y-4"> {/* Increased spacing between items */}
+                                        {/* Map over the actual data for this category */}
+                                        {categoryData.map((item: any, index: number) => ( // Use 'any' for now, or create a union type
+                                            <li key={item.id || index} className="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0 relative group"> {/* Added relative/group for delete button positioning */}
+
+                                                {/* === RENDER DATA BASED ON CATEGORY === */}
+                                                {/* Academic Qualifications */}
+                                                {categoryKey === 'academicQualifications' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.degree || 'N/A'}</p>
+                                                        <p className="text-gray-600">{item.institution || 'N/A'}{item.program ? ` - ${item.program}` : ''}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Completed: {item.yearCompleted || 'N/A'}</p>
+                                                        {item.diplomaFileUrl && <a href={item.diplomaFileUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline mt-1 block">View Document</a>}
+                                                    </>
+                                                )}
+                                                {/* Professional Licenses */}
+                                                {categoryKey === 'professionalLicenses' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.examination || 'N/A'}</p>
+                                                        <p className="text-gray-600">Number: {item.licenseNumber || 'N/A'}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Issued: {item.monthYear || 'N/A'} | Expires: {formatDate(item.expiration)}</p>
+                                                    </>
+                                                )}
+                                                {/* Work Experience */}
+                                                {categoryKey === 'workExperiences' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.position || 'N/A'}</p>
+                                                        <p className="text-gray-600">{item.institution || 'N/A'}</p>
+                                                        {item.natureOfWork && <p className="text-xs text-gray-500 italic mt-1">{item.natureOfWork}</p>}
+                                                        <p className="text-xs text-gray-500 mt-1">Years: {item.inclusiveYears || 'N/A'}</p>
+                                                    </>
+                                                )}
+                                                {/* Professional Affiliations */}
+                                                {categoryKey === 'professionalAffiliations' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.organization || 'N/A'}</p>
+                                                        {item.position && <p className="text-gray-600">Position: {item.position}</p>}
+                                                        <p className="text-xs text-gray-500 mt-1">Years: {item.inclusiveYears || 'N/A'}</p>
+                                                    </>
+                                                )}
+                                                {/* Awards & Recognitions */}
+                                                {categoryKey === 'awardsRecognitions' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.awardName || 'N/A'}</p>
+                                                        <p className="text-gray-600">Awarded by: {item.awardingBody || 'N/A'}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Year: {item.yearReceived || 'N/A'}</p>
+                                                    </>
+                                                )}
+                                                {/* Professional Development */}
+                                                {categoryKey === 'professionalDevelopments' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.title || 'N/A'}</p>
+                                                        <p className="text-gray-600">Organizer: {item.organizer || 'N/A'}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Date/Location: {item.dateLocation || 'N/A'}</p>
+                                                        {item.certificateFileUrl && <a href={item.certificateFileUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline mt-1 block">View Certificate</a>}
+                                                    </>
+                                                )}
+                                                {/* Community Involvement */}
+                                                {categoryKey === 'communityInvolvements' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.engagementTitle || 'N/A'}</p>
+                                                        <p className="text-gray-600">Role: {item.role || 'N/A'}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Date/Location: {item.locationDate || 'N/A'}</p>
+                                                    </>
+                                                )}
+                                                {/* Publications */}
+                                                {categoryKey === 'publications' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.researchTitle || 'N/A'}</p>
+                                                        <p className="text-gray-600">Journal: {item.journal || 'N/A'}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Published: {formatDate(item.datePublished)}</p>
+                                                        {/* Add link/DOI later if needed */}
+                                                    </>
+                                                )}
+                                                {/* Conference Presentations */}
+                                                {categoryKey === 'conferencePresentations' && (
+                                                    <>
+                                                        <p className="font-semibold text-gray-800">{item.paperTitle || 'N/A'}</p>
+                                                        <p className="text-gray-600">Event: {item.eventName || 'N/A'}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Date/Location: {item.dateLocation || 'N/A'}</p>
+                                                    </>
+                                                )}
+
+                                                {/* Delete Button - Show only in edit mode */}
+                                                {isEditing && (
+                                                    <button
+                                                        onClick={() => handleDeleteItem(categoryKey, item.id)}
+                                                        className="absolute top-1 right-1 p-0.5 rounded bg-red-50 text-red-500 opacity-0 group-hover:opacity-100 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-1 transition-opacity"
+                                                        title={`Delete this ${categoryMeta.title} item`}
+                                                    >
+                                                        <TrashIcon className="h-4 w-4" />
+                                                        <span className="sr-only">Delete</span>
+                                                    </button>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+        </div>
+    );
+}
+
 
 --- END FILE: src\app\(faculty)\profile\page.tsx ---
 
@@ -581,7 +1541,64 @@ export default function FacultyDashboardPage() {
 --- END FILE: src\app\admin\approvals\page.tsx ---
 
 --- START FILE: src\app\admin\dashboard\page.tsx ---
-[EMPTY FILE]
+// src/app/admin/dashboard/page.tsx
+'use client';
+
+import React from 'react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link'; // For linking to other admin sections later
+
+export default function AdminDashboardPage() {
+    const { data: session, status } = useSession();
+
+    // Note: The middleware should already prevent non-admins from reaching here.
+    // This check is mostly for display purposes or as an extra layer.
+    const userRole = (session?.user as any)?.role;
+
+    if (status === 'loading') {
+        return <div className="p-6">Loading admin dashboard...</div>;
+    }
+
+    // Extra check, though middleware is primary protection
+    if (status !== 'authenticated' || userRole !== 'ADMIN') {
+         return <div className="p-6">Access Denied. You do not have permission to view this page.</div>;
+    }
+
+    return (
+        <div className="p-6">
+            <h1 className="mb-6 text-2xl font-semibold text-[#003153]">
+                Administrator Dashboard
+            </h1>
+
+            <p className="mb-4">
+                Welcome, Administrator {session?.user?.name ?? session?.user?.email}!
+            </p>
+
+            <p>This is the central hub for managing faculty and system settings.</p>
+
+            {/* Placeholder sections for Admin features */}
+             <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="rounded border border-gray-200 bg-white p-4 shadow">
+                    <h2 className="mb-2 text-lg font-medium text-[#003153]">Manage Faculty</h2>
+                    <p className="text-sm text-gray-600">View and manage faculty profiles.</p>
+                     {/* <Link href="/admin/faculty">Go</Link> */}
+                </div>
+                 <div className="rounded border border-gray-200 bg-white p-4 shadow">
+                    <h2 className="mb-2 text-lg font-medium text-[#003153]">Document Approvals</h2>
+                    <p className="text-sm text-gray-600">Review pending document submissions.</p>
+                     {/* <Link href="/admin/approvals">Go</Link> */}
+                </div>
+                 <div className="rounded border border-gray-200 bg-white p-4 shadow">
+                    <h2 className="mb-2 text-lg font-medium text-[#003153]">Specialization Matrix</h2>
+                    <p className="text-sm text-gray-600">View faculty skills and expertise.</p>
+                     {/* <Link href="/admin/matrix">Go</Link> */}
+                </div>
+                 {/* Add more admin sections as needed */}
+            </div>
+        </div>
+    );
+}
+
 
 --- END FILE: src\app\admin\dashboard\page.tsx ---
 
@@ -731,6 +1748,102 @@ export { handler as GET, handler as POST };
 
 --- END FILE: src\app\api\faculty\route.ts ---
 
+--- START FILE: src\app\image-test\page.tsx ---
+'use client'; // Required for potential state/hooks later if needed
+
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+// Ensure you have a valid image file named dot.png
+// located directly in your project's /public directory
+const IMAGE_SRC = "/dot.png";
+const IMAGE_WIDTH = 100; // Example width
+const IMAGE_HEIGHT = 100; // Example height
+
+export default function ImageTestPage() {
+
+    return (
+        <div className="p-10">
+            <h1 className="text-2xl font-bold mb-6">Image Loading Test Page</h1>
+
+            <p className="mb-4">
+                This page attempts to load the image located at <code>{IMAGE_SRC}</code>
+                (expected to be in the <code>/public</code> folder).
+            </p>
+
+            <hr className="my-6" />
+
+            {/* Test Case 1: Standard next/image */}
+            <div className="mb-8 p-4 border rounded shadow">
+                <h2 className="text-lg font-semibold mb-2">Test 1: Standard `next/image`</h2>
+                <p className="text-sm text-gray-600 mb-2">
+                    Using default optimization. Should work if the file is valid and optimization is okay.
+                </p>
+                <div style={{ width: `${IMAGE_WIDTH}px`, height: `${IMAGE_HEIGHT}px`, position: 'relative', border: '1px dashed blue' }}>
+                    <Image
+                        src={IMAGE_SRC}
+                        alt="Test Dot - Standard"
+                        width={IMAGE_WIDTH}
+                        height={IMAGE_HEIGHT}
+                        style={{ border: '1px solid red' }} // Add visible border to image itself
+                        // Add onError for more feedback
+                        onError={(e) => console.error(`Standard Image Error for ${IMAGE_SRC}:`, e)}
+                    />
+                </div>
+                 <p className="text-xs mt-2">Container size: {IMAGE_WIDTH}x{IMAGE_HEIGHT}. Image border: red. Container border: blue dashed.</p>
+            </div>
+
+            {/* Test Case 2: next/image with unoptimized={true} */}
+            <div className="mb-8 p-4 border rounded shadow">
+                <h2 className="text-lg font-semibold mb-2">Test 2: `next/image` with `unoptimized`</h2>
+                <p className="text-sm text-gray-600 mb-2">
+                    Bypasses optimization. Should work if the file exists but optimization fails.
+                </p>
+                 <div style={{ width: `${IMAGE_WIDTH}px`, height: `${IMAGE_HEIGHT}px`, position: 'relative', border: '1px dashed blue' }}>
+                    <Image
+                        src={IMAGE_SRC}
+                        alt="Test Dot - Unoptimized"
+                        width={IMAGE_WIDTH}
+                        height={IMAGE_HEIGHT}
+                        unoptimized={true} // Bypass optimization
+                        style={{ border: '1px solid red' }}
+                        onError={(e) => console.error(`Unoptimized Image Error for ${IMAGE_SRC}:`, e)}
+                    />
+                </div>
+                <p className="text-xs mt-2">Container size: {IMAGE_WIDTH}x{IMAGE_HEIGHT}. Image border: red. Container border: blue dashed.</p>
+            </div>
+
+             {/* Test Case 3: Standard HTML <img> tag */}
+            <div className="mb-8 p-4 border rounded shadow">
+                <h2 className="text-lg font-semibold mb-2">Test 3: Standard HTML `<img/>` tag</h2>
+                <p className="text-sm text-gray-600 mb-2">
+                    Loads the image directly from the public folder, no Next.js processing. Should work if the file exists and the server serves static files correctly.
+                </p>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                    src={IMAGE_SRC}
+                    alt="Test Dot - Standard img tag"
+                    width={IMAGE_WIDTH}
+                    height={IMAGE_HEIGHT}
+                    style={{ border: '1px solid red' }}
+                    onError={(e) => console.error(`Standard <img> Error for ${IMAGE_SRC}:`, e.currentTarget.src)} // Note: error handling is slightly different
+                />
+                 <p className="text-xs mt-2">Explicit width/height set: {IMAGE_WIDTH}x{IMAGE_HEIGHT}. Image border: red.</p>
+            </div>
+
+            <hr className="my-6" />
+
+            <Link href="/login" className="text-blue-600 hover:underline">
+                ? Back to Login
+            </Link>
+        </div>
+    );
+}
+
+
+--- END FILE: src\app\image-test\page.tsx ---
+
 --- START FILE: src\components\providers\NextAuthProvider.tsx ---
 // src/components/providers/NextAuthProvider.tsx
 'use client'; // This component wraps SessionProvider, so it must be a Client Component
@@ -748,6 +1861,10 @@ export default function NextAuthProvider({ children }: Props) {
     return <SessionProvider>{children}</SessionProvider>;
 }
 
+
+--- END FILE: src\components\providers\NextAuthProvider.tsx ---
+
+--- START FILE: src\lib\auth.ts ---
 [EMPTY FILE]
 
 --- END FILE: src\lib\auth.ts ---
@@ -784,6 +1901,335 @@ export default prisma;
 
 
 --- END FILE: src\lib\prisma.ts ---
+
+--- START FILE: src\lib\userActions.ts ---
+// src/lib/userActions.ts
+'use server'; // Mark this file as containing Server Actions
+
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Adjust path if needed
+import prisma from '@/lib/prisma';
+// Import types from the correct generated location
+import type {
+    User, // Keep User if needed
+    AcademicQualification,
+    ProfessionalLicense,
+    WorkExperience,
+    ProfessionalAffiliation,
+    AwardRecognition,
+    ProfessionalDevelopment,
+    CommunityInvolvement,
+    Publication,
+    ConferencePresentation
+ } from '@/generated/prisma';
+import { revalidatePath } from 'next/cache';
+import fs from 'fs/promises'; // Import Node.js file system promises API
+import path from 'path';     // Import Node.js path module
+import { v4 as uuidv4 } from 'uuid'; // Import UUID generator
+
+// --- Helper Function to ensure upload directory exists ---
+async function ensureUploadDirExists(subDir: string, userId: string): Promise<string> {
+    // Create a user-specific directory path within public/uploads/<subDir>
+    const userDirPath = path.join(process.cwd(), 'public', 'uploads', subDir, userId);
+    try {
+        await fs.mkdir(userDirPath, { recursive: true }); // Create directory if it doesn't exist
+        console.log(`Ensured directory exists: ${userDirPath}`);
+        return userDirPath;
+    } catch (error) {
+        console.error(`Error creating upload directory (${subDir}):`, error);
+        throw new Error(`Could not create upload directory for ${subDir}.`); // Re-throw error
+    }
+}
+
+// --- Get Profile Data Action ---
+interface GetUserProfileDataResponse {
+    user: { // Keep basic user info separate if preferred
+        id: string;
+        name: string | null;
+        email: string | null;
+        role: string | null;
+    } | null;
+    // Include arrays for ALL CV sections
+    academicQualifications: AcademicQualification[];
+    professionalLicenses: ProfessionalLicense[];
+    workExperiences: WorkExperience[];
+    professionalAffiliations: ProfessionalAffiliation[];
+    awardsRecognitions: AwardRecognition[];
+    professionalDevelopments: ProfessionalDevelopment[];
+    communityInvolvements: CommunityInvolvement[];
+    publications: Publication[];
+    conferencePresentations: ConferencePresentation[];
+    error?: string;
+}
+
+export async function getMyProfileData(): Promise<GetUserProfileDataResponse> {
+    const session = await getServerSession(authOptions);
+    const userId = (session?.user as any)?.id;
+
+    // Default empty state
+    const defaultResponse: Omit<GetUserProfileDataResponse, 'user' | 'error'> = {
+        academicQualifications: [],
+        professionalLicenses: [],
+        workExperiences: [],
+        professionalAffiliations: [],
+        awardsRecognitions: [],
+        professionalDevelopments: [],
+        communityInvolvements: [],
+        publications: [],
+        conferencePresentations: [],
+    };
+
+    if (!userId) {
+        return { user: null, ...defaultResponse, error: 'Not authenticated' };
+    }
+
+    try {
+        const userWithProfile = await prisma.user.findUnique({
+            where: { id: userId },
+            include: { // Include ALL relations
+                academicQualifications: { orderBy: { yearCompleted: 'desc' } },
+                professionalLicenses: { orderBy: { expiration: 'desc' } }, // Example ordering
+                workExperiences: { orderBy: { createdAt: 'desc' } }, // Order by creation for now
+                professionalAffiliations: { orderBy: { createdAt: 'desc' } },
+                awardsRecognitions: { orderBy: { yearReceived: 'desc' } },
+                professionalDevelopments: { orderBy: { createdAt: 'desc' } }, // Need better date field later maybe
+                communityInvolvements: { orderBy: { createdAt: 'desc' } },
+                publications: { orderBy: { datePublished: 'desc' } },
+                conferencePresentations: { orderBy: { createdAt: 'desc' } },
+            },
+        });
+
+        if (!userWithProfile) {
+            return { user: null, ...defaultResponse, error: 'User not found in database' };
+        }
+
+        // Return the structured data
+        return {
+             user: {
+                 id: userWithProfile.id,
+                 name: userWithProfile.name,
+                 email: userWithProfile.email,
+                 role: userWithProfile.role,
+             },
+             // Return fetched data, defaulting to empty array if relation is null/undefined somehow
+             academicQualifications: userWithProfile.academicQualifications ?? [],
+             professionalLicenses: userWithProfile.professionalLicenses ?? [],
+             workExperiences: userWithProfile.workExperiences ?? [],
+             professionalAffiliations: userWithProfile.professionalAffiliations ?? [],
+             awardsRecognitions: userWithProfile.awardsRecognitions ?? [],
+             professionalDevelopments: userWithProfile.professionalDevelopments ?? [],
+             communityInvolvements: userWithProfile.communityInvolvements ?? [],
+             publications: userWithProfile.publications ?? [],
+             conferencePresentations: userWithProfile.conferencePresentations ?? [],
+        };
+
+    } catch (error) {
+        console.error("Error fetching profile data:", error);
+         return { user: null, ...defaultResponse, error: 'Failed to fetch profile data' };
+    }
+}
+
+
+// --- Add Qualification Action ---
+interface AddQualificationResponse {
+    success: boolean;
+    qualification?: AcademicQualification; // Return the created qualification on success
+    error?: string;
+}
+
+// Accepts FormData for file uploads
+export async function addMyQualification(
+    formData: FormData
+): Promise<AddQualificationResponse> {
+    // 1. Get session and user ID
+    const session = await getServerSession(authOptions);
+    const userId = (session?.user as any)?.id;
+
+    if (!userId) {
+        return { success: false, error: 'Not authenticated' };
+    }
+
+    // 2. Extract data from FormData
+    const degree = formData.get('degree') as string | null;
+    const institution = formData.get('institution') as string | null;
+    const program = formData.get('program') as string | null;
+    const yearCompletedStr = formData.get('yearCompleted') as string | null;
+    const diplomaFile = formData.get('diplomaFile') as File | null; // Get the file
+
+    // 3. Basic Validation
+    if (!degree || !institution || !program || !yearCompletedStr) {
+        return { success: false, error: 'Missing required text fields' };
+    }
+    const yearCompleted = parseInt(yearCompletedStr, 10);
+    if (isNaN(yearCompleted) || yearCompleted < 1900 || yearCompleted > new Date().getFullYear() + 5) {
+        return { success: false, error: 'Invalid year completed' };
+    }
+     // Add file validation if needed (size, type - ideally do some on client too)
+     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB example limit
+     const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+     if (diplomaFile && diplomaFile.size > MAX_FILE_SIZE) {
+         return { success: false, error: `File size exceeds limit of ${MAX_FILE_SIZE / 1024 / 1024}MB.` };
+     }
+     if (diplomaFile && !ALLOWED_TYPES.includes(diplomaFile.type)) {
+         return { success: false, error: 'Invalid file type. Allowed: PDF, PNG, JPG.' };
+     }
+
+
+    let fileUrl: string | undefined = undefined; // Initialize file path/URL
+
+    try {
+        // 4. Handle File Upload (if provided)
+        if (diplomaFile && diplomaFile.size > 0) {
+            console.log("Diploma file found:", diplomaFile.name, diplomaFile.size);
+
+            // Ensure user's upload directory exists
+            const uploadDir = await ensureUploadDirExists('qualifications', userId); // Pass subdirectory
+
+            // Generate a unique filename
+            const fileExtension = path.extname(diplomaFile.name);
+            const uniqueFilename = `${uuidv4()}${fileExtension}`;
+            const filePath = path.join(uploadDir, uniqueFilename);
+
+            // Convert file buffer for saving
+            const fileBuffer = Buffer.from(await diplomaFile.arrayBuffer());
+
+            // Save the file locally
+            await fs.writeFile(filePath, fileBuffer);
+            console.log(`File saved locally to: ${filePath}`);
+
+            // Store the RELATIVE path for accessing via URL later
+            // IMPORTANT: Use forward slashes for URL paths
+            fileUrl = `/uploads/qualifications/${userId}/${uniqueFilename}`;
+            console.log(`Storing relative path: ${fileUrl}`);
+
+        } else {
+            console.log("No diploma file provided or file is empty.");
+        }
+
+        // 5. Create qualification in database
+        const newQualification = await prisma.academicQualification.create({
+            data: {
+                degree,
+                institution,
+                program,
+                yearCompleted,
+                userId, // Link to the logged-in user
+                diplomaFileUrl: fileUrl, // Save the relative path or null/undefined
+            },
+        });
+
+        // 6. Revalidate the profile page cache
+        revalidatePath('/profile');
+        console.log("Revalidated /profile path");
+
+
+        return { success: true, qualification: newQualification };
+
+    } catch (error) {
+        console.error("Error adding academic qualification:", error);
+         // TODO: Optionally delete the locally uploaded file if DB operation fails
+        return { success: false, error: 'Failed to add qualification' };
+    }
+}
+
+
+// --- Delete Qualification Action ---
+
+interface DeleteQualificationResponse {
+    success: boolean;
+    error?: string;
+}
+
+export async function deleteMyQualification(
+    qualificationId: string // ID of the qualification to delete
+): Promise<DeleteQualificationResponse> {
+    // 1. Get session and user ID
+    const session = await getServerSession(authOptions);
+    const userId = (session?.user as any)?.id;
+
+    if (!userId) {
+        return { success: false, error: 'Not authenticated' };
+    }
+
+    if (!qualificationId) {
+        return { success: false, error: 'Qualification ID is required' };
+    }
+
+    try {
+        // 2. Find the qualification to ensure it belongs to the user AND get file path
+        // Use prisma instance imported at the top
+        const qualification = await prisma.academicQualification.findUnique({
+            where: {
+                id: qualificationId,
+                userId: userId // Ensure user owns this record directly in the query
+            },
+        });
+
+        // Check if qualification exists (and belongs to user implicitly due to where clause)
+        if (!qualification) {
+            console.warn(`Qualification ${qualificationId} not found or user ${userId} does not own it.`);
+             return { success: false, error: 'Qualification not found or you do not have permission.' };
+        }
+
+        const filePathToDelete = qualification.diplomaFileUrl; // Get the stored path/URL
+
+        // 3. Delete the qualification record from the database
+        // Use prisma instance imported at the top
+        await prisma.academicQualification.delete({
+            where: {
+                id: qualificationId,
+                // Optional: userId check again if needed, but covered by findUnique above
+            },
+        });
+         console.log(`Deleted qualification record ${qualificationId} for user ${userId}`);
+
+        // 4. Delete the associated file from local storage (if path exists)
+        if (filePathToDelete) {
+             try {
+                // Construct the full local path from the relative URL path stored
+                if (filePathToDelete.startsWith('/uploads/')) {
+                     const localFilePath = path.join(process.cwd(), 'public', filePathToDelete);
+                     // Check if file exists before trying to delete
+                     try {
+                         await fs.access(localFilePath); // Check existence
+                         await fs.unlink(localFilePath); // Delete the file
+                         console.log(`Deleted associated file: ${localFilePath}`);
+                     } catch (accessError: any) {
+                          console.warn(`File not found or inaccessible, skipping delete: ${localFilePath} - Error: ${accessError.message}`);
+                     }
+                } else {
+                     console.warn(`Skipping file deletion for non-local path pattern: ${filePathToDelete}`);
+                }
+             } catch (fileError: any) {
+                // Log error if file deletion fails, but don't fail the overall action
+                console.error(`Error deleting file ${filePathToDelete}:`, fileError.message);
+             }
+        }
+
+        // 5. Revalidate the profile page cache
+        revalidatePath('/profile');
+        console.log("Revalidated /profile path after deletion");
+
+        return { success: true };
+
+    } catch (error) {
+        console.error("Error deleting academic qualification:", error);
+        return { success: false, error: 'Failed to delete qualification' };
+    }
+}
+
+// --- Placeholder for Update Profile Action (handles save changes) ---
+// export async function updateMyProfile(changes: /* Define a complex type for changes */) {
+//    'use server';
+//    // 1. Get User ID
+//    // 2. Use prisma.$transaction to perform multiple creates, updates, deletes
+//    // 3. Handle file uploads/deletions within transaction if possible or carefully sequence
+//    // 4. Revalidate paths
+//    // 5. Return success/error
+// }
+
+
+--- END FILE: src\lib\userActions.ts ---
 
 --- START FILE: src\lib\utils.ts ---
 [EMPTY FILE]
