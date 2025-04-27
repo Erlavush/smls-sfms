@@ -1,5 +1,5 @@
 // src/lib/userActions.ts
-'use server'; // Mark this file as containing Server Actions
+'use server';
 
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -7,26 +7,28 @@ import prisma from '@/lib/prisma';
 import type {
     User, AcademicQualification, ProfessionalLicense, WorkExperience,
     ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
-    CommunityInvolvement, Publication, ConferencePresentation
- } from '@/generated/prisma'; // Use generated types directly
+    CommunityInvolvement, Publication, ConferencePresentation,
+    ApprovalStatus // Import ApprovalStatus
+ } from '@/generated/prisma';
 import { revalidatePath } from 'next/cache';
-import fs from 'fs/promises'; // Import Node.js file system promises API
-import path from 'path';     // Import Node.js path module
-import { v4 as uuidv4 } from 'uuid'; // Import UUID generator
+import fs from 'fs/promises';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
-// --- Incoming Data Types (Define for all sections) ---
-// Omit fields managed by server or temporary frontend state (_selectedFile)
-type IncomingAcademicQualification = Omit<AcademicQualification, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; yearCompleted: number | null; };
-type IncomingProfessionalLicense = Omit<ProfessionalLicense, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; expiration: string | null; }; // Keep expiration as string|null from JSON
-type IncomingWorkExperience = Omit<WorkExperience, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; };
-type IncomingProfessionalAffiliation = Omit<ProfessionalAffiliation, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; };
-type IncomingAwardRecognition = Omit<AwardRecognition, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; yearReceived: number | null; };
-type IncomingProfessionalDevelopment = Omit<ProfessionalDevelopment, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; };
-type IncomingCommunityInvolvement = Omit<CommunityInvolvement, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; };
-type IncomingPublication = Omit<Publication, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; datePublished: string | null; }; // Keep datePublished as string|null from JSON
-type IncomingConferencePresentation = Omit<ConferencePresentation, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; };
+// --- Incoming Data Types ---
+// Add status and rejectionReason where applicable
+type IncomingAcademicQualification = Omit<AcademicQualification, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; yearCompleted: number | null; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingProfessionalLicense = Omit<ProfessionalLicense, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; expiration: string | null; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingWorkExperience = Omit<WorkExperience, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingProfessionalAffiliation = Omit<ProfessionalAffiliation, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingAwardRecognition = Omit<AwardRecognition, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; yearReceived: number | null; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingProfessionalDevelopment = Omit<ProfessionalDevelopment, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingCommunityInvolvement = Omit<CommunityInvolvement, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingPublication = Omit<Publication, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; datePublished: string | null; status: ApprovalStatus; rejectionReason?: string | null; };
+type IncomingConferencePresentation = Omit<ConferencePresentation, 'createdAt' | 'updatedAt' | 'userId'> & { _isNew?: boolean; id: string; status: ApprovalStatus; rejectionReason?: string | null; };
 
-// --- Helper Function to ensure upload directory exists ---
+
+// --- Helper Functions (ensureUploadDirExists, safeDeleteFile, uploadFile) ---
 async function ensureUploadDirExists(subDir: string, userId: string): Promise<string> {
     const userDirPath = path.join(process.cwd(), 'public', 'uploads', subDir, userId);
     try {
@@ -38,8 +40,6 @@ async function ensureUploadDirExists(subDir: string, userId: string): Promise<st
         throw new Error(`Could not create upload directory for ${subDir}.`);
     }
 }
-
-// --- Helper Function for safe file deletion ---
 async function safeDeleteFile(filePath: string | null | undefined) {
     if (!filePath || !filePath.startsWith('/uploads/')) {
         // console.log(`Skipping deletion for invalid or non-local path: ${filePath}`);
@@ -58,13 +58,7 @@ async function safeDeleteFile(filePath: string | null | undefined) {
         }
     }
 }
-
-// --- Helper Function to upload a file ---
-async function uploadFile(
-    file: File,
-    userId: string,
-    subDir: string
-): Promise<string> { // Returns the relative URL path
+async function uploadFile(file: File, userId: string, subDir: string): Promise<string> { // Returns the relative URL path
     try {
         // Basic validation within upload function as well
         const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -87,7 +81,6 @@ async function uploadFile(
         throw new Error(`Failed to upload file ${file.name}: ${uploadError.message}`);
     }
 }
-
 
 // --- Get Profile Data Action ---
 interface GetUserProfileDataResponse {
@@ -143,8 +136,17 @@ export async function getMyProfileData(): Promise<GetUserProfileDataResponse> {
     }
 }
 
+
 // --- Update Profile Action ---
 interface UpdateProfileResponse { success: boolean; error?: string; }
+
+// --- ADDED: Interface for selected item data ---
+interface SelectedItem {
+    id: string;
+    status: ApprovalStatus;
+    [key: string]: any; // Allow dynamic access to URL field
+}
+// --- END ADDED ---
 
 export async function updateMyProfile(formData: FormData): Promise<UpdateProfileResponse> {
     'use server';
@@ -153,7 +155,6 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
     if (!userId) { return { success: false, error: 'Not authenticated' }; }
     console.log(`updateMyProfile called for user: ${userId}`);
 
-    // --- Helper Function to Parse JSON Data ---
     function parseJsonData<T>(jsonString: string | null, arrayName: string): T[] {
         if (!jsonString) return [];
         try {
@@ -166,42 +167,11 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
         }
     }
 
-    // Define upload subdirectories and URL field names for each model
-    const uploadDirs: Record<string, string> = {
-        academicQualifications: 'qualifications',
-        professionalLicenses: 'licenses',
-        workExperiences: 'workexp',
-        professionalAffiliations: 'affiliations',
-        awardsRecognitions: 'awards',
-        professionalDevelopments: 'profdev',
-        communityInvolvements: 'community',
-        publications: 'publications',
-        conferencePresentations: 'presentations'
-    };
-    const urlFieldNames: Record<string, keyof any> = {
-        academicQualifications: 'diplomaFileUrl',
-        professionalLicenses: 'licenseFileUrl',
-        workExperiences: 'proofUrl',
-        professionalAffiliations: 'membershipProofUrl',
-        awardsRecognitions: 'certificateUrl',
-        professionalDevelopments: 'certificateFileUrl',
-        communityInvolvements: 'proofUrl',
-        publications: 'pdfUrl',
-        conferencePresentations: 'proofUrl'
-    };
-     // Define required fields for validation during creation
-     const requiredFieldsMap: Record<string, string[]> = {
-        academicQualifications: ['degree', 'institution', 'program', 'yearCompleted'],
-        professionalLicenses: ['examination', 'monthYear', 'licenseNumber', 'expiration'],
-        workExperiences: ['institution', 'position', 'inclusiveYears'],
-        professionalAffiliations: ['organization', 'inclusiveYears'],
-        awardsRecognitions: ['awardName', 'awardingBody', 'yearReceived'],
-        professionalDevelopments: ['title', 'organizer', 'dateLocation'],
-        communityInvolvements: ['engagementTitle', 'role', 'locationDate'],
-        publications: ['researchTitle', 'journal', 'datePublished'],
-        conferencePresentations: ['paperTitle', 'eventName', 'dateLocation']
-    };
-
+    const uploadDirs: Record<string, string> = { academicQualifications: 'qualifications', professionalLicenses: 'licenses', workExperiences: 'workexp', professionalAffiliations: 'affiliations', awardsRecognitions: 'awards', professionalDevelopments: 'profdev', communityInvolvements: 'community', publications: 'publications', conferencePresentations: 'presentations' };
+    // --- ADJUSTED: Use string type for URL field names ---
+    const urlFieldNames: Record<string, string> = { academicQualifications: 'diplomaFileUrl', professionalLicenses: 'licenseFileUrl', workExperiences: 'proofUrl', professionalAffiliations: 'membershipProofUrl', awardsRecognitions: 'certificateUrl', professionalDevelopments: 'certificateFileUrl', communityInvolvements: 'proofUrl', publications: 'pdfUrl', conferencePresentations: 'proofUrl' };
+    // --- END ADJUSTED ---
+    const requiredFieldsMap: Record<string, string[]> = { academicQualifications: ['degree', 'institution', 'program', 'yearCompleted'], professionalLicenses: ['examination', 'monthYear', 'licenseNumber', 'expiration'], workExperiences: ['institution', 'position', 'inclusiveYears'], professionalAffiliations: ['organization', 'inclusiveYears'], awardsRecognitions: ['awardName', 'awardingBody', 'yearReceived'], professionalDevelopments: ['title', 'organizer', 'dateLocation'], communityInvolvements: ['engagementTitle', 'role', 'locationDate'], publications: ['researchTitle', 'journal', 'datePublished'], conferencePresentations: ['paperTitle', 'eventName', 'dateLocation'] };
 
     let filesToDelete: (string | null | undefined)[] = [];
     let incomingData: Record<string, any[]> = {}; // Store parsed data
@@ -224,22 +194,31 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
 
     try {
         const result = await prisma.$transaction(async (tx) => {
-            // --- Generic Processing Function ---
-            async function processSection<TIncoming extends { id: string; _isNew?: boolean }, TPrisma extends { id: string }>(
+            // --- ADJUSTED: Generic type TPrisma now includes status ---
+            async function processSection<TIncoming extends { id: string; _isNew?: boolean; status?: ApprovalStatus }, TPrisma extends { id: string; status: ApprovalStatus }>(
                 sectionKey: keyof typeof uploadDirs,
-                prismaModel: any
+                prismaModel: any // Prisma model delegate (e.g., tx.academicQualification)
             ) {
                 const data = incomingData[sectionKey] as TIncoming[];
                 if (!data) { console.warn(`No data found for section ${sectionKey}. Skipping.`); return; }
                 console.log(`Processing section: ${sectionKey}`);
 
-                const urlFieldName = urlFieldNames[sectionKey];
+                const urlFieldName = urlFieldNames[sectionKey]; // Now correctly typed as string | undefined
                 const subDir = uploadDirs[sectionKey];
                 const requiredFields = requiredFieldsMap[sectionKey] || [];
 
-                // 1. Fetch Current Data
-                const currentItems = await prismaModel.findMany({ where: { userId: userId }, select: { id: true, [urlFieldName]: true } });
-                const currentItemMap = new Map(currentItems.map((item: any) => [item.id, item]));
+                // --- ADJUSTED: Select definition and Map typing ---
+                const selectFields: { id: true; status: true; [key: string]: true } = { id: true, status: true };
+                if (urlFieldName) {
+                    selectFields[urlFieldName] = true; // Add URL field to select if it exists
+                }
+                const currentItems: SelectedItem[] = await prismaModel.findMany({
+                    where: { userId: userId },
+                    select: selectFields
+                });
+                const currentItemMap = new Map<string, SelectedItem>(currentItems.map(item => [item.id, item]));
+                // --- END ADJUSTED ---
+
                 const incomingIds = new Set(data.map(item => item.id));
                 const idsToDeleteInternal: string[] = [];
 
@@ -247,10 +226,11 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
                 for (const currentItem of currentItems) {
                     if (!incomingIds.has(currentItem.id)) {
                         idsToDeleteInternal.push(currentItem.id);
-                        // --- FIX: Use 'as any' for index access ---
-                        if (urlFieldName && (currentItem as any)[urlFieldName]) {
-                             filesToDelete.push((currentItem as any)[urlFieldName]);
+                        // --- ADJUSTED: Check urlFieldName exists before access ---
+                        if (urlFieldName && currentItem[urlFieldName]) {
+                             filesToDelete.push(currentItem[urlFieldName]);
                         }
+                        // --- END ADJUSTED ---
                     }
                 }
                 // 3. Perform Deletions
@@ -261,56 +241,100 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
                     const fileKey = `${sectionKey}_file_${incomingItem.id}`;
                     const file = formData.get(fileKey) as File | null;
                     let uploadedFileUrl: string | null | undefined = undefined;
+                    let fileChanged = false; // Track if the file itself was changed
 
-                    if (file) { console.log(`File found for ${sectionKey} item ${incomingItem.id}: ${file.name}`); uploadedFileUrl = await uploadFile(file, userId, subDir); }
+                    if (file) {
+                        console.log(`File found for ${sectionKey} item ${incomingItem.id}: ${file.name}`);
+                        uploadedFileUrl = await uploadFile(file, userId, subDir);
+                        fileChanged = true; // A new file was uploaded
+                    }
 
-                    const { _isNew, id, ...dataForPrisma } = incomingItem as any;
-                    Object.keys(dataForPrisma).forEach(key => {
+                    // Destructure, remove temp fields, prepare data
+                    const { _isNew, id, status, rejectionReason, ...dataForPrisma } = incomingItem as any;
+                    Object.keys(dataForPrisma).forEach(key => { // Date/Number/Null parsing...
                         const value = dataForPrisma[key];
                         if (['expiration', 'datePublished'].includes(key) && typeof value === 'string') { try { const parsedDate = new Date(value); dataForPrisma[key] = !isNaN(parsedDate.getTime()) ? parsedDate : null; } catch { dataForPrisma[key] = null; } }
                         if (['yearCompleted', 'yearReceived'].includes(key) && typeof value === 'string') { const num = parseInt(value, 10); dataForPrisma[key] = isNaN(num) ? null : num; }
                         if (typeof value === 'string' && value.trim() === '' && !requiredFields.includes(key)) { dataForPrisma[key] = null; }
                     });
                     dataForPrisma.userId = userId;
-                    if (uploadedFileUrl !== undefined) { dataForPrisma[urlFieldName] = uploadedFileUrl; }
+                    // --- ADJUSTED: Check urlFieldName exists before assignment ---
+                    if (urlFieldName && uploadedFileUrl !== undefined) {
+                        dataForPrisma[urlFieldName] = uploadedFileUrl;
+                    }
+                    // --- END ADJUSTED ---
 
                     if (_isNew) {
                         console.log(`Attempting create for ${sectionKey} - ID: ${id}`);
                         for (const field of requiredFields) { if (dataForPrisma[field] === null || dataForPrisma[field] === undefined || dataForPrisma[field] === '') { throw new Error(`Missing required field "${field}" for new ${sectionKey}.`); } }
-                        await prismaModel.create({ data: dataForPrisma }); console.log(`Created ${sectionKey} item.`);
+                        // New items automatically get PENDING status from schema default
+                        dataForPrisma.status = 'PENDING'; // Explicitly set for clarity if needed
+                        dataForPrisma.rejectionReason = null;
+                        await prismaModel.create({ data: dataForPrisma });
+                        console.log(`Created ${sectionKey} item.`);
                     } else {
-                        const currentItem = currentItemMap.get(id);
+                        const currentItem = currentItemMap.get(id); // currentItem is now Typed as SelectedItem | undefined
                         if (!currentItem) { console.warn(`${sectionKey} Update: ID ${id} not found. Skipping.`); continue; }
-                        const updateData: Partial<any> = {}; let needsDbUpdate = false;
 
+                        const updateData: Partial<any> = {};
+                        let needsDbUpdate = false;
+                        let significantChange = false; // Track if key data fields changed
+
+                        // Compare fields to detect changes
                         Object.keys(dataForPrisma).forEach(key => {
-                            if (key !== 'userId' && key !== 'createdAt' && key !== 'updatedAt') {
+                            if (key !== 'userId' && key !== 'createdAt' && key !== 'updatedAt' && key !== 'status' && key !== 'rejectionReason') {
                                 const incomingValue = dataForPrisma[key];
-                                // --- FIX: Use 'as any' for index access ---
-                                const currentValue = (currentItem as any)[key];
-                                if (incomingValue instanceof Date) {
-                                    // --- FIX: Ensure currentValue is also treated as Date for comparison ---
-                                    if (!(currentValue instanceof Date) || incomingValue.getTime() !== (currentValue as Date)?.getTime()) {
-                                        updateData[key] = incomingValue; needsDbUpdate = true;
+                                const currentValue = currentItem[key]; // Access directly
+                                let fieldChanged = false;
+                                if (incomingValue instanceof Date) { fieldChanged = !(currentValue instanceof Date) || incomingValue.getTime() !== (currentValue as Date)?.getTime(); }
+                                else { fieldChanged = incomingValue !== currentValue; }
+
+                                if (fieldChanged) {
+                                    updateData[key] = incomingValue;
+                                    needsDbUpdate = true;
+                                    // Define which fields trigger a status reset (adjust as needed)
+                                    const keyFields = ['degree', 'institution', 'program', 'yearCompleted', 'examination', 'licenseNumber', 'expiration', 'title', 'organizer', 'dateLocation', 'researchTitle', 'journal', 'datePublished', 'paperTitle', 'eventName'];
+                                    // --- ADJUSTED: Check urlFieldName exists before comparing ---
+                                    if (keyFields.includes(key) || (urlFieldName && key === urlFieldName)) {
+                                        significantChange = true;
                                     }
-                                } else if (incomingValue !== currentValue) {
-                                    updateData[key] = incomingValue; needsDbUpdate = true;
+                                    // --- END ADJUSTED ---
                                 }
-                           }
-                       });
+                            }
+                        });
+
+                        // --- Approval Status Logic (Uses currentItem.status correctly now) ---
+                        const currentStatus = currentItem.status; // Directly access typed status
+                        if (significantChange || fileChanged) {
+                             // If significant data or the file changed, reset to PENDING
+                            if (currentStatus !== 'PENDING') {
+                                updateData.status = 'PENDING';
+                                updateData.rejectionReason = null; // Clear rejection reason on resubmission
+                                needsDbUpdate = true;
+                                console.log(`Significant change detected for ${sectionKey} ID: ${id}. Resetting status to PENDING.`);
+                            }
+                        } else if (currentStatus === 'REJECTED' && needsDbUpdate) {
+                            // If only minor edits on a REJECTED item, keep it PENDING for re-review
+                            updateData.status = 'PENDING';
+                            updateData.rejectionReason = null;
+                            needsDbUpdate = true;
+                             console.log(`Minor edit on REJECTED ${sectionKey} ID: ${id}. Setting status to PENDING.`);
+                        }
+                        // No status change needed if only minor edits on PENDING or APPROVED (unless significantChange/fileChanged handled above)
 
                         if (needsDbUpdate) {
-                            console.log(`Updating ${sectionKey} ID: ${id}`);
-                            // --- FIX: Use 'as any' for index access ---
-                            if (urlFieldName && dataForPrisma[urlFieldName] !== (currentItem as any)[urlFieldName] && (currentItem as any)[urlFieldName]) {
-                                console.log(`Marking old file for deletion (update): ${(currentItem as any)[urlFieldName]}`);
-                                filesToDelete.push((currentItem as any)[urlFieldName]);
+                            console.log(`Updating ${sectionKey} ID: ${id} with data:`, updateData);
+                            // --- ADJUSTED: Check urlFieldName exists before comparison/deletion scheduling ---
+                            if (urlFieldName && updateData[urlFieldName] !== currentItem[urlFieldName] && currentItem[urlFieldName]) {
+                                console.log(`Marking old file for deletion (update): ${currentItem[urlFieldName]}`);
+                                filesToDelete.push(currentItem[urlFieldName]);
                             }
+                            // --- END ADJUSTED ---
                             await prismaModel.update({ where: { id: id, userId: userId }, data: updateData });
                         }
                     }
                 }
-            }
+            } // end processSection
 
             // --- Process ALL Sections ---
             await processSection('academicQualifications', tx.academicQualification);
@@ -335,8 +359,9 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
 
         // Revalidate Path
         if (result.success) {
-            revalidatePath('/profile');
-            console.log("Profile revalidated.");
+            revalidatePath('/profile'); // Revalidate faculty profile
+            revalidatePath('/admin/approvals'); // Revalidate admin approvals page
+            console.log("Profile and Admin Approvals revalidated.");
         }
 
         return { success: result.success };
@@ -348,21 +373,3 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
         return { success: false, error: error.message || 'Failed to update profile data' };
     }
 }
-
-/*
-// --- Deprecated Add Qualification Action ---
-interface AddQualificationResponse { success: boolean; qualification?: AcademicQualification; error?: string; }
-export async function addMyQualification(formData: FormData): Promise<AddQualificationResponse> {
-    // ... (implementation using uploadFile and prisma.create)
-    // Consider removing or marking as deprecated
-     return { success: false, error: 'This action is deprecated. Use updateMyProfile.' };
-}
-
-// --- Deprecated Delete Qualification Action ---
-interface DeleteQualificationResponse { success: boolean; error?: string; }
-export async function deleteMyQualification(qualificationId: string): Promise<DeleteQualificationResponse> {
-    // ... (implementation using prisma.findUnique, safeDeleteFile, prisma.delete)
-    // Consider removing or marking as deprecated
-     return { success: false, error: 'This action is deprecated. Use updateMyProfile.' };
-}
-*/

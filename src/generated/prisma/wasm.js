@@ -133,7 +133,9 @@ exports.Prisma.AcademicQualificationScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  diplomaFileUrl: 'diplomaFileUrl'
+  diplomaFileUrl: 'diplomaFileUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.ProfessionalLicenseScalarFieldEnum = {
@@ -145,7 +147,9 @@ exports.Prisma.ProfessionalLicenseScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  licenseFileUrl: 'licenseFileUrl'
+  licenseFileUrl: 'licenseFileUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.WorkExperienceScalarFieldEnum = {
@@ -157,7 +161,9 @@ exports.Prisma.WorkExperienceScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  proofUrl: 'proofUrl'
+  proofUrl: 'proofUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.ProfessionalAffiliationScalarFieldEnum = {
@@ -168,7 +174,9 @@ exports.Prisma.ProfessionalAffiliationScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  membershipProofUrl: 'membershipProofUrl'
+  membershipProofUrl: 'membershipProofUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.AwardRecognitionScalarFieldEnum = {
@@ -179,7 +187,9 @@ exports.Prisma.AwardRecognitionScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  certificateUrl: 'certificateUrl'
+  certificateUrl: 'certificateUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.ProfessionalDevelopmentScalarFieldEnum = {
@@ -190,7 +200,9 @@ exports.Prisma.ProfessionalDevelopmentScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  certificateFileUrl: 'certificateFileUrl'
+  certificateFileUrl: 'certificateFileUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.CommunityInvolvementScalarFieldEnum = {
@@ -201,7 +213,9 @@ exports.Prisma.CommunityInvolvementScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  proofUrl: 'proofUrl'
+  proofUrl: 'proofUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.PublicationScalarFieldEnum = {
@@ -213,7 +227,9 @@ exports.Prisma.PublicationScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  pdfUrl: 'pdfUrl'
+  pdfUrl: 'pdfUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.ConferencePresentationScalarFieldEnum = {
@@ -224,7 +240,9 @@ exports.Prisma.ConferencePresentationScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  proofUrl: 'proofUrl'
+  proofUrl: 'proofUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.SortOrder = {
@@ -239,6 +257,12 @@ exports.Prisma.NullsOrder = {
 exports.Role = exports.$Enums.Role = {
   FACULTY: 'FACULTY',
   ADMIN: 'ADMIN'
+};
+
+exports.ApprovalStatus = exports.$Enums.ApprovalStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
 };
 
 exports.Prisma.ModelName = {

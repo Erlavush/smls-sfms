@@ -75,11 +75,24 @@ export namespace $Enums {
 
 export type Role = (typeof Role)[keyof typeof Role]
 
+
+export const ApprovalStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type ApprovalStatus = (typeof ApprovalStatus)[keyof typeof ApprovalStatus]
+
 }
 
 export type Role = $Enums.Role
 
 export const Role: typeof $Enums.Role
+
+export type ApprovalStatus = $Enums.ApprovalStatus
+
+export const ApprovalStatus: typeof $Enums.ApprovalStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -3155,6 +3168,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     diplomaFileUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type AcademicQualificationMaxAggregateOutputType = {
@@ -3167,6 +3182,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     diplomaFileUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type AcademicQualificationCountAggregateOutputType = {
@@ -3179,6 +3196,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     diplomaFileUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -3201,6 +3220,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     diplomaFileUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type AcademicQualificationMaxAggregateInputType = {
@@ -3213,6 +3234,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     diplomaFileUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type AcademicQualificationCountAggregateInputType = {
@@ -3225,6 +3248,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     diplomaFileUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -3324,6 +3349,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     diplomaFileUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: AcademicQualificationCountAggregateOutputType | null
     _avg: AcademicQualificationAvgAggregateOutputType | null
     _sum: AcademicQualificationSumAggregateOutputType | null
@@ -3355,6 +3382,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     diplomaFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicQualification"]>
 
@@ -3368,6 +3397,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     diplomaFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicQualification"]>
 
@@ -3381,6 +3412,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     diplomaFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicQualification"]>
 
@@ -3394,9 +3427,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     diplomaFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type AcademicQualificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "degree" | "institution" | "program" | "yearCompleted" | "createdAt" | "updatedAt" | "userId" | "diplomaFileUrl", ExtArgs["result"]["academicQualification"]>
+  export type AcademicQualificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "degree" | "institution" | "program" | "yearCompleted" | "createdAt" | "updatedAt" | "userId" | "diplomaFileUrl" | "status" | "rejectionReason", ExtArgs["result"]["academicQualification"]>
   export type AcademicQualificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3422,6 +3457,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       diplomaFileUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["academicQualification"]>
     composites: {}
   }
@@ -3855,6 +3892,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"AcademicQualification", 'DateTime'>
     readonly userId: FieldRef<"AcademicQualification", 'String'>
     readonly diplomaFileUrl: FieldRef<"AcademicQualification", 'String'>
+    readonly status: FieldRef<"AcademicQualification", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"AcademicQualification", 'String'>
   }
     
 
@@ -4287,6 +4326,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     licenseFileUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ProfessionalLicenseMaxAggregateOutputType = {
@@ -4299,6 +4340,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     licenseFileUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ProfessionalLicenseCountAggregateOutputType = {
@@ -4311,6 +4354,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     licenseFileUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -4325,6 +4370,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     licenseFileUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ProfessionalLicenseMaxAggregateInputType = {
@@ -4337,6 +4384,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     licenseFileUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ProfessionalLicenseCountAggregateInputType = {
@@ -4349,6 +4398,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     licenseFileUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -4434,6 +4485,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     licenseFileUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: ProfessionalLicenseCountAggregateOutputType | null
     _min: ProfessionalLicenseMinAggregateOutputType | null
     _max: ProfessionalLicenseMaxAggregateOutputType | null
@@ -4463,6 +4516,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     licenseFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalLicense"]>
 
@@ -4476,6 +4531,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     licenseFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalLicense"]>
 
@@ -4489,6 +4546,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     licenseFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalLicense"]>
 
@@ -4502,9 +4561,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     licenseFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type ProfessionalLicenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examination" | "monthYear" | "licenseNumber" | "expiration" | "createdAt" | "updatedAt" | "userId" | "licenseFileUrl", ExtArgs["result"]["professionalLicense"]>
+  export type ProfessionalLicenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examination" | "monthYear" | "licenseNumber" | "expiration" | "createdAt" | "updatedAt" | "userId" | "licenseFileUrl" | "status" | "rejectionReason", ExtArgs["result"]["professionalLicense"]>
   export type ProfessionalLicenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -4530,6 +4591,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       licenseFileUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["professionalLicense"]>
     composites: {}
   }
@@ -4963,6 +5026,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"ProfessionalLicense", 'DateTime'>
     readonly userId: FieldRef<"ProfessionalLicense", 'String'>
     readonly licenseFileUrl: FieldRef<"ProfessionalLicense", 'String'>
+    readonly status: FieldRef<"ProfessionalLicense", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"ProfessionalLicense", 'String'>
   }
     
 
@@ -5395,6 +5460,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     proofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type WorkExperienceMaxAggregateOutputType = {
@@ -5407,6 +5474,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     proofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type WorkExperienceCountAggregateOutputType = {
@@ -5419,6 +5488,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     proofUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -5433,6 +5504,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type WorkExperienceMaxAggregateInputType = {
@@ -5445,6 +5518,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type WorkExperienceCountAggregateInputType = {
@@ -5457,6 +5532,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -5542,6 +5619,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     proofUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: WorkExperienceCountAggregateOutputType | null
     _min: WorkExperienceMinAggregateOutputType | null
     _max: WorkExperienceMaxAggregateOutputType | null
@@ -5571,6 +5650,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workExperience"]>
 
@@ -5584,6 +5665,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workExperience"]>
 
@@ -5597,6 +5680,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workExperience"]>
 
@@ -5610,9 +5695,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type WorkExperienceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "institution" | "position" | "natureOfWork" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId" | "proofUrl", ExtArgs["result"]["workExperience"]>
+  export type WorkExperienceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "institution" | "position" | "natureOfWork" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId" | "proofUrl" | "status" | "rejectionReason", ExtArgs["result"]["workExperience"]>
   export type WorkExperienceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5638,6 +5725,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       proofUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["workExperience"]>
     composites: {}
   }
@@ -6071,6 +6160,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"WorkExperience", 'DateTime'>
     readonly userId: FieldRef<"WorkExperience", 'String'>
     readonly proofUrl: FieldRef<"WorkExperience", 'String'>
+    readonly status: FieldRef<"WorkExperience", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"WorkExperience", 'String'>
   }
     
 
@@ -6502,6 +6593,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     membershipProofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ProfessionalAffiliationMaxAggregateOutputType = {
@@ -6513,6 +6606,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     membershipProofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ProfessionalAffiliationCountAggregateOutputType = {
@@ -6524,6 +6619,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     membershipProofUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -6537,6 +6634,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     membershipProofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ProfessionalAffiliationMaxAggregateInputType = {
@@ -6548,6 +6647,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     membershipProofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ProfessionalAffiliationCountAggregateInputType = {
@@ -6559,6 +6660,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     membershipProofUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -6643,6 +6746,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     membershipProofUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: ProfessionalAffiliationCountAggregateOutputType | null
     _min: ProfessionalAffiliationMinAggregateOutputType | null
     _max: ProfessionalAffiliationMaxAggregateOutputType | null
@@ -6671,6 +6776,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     membershipProofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalAffiliation"]>
 
@@ -6683,6 +6790,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     membershipProofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalAffiliation"]>
 
@@ -6695,6 +6804,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     membershipProofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalAffiliation"]>
 
@@ -6707,9 +6818,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     membershipProofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type ProfessionalAffiliationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organization" | "position" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId" | "membershipProofUrl", ExtArgs["result"]["professionalAffiliation"]>
+  export type ProfessionalAffiliationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organization" | "position" | "inclusiveYears" | "createdAt" | "updatedAt" | "userId" | "membershipProofUrl" | "status" | "rejectionReason", ExtArgs["result"]["professionalAffiliation"]>
   export type ProfessionalAffiliationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6734,6 +6847,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       membershipProofUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["professionalAffiliation"]>
     composites: {}
   }
@@ -7166,6 +7281,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"ProfessionalAffiliation", 'DateTime'>
     readonly userId: FieldRef<"ProfessionalAffiliation", 'String'>
     readonly membershipProofUrl: FieldRef<"ProfessionalAffiliation", 'String'>
+    readonly status: FieldRef<"ProfessionalAffiliation", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"ProfessionalAffiliation", 'String'>
   }
     
 
@@ -7607,6 +7724,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     certificateUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type AwardRecognitionMaxAggregateOutputType = {
@@ -7618,6 +7737,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     certificateUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type AwardRecognitionCountAggregateOutputType = {
@@ -7629,6 +7750,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     certificateUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -7650,6 +7773,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     certificateUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type AwardRecognitionMaxAggregateInputType = {
@@ -7661,6 +7786,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     certificateUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type AwardRecognitionCountAggregateInputType = {
@@ -7672,6 +7799,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     certificateUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -7770,6 +7899,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     certificateUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: AwardRecognitionCountAggregateOutputType | null
     _avg: AwardRecognitionAvgAggregateOutputType | null
     _sum: AwardRecognitionSumAggregateOutputType | null
@@ -7800,6 +7931,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["awardRecognition"]>
 
@@ -7812,6 +7945,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["awardRecognition"]>
 
@@ -7824,6 +7959,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["awardRecognition"]>
 
@@ -7836,9 +7973,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type AwardRecognitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "awardName" | "awardingBody" | "yearReceived" | "createdAt" | "updatedAt" | "userId" | "certificateUrl", ExtArgs["result"]["awardRecognition"]>
+  export type AwardRecognitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "awardName" | "awardingBody" | "yearReceived" | "createdAt" | "updatedAt" | "userId" | "certificateUrl" | "status" | "rejectionReason", ExtArgs["result"]["awardRecognition"]>
   export type AwardRecognitionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7863,6 +8002,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       certificateUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["awardRecognition"]>
     composites: {}
   }
@@ -8295,6 +8436,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"AwardRecognition", 'DateTime'>
     readonly userId: FieldRef<"AwardRecognition", 'String'>
     readonly certificateUrl: FieldRef<"AwardRecognition", 'String'>
+    readonly status: FieldRef<"AwardRecognition", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"AwardRecognition", 'String'>
   }
     
 
@@ -8726,6 +8869,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     certificateFileUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ProfessionalDevelopmentMaxAggregateOutputType = {
@@ -8737,6 +8882,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     certificateFileUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ProfessionalDevelopmentCountAggregateOutputType = {
@@ -8748,6 +8895,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     certificateFileUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -8761,6 +8910,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     certificateFileUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ProfessionalDevelopmentMaxAggregateInputType = {
@@ -8772,6 +8923,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     certificateFileUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ProfessionalDevelopmentCountAggregateInputType = {
@@ -8783,6 +8936,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     certificateFileUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -8867,6 +9022,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     certificateFileUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: ProfessionalDevelopmentCountAggregateOutputType | null
     _min: ProfessionalDevelopmentMinAggregateOutputType | null
     _max: ProfessionalDevelopmentMaxAggregateOutputType | null
@@ -8895,6 +9052,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalDevelopment"]>
 
@@ -8907,6 +9066,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalDevelopment"]>
 
@@ -8919,6 +9080,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalDevelopment"]>
 
@@ -8931,9 +9094,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     certificateFileUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type ProfessionalDevelopmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "organizer" | "dateLocation" | "createdAt" | "updatedAt" | "userId" | "certificateFileUrl", ExtArgs["result"]["professionalDevelopment"]>
+  export type ProfessionalDevelopmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "organizer" | "dateLocation" | "createdAt" | "updatedAt" | "userId" | "certificateFileUrl" | "status" | "rejectionReason", ExtArgs["result"]["professionalDevelopment"]>
   export type ProfessionalDevelopmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -8958,6 +9123,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       certificateFileUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["professionalDevelopment"]>
     composites: {}
   }
@@ -9390,6 +9557,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"ProfessionalDevelopment", 'DateTime'>
     readonly userId: FieldRef<"ProfessionalDevelopment", 'String'>
     readonly certificateFileUrl: FieldRef<"ProfessionalDevelopment", 'String'>
+    readonly status: FieldRef<"ProfessionalDevelopment", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"ProfessionalDevelopment", 'String'>
   }
     
 
@@ -9821,6 +9990,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     proofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type CommunityInvolvementMaxAggregateOutputType = {
@@ -9832,6 +10003,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     proofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type CommunityInvolvementCountAggregateOutputType = {
@@ -9843,6 +10016,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     proofUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -9856,6 +10031,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type CommunityInvolvementMaxAggregateInputType = {
@@ -9867,6 +10044,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type CommunityInvolvementCountAggregateInputType = {
@@ -9878,6 +10057,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -9962,6 +10143,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     proofUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: CommunityInvolvementCountAggregateOutputType | null
     _min: CommunityInvolvementMinAggregateOutputType | null
     _max: CommunityInvolvementMaxAggregateOutputType | null
@@ -9990,6 +10173,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["communityInvolvement"]>
 
@@ -10002,6 +10187,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["communityInvolvement"]>
 
@@ -10014,6 +10201,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["communityInvolvement"]>
 
@@ -10026,9 +10215,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type CommunityInvolvementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "engagementTitle" | "role" | "locationDate" | "createdAt" | "updatedAt" | "userId" | "proofUrl", ExtArgs["result"]["communityInvolvement"]>
+  export type CommunityInvolvementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "engagementTitle" | "role" | "locationDate" | "createdAt" | "updatedAt" | "userId" | "proofUrl" | "status" | "rejectionReason", ExtArgs["result"]["communityInvolvement"]>
   export type CommunityInvolvementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -10053,6 +10244,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       proofUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["communityInvolvement"]>
     composites: {}
   }
@@ -10485,6 +10678,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"CommunityInvolvement", 'DateTime'>
     readonly userId: FieldRef<"CommunityInvolvement", 'String'>
     readonly proofUrl: FieldRef<"CommunityInvolvement", 'String'>
+    readonly status: FieldRef<"CommunityInvolvement", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"CommunityInvolvement", 'String'>
   }
     
 
@@ -10917,6 +11112,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     pdfUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type PublicationMaxAggregateOutputType = {
@@ -10929,6 +11126,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     pdfUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type PublicationCountAggregateOutputType = {
@@ -10941,6 +11140,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     pdfUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -10955,6 +11156,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     pdfUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type PublicationMaxAggregateInputType = {
@@ -10967,6 +11170,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     pdfUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type PublicationCountAggregateInputType = {
@@ -10979,6 +11184,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     pdfUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -11064,6 +11271,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     pdfUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: PublicationCountAggregateOutputType | null
     _min: PublicationMinAggregateOutputType | null
     _max: PublicationMaxAggregateOutputType | null
@@ -11093,6 +11302,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     pdfUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publication"]>
 
@@ -11106,6 +11317,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     pdfUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publication"]>
 
@@ -11119,6 +11332,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     pdfUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publication"]>
 
@@ -11132,9 +11347,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     pdfUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type PublicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "researchTitle" | "journal" | "datePublished" | "doiLink" | "createdAt" | "updatedAt" | "userId" | "pdfUrl", ExtArgs["result"]["publication"]>
+  export type PublicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "researchTitle" | "journal" | "datePublished" | "doiLink" | "createdAt" | "updatedAt" | "userId" | "pdfUrl" | "status" | "rejectionReason", ExtArgs["result"]["publication"]>
   export type PublicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -11160,6 +11377,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       pdfUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["publication"]>
     composites: {}
   }
@@ -11593,6 +11812,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Publication", 'DateTime'>
     readonly userId: FieldRef<"Publication", 'String'>
     readonly pdfUrl: FieldRef<"Publication", 'String'>
+    readonly status: FieldRef<"Publication", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"Publication", 'String'>
   }
     
 
@@ -12024,6 +12245,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     proofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ConferencePresentationMaxAggregateOutputType = {
@@ -12035,6 +12258,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     proofUrl: string | null
+    status: $Enums.ApprovalStatus | null
+    rejectionReason: string | null
   }
 
   export type ConferencePresentationCountAggregateOutputType = {
@@ -12046,6 +12271,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     proofUrl: number
+    status: number
+    rejectionReason: number
     _all: number
   }
 
@@ -12059,6 +12286,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ConferencePresentationMaxAggregateInputType = {
@@ -12070,6 +12299,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
   }
 
   export type ConferencePresentationCountAggregateInputType = {
@@ -12081,6 +12312,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     proofUrl?: true
+    status?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -12165,6 +12398,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     proofUrl: string | null
+    status: $Enums.ApprovalStatus
+    rejectionReason: string | null
     _count: ConferencePresentationCountAggregateOutputType | null
     _min: ConferencePresentationMinAggregateOutputType | null
     _max: ConferencePresentationMaxAggregateOutputType | null
@@ -12193,6 +12428,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conferencePresentation"]>
 
@@ -12205,6 +12442,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conferencePresentation"]>
 
@@ -12217,6 +12456,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conferencePresentation"]>
 
@@ -12229,9 +12470,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     proofUrl?: boolean
+    status?: boolean
+    rejectionReason?: boolean
   }
 
-  export type ConferencePresentationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paperTitle" | "eventName" | "dateLocation" | "createdAt" | "updatedAt" | "userId" | "proofUrl", ExtArgs["result"]["conferencePresentation"]>
+  export type ConferencePresentationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paperTitle" | "eventName" | "dateLocation" | "createdAt" | "updatedAt" | "userId" | "proofUrl" | "status" | "rejectionReason", ExtArgs["result"]["conferencePresentation"]>
   export type ConferencePresentationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -12256,6 +12499,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       proofUrl: string | null
+      status: $Enums.ApprovalStatus
+      rejectionReason: string | null
     }, ExtArgs["result"]["conferencePresentation"]>
     composites: {}
   }
@@ -12688,6 +12933,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"ConferencePresentation", 'DateTime'>
     readonly userId: FieldRef<"ConferencePresentation", 'String'>
     readonly proofUrl: FieldRef<"ConferencePresentation", 'String'>
+    readonly status: FieldRef<"ConferencePresentation", 'ApprovalStatus'>
+    readonly rejectionReason: FieldRef<"ConferencePresentation", 'String'>
   }
     
 
@@ -13133,7 +13380,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    diplomaFileUrl: 'diplomaFileUrl'
+    diplomaFileUrl: 'diplomaFileUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type AcademicQualificationScalarFieldEnum = (typeof AcademicQualificationScalarFieldEnum)[keyof typeof AcademicQualificationScalarFieldEnum]
@@ -13148,7 +13397,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    licenseFileUrl: 'licenseFileUrl'
+    licenseFileUrl: 'licenseFileUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type ProfessionalLicenseScalarFieldEnum = (typeof ProfessionalLicenseScalarFieldEnum)[keyof typeof ProfessionalLicenseScalarFieldEnum]
@@ -13163,7 +13414,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    proofUrl: 'proofUrl'
+    proofUrl: 'proofUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type WorkExperienceScalarFieldEnum = (typeof WorkExperienceScalarFieldEnum)[keyof typeof WorkExperienceScalarFieldEnum]
@@ -13177,7 +13430,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    membershipProofUrl: 'membershipProofUrl'
+    membershipProofUrl: 'membershipProofUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type ProfessionalAffiliationScalarFieldEnum = (typeof ProfessionalAffiliationScalarFieldEnum)[keyof typeof ProfessionalAffiliationScalarFieldEnum]
@@ -13191,7 +13446,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    certificateUrl: 'certificateUrl'
+    certificateUrl: 'certificateUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type AwardRecognitionScalarFieldEnum = (typeof AwardRecognitionScalarFieldEnum)[keyof typeof AwardRecognitionScalarFieldEnum]
@@ -13205,7 +13462,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    certificateFileUrl: 'certificateFileUrl'
+    certificateFileUrl: 'certificateFileUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type ProfessionalDevelopmentScalarFieldEnum = (typeof ProfessionalDevelopmentScalarFieldEnum)[keyof typeof ProfessionalDevelopmentScalarFieldEnum]
@@ -13219,7 +13478,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    proofUrl: 'proofUrl'
+    proofUrl: 'proofUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type CommunityInvolvementScalarFieldEnum = (typeof CommunityInvolvementScalarFieldEnum)[keyof typeof CommunityInvolvementScalarFieldEnum]
@@ -13234,7 +13495,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    pdfUrl: 'pdfUrl'
+    pdfUrl: 'pdfUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type PublicationScalarFieldEnum = (typeof PublicationScalarFieldEnum)[keyof typeof PublicationScalarFieldEnum]
@@ -13248,7 +13511,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    proofUrl: 'proofUrl'
+    proofUrl: 'proofUrl',
+    status: 'status',
+    rejectionReason: 'rejectionReason'
   };
 
   export type ConferencePresentationScalarFieldEnum = (typeof ConferencePresentationScalarFieldEnum)[keyof typeof ConferencePresentationScalarFieldEnum]
@@ -13300,6 +13565,13 @@ export namespace Prisma {
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'ApprovalStatus'
+   */
+  export type EnumApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalStatus'>
     
 
 
@@ -13415,6 +13687,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AcademicQualification"> | Date | string
     userId?: StringFilter<"AcademicQualification"> | string
     diplomaFileUrl?: StringNullableFilter<"AcademicQualification"> | string | null
+    status?: EnumApprovalStatusFilter<"AcademicQualification"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"AcademicQualification"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13428,6 +13702,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     diplomaFileUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13444,6 +13720,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AcademicQualification"> | Date | string
     userId?: StringFilter<"AcademicQualification"> | string
     diplomaFileUrl?: StringNullableFilter<"AcademicQualification"> | string | null
+    status?: EnumApprovalStatusFilter<"AcademicQualification"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"AcademicQualification"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13457,6 +13735,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     diplomaFileUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: AcademicQualificationCountOrderByAggregateInput
     _avg?: AcademicQualificationAvgOrderByAggregateInput
     _max?: AcademicQualificationMaxOrderByAggregateInput
@@ -13477,6 +13757,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"AcademicQualification"> | Date | string
     userId?: StringWithAggregatesFilter<"AcademicQualification"> | string
     diplomaFileUrl?: StringNullableWithAggregatesFilter<"AcademicQualification"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"AcademicQualification"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"AcademicQualification"> | string | null
   }
 
   export type ProfessionalLicenseWhereInput = {
@@ -13492,6 +13774,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     userId?: StringFilter<"ProfessionalLicense"> | string
     licenseFileUrl?: StringNullableFilter<"ProfessionalLicense"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalLicense"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalLicense"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13505,6 +13789,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     licenseFileUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13521,6 +13807,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     userId?: StringFilter<"ProfessionalLicense"> | string
     licenseFileUrl?: StringNullableFilter<"ProfessionalLicense"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalLicense"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalLicense"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "licenseNumber">
 
@@ -13534,6 +13822,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     licenseFileUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: ProfessionalLicenseCountOrderByAggregateInput
     _max?: ProfessionalLicenseMaxOrderByAggregateInput
     _min?: ProfessionalLicenseMinOrderByAggregateInput
@@ -13552,6 +13842,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ProfessionalLicense"> | Date | string
     userId?: StringWithAggregatesFilter<"ProfessionalLicense"> | string
     licenseFileUrl?: StringNullableWithAggregatesFilter<"ProfessionalLicense"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"ProfessionalLicense"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"ProfessionalLicense"> | string | null
   }
 
   export type WorkExperienceWhereInput = {
@@ -13567,6 +13859,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
     userId?: StringFilter<"WorkExperience"> | string
     proofUrl?: StringNullableFilter<"WorkExperience"> | string | null
+    status?: EnumApprovalStatusFilter<"WorkExperience"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"WorkExperience"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13580,6 +13874,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13596,6 +13892,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
     userId?: StringFilter<"WorkExperience"> | string
     proofUrl?: StringNullableFilter<"WorkExperience"> | string | null
+    status?: EnumApprovalStatusFilter<"WorkExperience"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"WorkExperience"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13609,6 +13907,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: WorkExperienceCountOrderByAggregateInput
     _max?: WorkExperienceMaxOrderByAggregateInput
     _min?: WorkExperienceMinOrderByAggregateInput
@@ -13627,6 +13927,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"WorkExperience"> | Date | string
     userId?: StringWithAggregatesFilter<"WorkExperience"> | string
     proofUrl?: StringNullableWithAggregatesFilter<"WorkExperience"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"WorkExperience"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"WorkExperience"> | string | null
   }
 
   export type ProfessionalAffiliationWhereInput = {
@@ -13641,6 +13943,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringFilter<"ProfessionalAffiliation"> | string
     membershipProofUrl?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalAffiliation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13653,6 +13957,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     membershipProofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13668,6 +13974,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringFilter<"ProfessionalAffiliation"> | string
     membershipProofUrl?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalAffiliation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13680,6 +13988,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     membershipProofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: ProfessionalAffiliationCountOrderByAggregateInput
     _max?: ProfessionalAffiliationMaxOrderByAggregateInput
     _min?: ProfessionalAffiliationMinOrderByAggregateInput
@@ -13697,6 +14007,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringWithAggregatesFilter<"ProfessionalAffiliation"> | string
     membershipProofUrl?: StringNullableWithAggregatesFilter<"ProfessionalAffiliation"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"ProfessionalAffiliation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"ProfessionalAffiliation"> | string | null
   }
 
   export type AwardRecognitionWhereInput = {
@@ -13711,6 +14023,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     userId?: StringFilter<"AwardRecognition"> | string
     certificateUrl?: StringNullableFilter<"AwardRecognition"> | string | null
+    status?: EnumApprovalStatusFilter<"AwardRecognition"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"AwardRecognition"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13723,6 +14037,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13738,6 +14054,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     userId?: StringFilter<"AwardRecognition"> | string
     certificateUrl?: StringNullableFilter<"AwardRecognition"> | string | null
+    status?: EnumApprovalStatusFilter<"AwardRecognition"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"AwardRecognition"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13750,6 +14068,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: AwardRecognitionCountOrderByAggregateInput
     _avg?: AwardRecognitionAvgOrderByAggregateInput
     _max?: AwardRecognitionMaxOrderByAggregateInput
@@ -13769,6 +14089,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"AwardRecognition"> | Date | string
     userId?: StringWithAggregatesFilter<"AwardRecognition"> | string
     certificateUrl?: StringNullableWithAggregatesFilter<"AwardRecognition"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"AwardRecognition"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"AwardRecognition"> | string | null
   }
 
   export type ProfessionalDevelopmentWhereInput = {
@@ -13783,6 +14105,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalDevelopment"> | Date | string
     userId?: StringFilter<"ProfessionalDevelopment"> | string
     certificateFileUrl?: StringNullableFilter<"ProfessionalDevelopment"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalDevelopment"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalDevelopment"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13795,6 +14119,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateFileUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13810,6 +14136,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalDevelopment"> | Date | string
     userId?: StringFilter<"ProfessionalDevelopment"> | string
     certificateFileUrl?: StringNullableFilter<"ProfessionalDevelopment"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalDevelopment"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalDevelopment"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13822,6 +14150,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateFileUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: ProfessionalDevelopmentCountOrderByAggregateInput
     _max?: ProfessionalDevelopmentMaxOrderByAggregateInput
     _min?: ProfessionalDevelopmentMinOrderByAggregateInput
@@ -13839,6 +14169,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ProfessionalDevelopment"> | Date | string
     userId?: StringWithAggregatesFilter<"ProfessionalDevelopment"> | string
     certificateFileUrl?: StringNullableWithAggregatesFilter<"ProfessionalDevelopment"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"ProfessionalDevelopment"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"ProfessionalDevelopment"> | string | null
   }
 
   export type CommunityInvolvementWhereInput = {
@@ -13853,6 +14185,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     userId?: StringFilter<"CommunityInvolvement"> | string
     proofUrl?: StringNullableFilter<"CommunityInvolvement"> | string | null
+    status?: EnumApprovalStatusFilter<"CommunityInvolvement"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"CommunityInvolvement"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13865,6 +14199,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13880,6 +14216,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     userId?: StringFilter<"CommunityInvolvement"> | string
     proofUrl?: StringNullableFilter<"CommunityInvolvement"> | string | null
+    status?: EnumApprovalStatusFilter<"CommunityInvolvement"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"CommunityInvolvement"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13892,6 +14230,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: CommunityInvolvementCountOrderByAggregateInput
     _max?: CommunityInvolvementMaxOrderByAggregateInput
     _min?: CommunityInvolvementMinOrderByAggregateInput
@@ -13909,6 +14249,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"CommunityInvolvement"> | Date | string
     userId?: StringWithAggregatesFilter<"CommunityInvolvement"> | string
     proofUrl?: StringNullableWithAggregatesFilter<"CommunityInvolvement"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"CommunityInvolvement"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"CommunityInvolvement"> | string | null
   }
 
   export type PublicationWhereInput = {
@@ -13924,6 +14266,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Publication"> | Date | string
     userId?: StringFilter<"Publication"> | string
     pdfUrl?: StringNullableFilter<"Publication"> | string | null
+    status?: EnumApprovalStatusFilter<"Publication"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"Publication"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13937,6 +14281,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     pdfUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -13953,6 +14299,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Publication"> | Date | string
     userId?: StringFilter<"Publication"> | string
     pdfUrl?: StringNullableFilter<"Publication"> | string | null
+    status?: EnumApprovalStatusFilter<"Publication"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"Publication"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -13966,6 +14314,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     pdfUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: PublicationCountOrderByAggregateInput
     _max?: PublicationMaxOrderByAggregateInput
     _min?: PublicationMinOrderByAggregateInput
@@ -13984,6 +14334,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Publication"> | Date | string
     userId?: StringWithAggregatesFilter<"Publication"> | string
     pdfUrl?: StringNullableWithAggregatesFilter<"Publication"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"Publication"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"Publication"> | string | null
   }
 
   export type ConferencePresentationWhereInput = {
@@ -13998,6 +14350,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     userId?: StringFilter<"ConferencePresentation"> | string
     proofUrl?: StringNullableFilter<"ConferencePresentation"> | string | null
+    status?: EnumApprovalStatusFilter<"ConferencePresentation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ConferencePresentation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -14010,6 +14364,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -14025,6 +14381,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     userId?: StringFilter<"ConferencePresentation"> | string
     proofUrl?: StringNullableFilter<"ConferencePresentation"> | string | null
+    status?: EnumApprovalStatusFilter<"ConferencePresentation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ConferencePresentation"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -14037,6 +14395,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: ConferencePresentationCountOrderByAggregateInput
     _max?: ConferencePresentationMaxOrderByAggregateInput
     _min?: ConferencePresentationMinOrderByAggregateInput
@@ -14054,6 +14414,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ConferencePresentation"> | Date | string
     userId?: StringWithAggregatesFilter<"ConferencePresentation"> | string
     proofUrl?: StringNullableWithAggregatesFilter<"ConferencePresentation"> | string | null
+    status?: EnumApprovalStatusWithAggregatesFilter<"ConferencePresentation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"ConferencePresentation"> | string | null
   }
 
   export type UserCreateInput = {
@@ -14171,6 +14533,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     diplomaFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutAcademicQualificationsInput
   }
 
@@ -14184,6 +14548,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     diplomaFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AcademicQualificationUpdateInput = {
@@ -14195,6 +14561,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     diplomaFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutAcademicQualificationsNestedInput
   }
 
@@ -14208,6 +14576,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     diplomaFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicQualificationCreateManyInput = {
@@ -14220,6 +14590,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     diplomaFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AcademicQualificationUpdateManyMutationInput = {
@@ -14231,6 +14603,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     diplomaFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicQualificationUncheckedUpdateManyInput = {
@@ -14243,6 +14617,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     diplomaFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseCreateInput = {
@@ -14254,6 +14630,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     licenseFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutProfessionalLicensesInput
   }
 
@@ -14267,6 +14645,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     licenseFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalLicenseUpdateInput = {
@@ -14278,6 +14658,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalLicensesNestedInput
   }
 
@@ -14291,6 +14673,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseCreateManyInput = {
@@ -14303,6 +14687,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     licenseFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalLicenseUpdateManyMutationInput = {
@@ -14314,6 +14700,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseUncheckedUpdateManyInput = {
@@ -14326,6 +14714,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceCreateInput = {
@@ -14337,6 +14727,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutWorkExperiencesInput
   }
 
@@ -14350,6 +14742,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type WorkExperienceUpdateInput = {
@@ -14361,6 +14755,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutWorkExperiencesNestedInput
   }
 
@@ -14374,6 +14770,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceCreateManyInput = {
@@ -14386,6 +14784,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type WorkExperienceUpdateManyMutationInput = {
@@ -14397,6 +14797,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUncheckedUpdateManyInput = {
@@ -14409,6 +14811,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationCreateInput = {
@@ -14419,6 +14823,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     membershipProofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutProfessionalAffiliationsInput
   }
 
@@ -14431,6 +14837,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     membershipProofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalAffiliationUpdateInput = {
@@ -14441,6 +14849,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalAffiliationsNestedInput
   }
 
@@ -14453,6 +14863,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationCreateManyInput = {
@@ -14464,6 +14876,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     membershipProofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalAffiliationUpdateManyMutationInput = {
@@ -14474,6 +14888,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUncheckedUpdateManyInput = {
@@ -14485,6 +14901,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionCreateInput = {
@@ -14495,6 +14913,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutAwardsRecognitionsInput
   }
 
@@ -14507,6 +14927,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     certificateUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AwardRecognitionUpdateInput = {
@@ -14517,6 +14939,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutAwardsRecognitionsNestedInput
   }
 
@@ -14529,6 +14953,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionCreateManyInput = {
@@ -14540,6 +14966,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     certificateUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AwardRecognitionUpdateManyMutationInput = {
@@ -14550,6 +14978,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUncheckedUpdateManyInput = {
@@ -14561,6 +14991,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentCreateInput = {
@@ -14571,6 +15003,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutProfessionalDevelopmentsInput
   }
 
@@ -14583,6 +15017,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     certificateFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalDevelopmentUpdateInput = {
@@ -14593,6 +15029,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalDevelopmentsNestedInput
   }
 
@@ -14605,6 +15043,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     certificateFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentCreateManyInput = {
@@ -14616,6 +15056,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     certificateFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalDevelopmentUpdateManyMutationInput = {
@@ -14626,6 +15068,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentUncheckedUpdateManyInput = {
@@ -14637,6 +15081,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     certificateFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementCreateInput = {
@@ -14647,6 +15093,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutCommunityInvolvementsInput
   }
 
@@ -14659,6 +15107,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type CommunityInvolvementUpdateInput = {
@@ -14669,6 +15119,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutCommunityInvolvementsNestedInput
   }
 
@@ -14681,6 +15133,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementCreateManyInput = {
@@ -14692,6 +15146,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type CommunityInvolvementUpdateManyMutationInput = {
@@ -14702,6 +15158,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementUncheckedUpdateManyInput = {
@@ -14713,6 +15171,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationCreateInput = {
@@ -14724,6 +15184,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pdfUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutPublicationsInput
   }
 
@@ -14737,6 +15199,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     pdfUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type PublicationUpdateInput = {
@@ -14748,6 +15212,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutPublicationsNestedInput
   }
 
@@ -14761,6 +15227,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationCreateManyInput = {
@@ -14773,6 +15241,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     pdfUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type PublicationUpdateManyMutationInput = {
@@ -14784,6 +15254,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUncheckedUpdateManyInput = {
@@ -14796,6 +15268,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationCreateInput = {
@@ -14806,6 +15280,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
     user: UserCreateNestedOneWithoutConferencePresentationsInput
   }
 
@@ -14818,6 +15294,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ConferencePresentationUpdateInput = {
@@ -14828,6 +15306,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutConferencePresentationsNestedInput
   }
 
@@ -14840,6 +15320,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationCreateManyInput = {
@@ -14851,6 +15333,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ConferencePresentationUpdateManyMutationInput = {
@@ -14861,6 +15345,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUncheckedUpdateManyInput = {
@@ -14872,6 +15358,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -15114,6 +15602,13 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type EnumApprovalStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[]
+    notIn?: $Enums.ApprovalStatus[]
+    not?: NestedEnumApprovalStatusFilter<$PrismaModel> | $Enums.ApprovalStatus
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -15129,6 +15624,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     diplomaFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AcademicQualificationAvgOrderByAggregateInput = {
@@ -15145,6 +15642,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     diplomaFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AcademicQualificationMinOrderByAggregateInput = {
@@ -15157,6 +15656,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     diplomaFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AcademicQualificationSumOrderByAggregateInput = {
@@ -15179,6 +15680,16 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type EnumApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[]
+    notIn?: $Enums.ApprovalStatus[]
+    not?: NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApprovalStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumApprovalStatusFilter<$PrismaModel>
+    _max?: NestedEnumApprovalStatusFilter<$PrismaModel>
+  }
+
   export type ProfessionalLicenseCountOrderByAggregateInput = {
     id?: SortOrder
     examination?: SortOrder
@@ -15189,6 +15700,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     licenseFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ProfessionalLicenseMaxOrderByAggregateInput = {
@@ -15201,6 +15714,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     licenseFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ProfessionalLicenseMinOrderByAggregateInput = {
@@ -15213,6 +15728,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     licenseFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type WorkExperienceCountOrderByAggregateInput = {
@@ -15225,6 +15742,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type WorkExperienceMaxOrderByAggregateInput = {
@@ -15237,6 +15756,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type WorkExperienceMinOrderByAggregateInput = {
@@ -15249,6 +15770,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ProfessionalAffiliationCountOrderByAggregateInput = {
@@ -15260,6 +15783,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     membershipProofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ProfessionalAffiliationMaxOrderByAggregateInput = {
@@ -15271,6 +15796,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     membershipProofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ProfessionalAffiliationMinOrderByAggregateInput = {
@@ -15282,6 +15809,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     membershipProofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AwardRecognitionCountOrderByAggregateInput = {
@@ -15293,6 +15822,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AwardRecognitionAvgOrderByAggregateInput = {
@@ -15308,6 +15839,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AwardRecognitionMinOrderByAggregateInput = {
@@ -15319,6 +15852,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AwardRecognitionSumOrderByAggregateInput = {
@@ -15334,6 +15869,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ProfessionalDevelopmentMaxOrderByAggregateInput = {
@@ -15345,6 +15882,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ProfessionalDevelopmentMinOrderByAggregateInput = {
@@ -15356,6 +15895,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     certificateFileUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type CommunityInvolvementCountOrderByAggregateInput = {
@@ -15367,6 +15908,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type CommunityInvolvementMaxOrderByAggregateInput = {
@@ -15378,6 +15921,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type CommunityInvolvementMinOrderByAggregateInput = {
@@ -15389,6 +15934,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type PublicationCountOrderByAggregateInput = {
@@ -15401,6 +15948,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     pdfUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type PublicationMaxOrderByAggregateInput = {
@@ -15413,6 +15962,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     pdfUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type PublicationMinOrderByAggregateInput = {
@@ -15425,6 +15976,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     pdfUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ConferencePresentationCountOrderByAggregateInput = {
@@ -15436,6 +15989,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ConferencePresentationMaxOrderByAggregateInput = {
@@ -15447,6 +16002,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ConferencePresentationMinOrderByAggregateInput = {
@@ -15458,6 +16015,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     proofUrl?: SortOrder
+    status?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type AcademicQualificationCreateNestedManyWithoutUserInput = {
@@ -15868,6 +16427,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type EnumApprovalStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ApprovalStatus
+  }
+
   export type UserUpdateOneRequiredWithoutAcademicQualificationsNestedInput = {
     create?: XOR<UserCreateWithoutAcademicQualificationsInput, UserUncheckedCreateWithoutAcademicQualificationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAcademicQualificationsInput
@@ -16114,6 +16677,13 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedEnumApprovalStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[]
+    notIn?: $Enums.ApprovalStatus[]
+    not?: NestedEnumApprovalStatusFilter<$PrismaModel> | $Enums.ApprovalStatus
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -16141,6 +16711,16 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[]
+    notIn?: $Enums.ApprovalStatus[]
+    not?: NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApprovalStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumApprovalStatusFilter<$PrismaModel>
+    _max?: NestedEnumApprovalStatusFilter<$PrismaModel>
+  }
+
   export type AcademicQualificationCreateWithoutUserInput = {
     id?: string
     degree: string
@@ -16150,6 +16730,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     diplomaFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AcademicQualificationUncheckedCreateWithoutUserInput = {
@@ -16161,6 +16743,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     diplomaFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AcademicQualificationCreateOrConnectWithoutUserInput = {
@@ -16181,6 +16765,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     licenseFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalLicenseUncheckedCreateWithoutUserInput = {
@@ -16192,6 +16778,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     licenseFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalLicenseCreateOrConnectWithoutUserInput = {
@@ -16212,6 +16800,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type WorkExperienceUncheckedCreateWithoutUserInput = {
@@ -16223,6 +16813,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type WorkExperienceCreateOrConnectWithoutUserInput = {
@@ -16242,6 +16834,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     membershipProofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalAffiliationUncheckedCreateWithoutUserInput = {
@@ -16252,6 +16846,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     membershipProofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalAffiliationCreateOrConnectWithoutUserInput = {
@@ -16271,6 +16867,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AwardRecognitionUncheckedCreateWithoutUserInput = {
@@ -16281,6 +16879,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AwardRecognitionCreateOrConnectWithoutUserInput = {
@@ -16300,6 +16900,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalDevelopmentUncheckedCreateWithoutUserInput = {
@@ -16310,6 +16912,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalDevelopmentCreateOrConnectWithoutUserInput = {
@@ -16329,6 +16933,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type CommunityInvolvementUncheckedCreateWithoutUserInput = {
@@ -16339,6 +16945,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type CommunityInvolvementCreateOrConnectWithoutUserInput = {
@@ -16359,6 +16967,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pdfUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type PublicationUncheckedCreateWithoutUserInput = {
@@ -16370,6 +16980,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pdfUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type PublicationCreateOrConnectWithoutUserInput = {
@@ -16389,6 +17001,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ConferencePresentationUncheckedCreateWithoutUserInput = {
@@ -16399,6 +17013,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ConferencePresentationCreateOrConnectWithoutUserInput = {
@@ -16439,6 +17055,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AcademicQualification"> | Date | string
     userId?: StringFilter<"AcademicQualification"> | string
     diplomaFileUrl?: StringNullableFilter<"AcademicQualification"> | string | null
+    status?: EnumApprovalStatusFilter<"AcademicQualification"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"AcademicQualification"> | string | null
   }
 
   export type ProfessionalLicenseUpsertWithWhereUniqueWithoutUserInput = {
@@ -16470,6 +17088,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalLicense"> | Date | string
     userId?: StringFilter<"ProfessionalLicense"> | string
     licenseFileUrl?: StringNullableFilter<"ProfessionalLicense"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalLicense"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalLicense"> | string | null
   }
 
   export type WorkExperienceUpsertWithWhereUniqueWithoutUserInput = {
@@ -16501,6 +17121,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
     userId?: StringFilter<"WorkExperience"> | string
     proofUrl?: StringNullableFilter<"WorkExperience"> | string | null
+    status?: EnumApprovalStatusFilter<"WorkExperience"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"WorkExperience"> | string | null
   }
 
   export type ProfessionalAffiliationUpsertWithWhereUniqueWithoutUserInput = {
@@ -16531,6 +17153,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalAffiliation"> | Date | string
     userId?: StringFilter<"ProfessionalAffiliation"> | string
     membershipProofUrl?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalAffiliation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalAffiliation"> | string | null
   }
 
   export type AwardRecognitionUpsertWithWhereUniqueWithoutUserInput = {
@@ -16561,6 +17185,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AwardRecognition"> | Date | string
     userId?: StringFilter<"AwardRecognition"> | string
     certificateUrl?: StringNullableFilter<"AwardRecognition"> | string | null
+    status?: EnumApprovalStatusFilter<"AwardRecognition"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"AwardRecognition"> | string | null
   }
 
   export type ProfessionalDevelopmentUpsertWithWhereUniqueWithoutUserInput = {
@@ -16591,6 +17217,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProfessionalDevelopment"> | Date | string
     userId?: StringFilter<"ProfessionalDevelopment"> | string
     certificateFileUrl?: StringNullableFilter<"ProfessionalDevelopment"> | string | null
+    status?: EnumApprovalStatusFilter<"ProfessionalDevelopment"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ProfessionalDevelopment"> | string | null
   }
 
   export type CommunityInvolvementUpsertWithWhereUniqueWithoutUserInput = {
@@ -16621,6 +17249,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CommunityInvolvement"> | Date | string
     userId?: StringFilter<"CommunityInvolvement"> | string
     proofUrl?: StringNullableFilter<"CommunityInvolvement"> | string | null
+    status?: EnumApprovalStatusFilter<"CommunityInvolvement"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"CommunityInvolvement"> | string | null
   }
 
   export type PublicationUpsertWithWhereUniqueWithoutUserInput = {
@@ -16652,6 +17282,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Publication"> | Date | string
     userId?: StringFilter<"Publication"> | string
     pdfUrl?: StringNullableFilter<"Publication"> | string | null
+    status?: EnumApprovalStatusFilter<"Publication"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"Publication"> | string | null
   }
 
   export type ConferencePresentationUpsertWithWhereUniqueWithoutUserInput = {
@@ -16682,6 +17314,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ConferencePresentation"> | Date | string
     userId?: StringFilter<"ConferencePresentation"> | string
     proofUrl?: StringNullableFilter<"ConferencePresentation"> | string | null
+    status?: EnumApprovalStatusFilter<"ConferencePresentation"> | $Enums.ApprovalStatus
+    rejectionReason?: StringNullableFilter<"ConferencePresentation"> | string | null
   }
 
   export type UserCreateWithoutAcademicQualificationsInput = {
@@ -17485,6 +18119,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     diplomaFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalLicenseCreateManyUserInput = {
@@ -17496,6 +18132,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     licenseFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type WorkExperienceCreateManyUserInput = {
@@ -17507,6 +18145,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalAffiliationCreateManyUserInput = {
@@ -17517,6 +18157,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     membershipProofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AwardRecognitionCreateManyUserInput = {
@@ -17527,6 +18169,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ProfessionalDevelopmentCreateManyUserInput = {
@@ -17537,6 +18181,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     certificateFileUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type CommunityInvolvementCreateManyUserInput = {
@@ -17547,6 +18193,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type PublicationCreateManyUserInput = {
@@ -17558,6 +18206,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pdfUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type ConferencePresentationCreateManyUserInput = {
@@ -17568,6 +18218,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     proofUrl?: string | null
+    status?: $Enums.ApprovalStatus
+    rejectionReason?: string | null
   }
 
   export type AcademicQualificationUpdateWithoutUserInput = {
@@ -17579,6 +18231,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     diplomaFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicQualificationUncheckedUpdateWithoutUserInput = {
@@ -17590,6 +18244,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     diplomaFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicQualificationUncheckedUpdateManyWithoutUserInput = {
@@ -17601,6 +18257,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     diplomaFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseUpdateWithoutUserInput = {
@@ -17612,6 +18270,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseUncheckedUpdateWithoutUserInput = {
@@ -17623,6 +18283,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalLicenseUncheckedUpdateManyWithoutUserInput = {
@@ -17634,6 +18296,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     licenseFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUpdateWithoutUserInput = {
@@ -17645,6 +18309,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUncheckedUpdateWithoutUserInput = {
@@ -17656,6 +18322,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkExperienceUncheckedUpdateManyWithoutUserInput = {
@@ -17667,6 +18335,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUpdateWithoutUserInput = {
@@ -17677,6 +18347,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUncheckedUpdateWithoutUserInput = {
@@ -17687,6 +18359,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalAffiliationUncheckedUpdateManyWithoutUserInput = {
@@ -17697,6 +18371,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     membershipProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUpdateWithoutUserInput = {
@@ -17707,6 +18383,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUncheckedUpdateWithoutUserInput = {
@@ -17717,6 +18395,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AwardRecognitionUncheckedUpdateManyWithoutUserInput = {
@@ -17727,6 +18407,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentUpdateWithoutUserInput = {
@@ -17737,6 +18419,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentUncheckedUpdateWithoutUserInput = {
@@ -17747,6 +18431,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalDevelopmentUncheckedUpdateManyWithoutUserInput = {
@@ -17757,6 +18443,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificateFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementUpdateWithoutUserInput = {
@@ -17767,6 +18455,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementUncheckedUpdateWithoutUserInput = {
@@ -17777,6 +18467,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CommunityInvolvementUncheckedUpdateManyWithoutUserInput = {
@@ -17787,6 +18479,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUpdateWithoutUserInput = {
@@ -17798,6 +18492,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUncheckedUpdateWithoutUserInput = {
@@ -17809,6 +18505,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PublicationUncheckedUpdateManyWithoutUserInput = {
@@ -17820,6 +18518,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUpdateWithoutUserInput = {
@@ -17830,6 +18530,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUncheckedUpdateWithoutUserInput = {
@@ -17840,6 +18542,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConferencePresentationUncheckedUpdateManyWithoutUserInput = {
@@ -17850,6 +18554,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     proofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

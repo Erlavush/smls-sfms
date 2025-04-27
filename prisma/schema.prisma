@@ -1,9 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// prisma/schema.prisma
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../src/generated/prisma" // Keep custom output path
 }
 
 datasource db {
@@ -17,17 +16,25 @@ enum Role {
   ADMIN
 }
 
+// --- ADDED: Approval Status Enum ---
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+// --- END ADDED ---
+
 // Define the User model
 model User {
-  id        String   @id @default(cuid()) // Unique ID for the user (using cuid)
-  name      String?                       // User's name (optional for now)
-  email     String   @unique                 // User's email, must be unique
-  password  String                        // Hashed password (we will hash it before saving)
-  role      Role     @default(FACULTY)     // User's role (defaults to FACULTY)
-  createdAt DateTime @default(now())         // Timestamp when the user was created
-  updatedAt DateTime @updatedAt            // Timestamp when the user was last updated
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(FACULTY)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  // --- Relationships to CV Models (One User has Many...) ---
+  // Relationships
   academicQualifications AcademicQualification[]
   professionalLicenses   ProfessionalLicense[]
   workExperiences        WorkExperience[]
@@ -37,154 +44,163 @@ model User {
   communityInvolvements  CommunityInvolvement[]
   publications           Publication[]
   conferencePresentations ConferencePresentation[]
-  // --- End Relationships ---
 }
 
-// --- CV Related Models ---
+// --- CV Related Models (Add status and rejectionReason to ALL below) ---
 
 model AcademicQualification {
-  id          String   @id @default(cuid())
-  degree      String
-  institution String
-  program     String
+  id            String   @id @default(cuid())
+  degree        String
+  institution   String
+  program       String
   yearCompleted Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  diplomaFileUrl String?
 
-  // Supporting document field
-  diplomaFileUrl String? // Optional field to store URL/path of uploaded diploma/transcript
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
 model ProfessionalLicense {
-  id          String   @id @default(cuid())
-  examination String   // e.g., "Medical Technologist Licensure Examination"
-  monthYear   String   // e.g., "August 2023"
-  licenseNumber String @unique // License number should be unique
-  expiration  DateTime // Date the license expires (REQUIRED)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relation to User
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // --- ADDED: Supporting document field ---
+  id            String   @id @default(cuid())
+  examination   String
+  monthYear     String
+  licenseNumber String   @unique
+  expiration    DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   licenseFileUrl String?
+
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
 model WorkExperience {
-  id         String   @id @default(cuid())
-  institution String   // e.g., "San Pedro College", "Davao Doctors Hospital"
-  position   String   // e.g., "Faculty", "Medical Technologist"
-  natureOfWork String?  // Optional description
-  inclusiveYears String // e.g., "2020-Present", "2018-2020"
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id             String   @id @default(cuid())
+  institution    String
+  position       String
+  natureOfWork   String?
+  inclusiveYears String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  proofUrl       String?
 
-  // Relation to User
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // --- ADDED: Supporting document field ---
-  proofUrl String?
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
 model ProfessionalAffiliation {
-  id        String   @id @default(cuid())
-  organization String // e.g., "PAMET", "PASMETH"
-  position  String?  // Optional: "Member", "Officer", etc.
-  inclusiveYears String // e.g., "2019-Present"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relation to User
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // --- ADDED: Supporting document field ---
+  id                String   @id @default(cuid())
+  organization      String
+  position          String?
+  inclusiveYears    String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   membershipProofUrl String?
+
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
 model AwardRecognition {
   id             String   @id @default(cuid())
-  awardName      String   // Name of the award/recognition
-  awardingBody   String   // Organization/Institution that gave the award
-  yearReceived   Int      // Year the award was received
+  awardName      String
+  awardingBody   String
+  yearReceived   Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-
-   // Relation to User
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // --- ADDED: Supporting document field ---
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   certificateUrl String?
+
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
 model ProfessionalDevelopment {
-  id          String   @id @default(cuid())
-  title       String
-  organizer   String
-  dateLocation String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String   @id @default(cuid())
+  title             String
+  organizer         String
+  dateLocation      String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  certificateFileUrl String?
 
-  // Supporting document field
-  certificateFileUrl String? // Optional field to store URL/path of uploaded certificate
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
 model CommunityInvolvement {
-  id          String   @id @default(cuid())
-  engagementTitle String // e.g., "Medical Mission Barangay X", "Blood Donation Drive"
-  role        String   // e.g., "Volunteer", "Organizer"
-  locationDate String  // e.g., "Barangay X / May 5, 2024"
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  engagementTitle String
+  role            String
+  locationDate    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  proofUrl        String?
 
-   // Relation to User
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // --- ADDED: Supporting document field ---
-  proofUrl String?
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
-// --- Research Related Models ---
 model Publication {
   id            String   @id @default(cuid())
   researchTitle String
-  journal       String   // Name of the journal
-  datePublished DateTime // Date of publication
-  doiLink       String?  // Optional: Link to DOI
+  journal       String
+  datePublished DateTime
+  doiLink       String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pdfUrl        String?
 
-   // Relation to User
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // --- ADDED: Supporting document field ---
-  pdfUrl String? // Optional: URL/path to uploaded PDF copy
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
 
 model ConferencePresentation {
   id            String   @id @default(cuid())
   paperTitle    String
-  eventName     String   // Name of the conference/event
-  dateLocation  String   // e.g., "June 2024 / Manila"
+  eventName     String
+  dateLocation  String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  proofUrl      String?
 
-  // Relation to User
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // --- ADDED: Supporting document field ---
-  proofUrl String? // Optional: URL/path to certificate/program page
+  // --- ADDED ---
+  status          ApprovalStatus @default(PENDING)
+  rejectionReason String?
+  // --- END ADDED ---
 }
-
-// --- Add other models below as needed ---
