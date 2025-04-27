@@ -1,5 +1,5 @@
-// tailwind.config.ts (Should be okay for v3)
-import type { Config } from 'tailwindcss'
+// tailwind.config.ts
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -9,9 +9,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // Keep extensions minimal for now
+      // Add the font family extension
+      fontFamily: {
+        // Define 'sans' to use the Inter variable, making it the default sans-serif font
+        // Tailwind will automatically apply this to the body via preflight/base styles
+        sans: ['var(--font-inter)', 'sans-serif'],
+      },
     },
   },
   plugins: [],
-}
-export default config
+};
+export default config;

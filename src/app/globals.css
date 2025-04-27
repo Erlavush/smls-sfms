@@ -4,7 +4,13 @@
 @tailwind utilities;
 
 /* Add minimal body styling */
+/* body { */
+   /* font-family: sans-serif; /* REMOVED - Tailwind will apply font-sans */ */
+   /* Add other base styles if needed e.g., background color */
+/* } */
+
+/* You can leave the body selector empty or remove it if no other base body styles are needed */
 body {
-   font-family: sans-serif; /* Basic default font */
-   /* Add other base styles if needed */
+    /* Example: Add a default background if desired */
+    /* background-color: #f8fafc; */ /* Light gray */
 }
