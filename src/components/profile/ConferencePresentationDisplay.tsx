@@ -1,25 +1,61 @@
 // src/components/profile/ConferencePresentationDisplay.tsx
 import React from 'react';
 import type { ConferencePresentation } from '@/generated/prisma';
-import { PaperClipIcon } from '@heroicons/react/24/outline';
+import StatusDisplay from './StatusDisplay'; // Import the new StatusDisplay component
+import { PaperClipIcon, DocumentTextIcon, CalendarDaysIcon, BuildingLibraryIcon, PresentationChartBarIcon, MapPinIcon } from '@heroicons/react/24/outline'; // Added PresentationChartBarIcon, MapPinIcon
 
-interface Props { item: ConferencePresentation }
+interface Props {
+    item: ConferencePresentation;
+}
 
 export default function ConferencePresentationDisplay({ item }: Props) {
     return (
-        <>
-            <p className="font-semibold text-gray-800">{item.paperTitle || 'N/A'}</p>
-            <p className="text-gray-600">
-                <span className="font-medium">Event:</span> {item.eventName || 'N/A'}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-                <span className="font-medium">Date/Location:</span> {item.dateLocation || 'N/A'}
-            </p>
-            {item.proofUrl && (
-                 <a href={item.proofUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-1 truncate max-w-[200px]" title={item.proofUrl}>
-                   <PaperClipIcon className="h-3 w-3 flex-shrink-0" /> View Proof/Details
-                 </a>
-            )}
-        </>
+        // Mimic the 'qualification' div structure
+        <div className="flex flex-col gap-2">
+            {/* Paper Title */}
+            <h3 className="text-base font-bold text-gray-800 tracking-tight">
+                {item.paperTitle || 'N/A'}
+            </h3>
+
+            {/* Event Name */}
+            <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
+                <div className="flex items-center justify-center w-6 h-6 rounded-md bg-purple-50 text-purple-600 flex-shrink-0">
+                    {/* Use a relevant icon */}
+                    <PresentationChartBarIcon className="h-4 w-4" />
+                </div>
+                <span>Event: {item.eventName || 'N/A'}</span>
+            </div>
+
+            {/* Details Row */}
+            <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 pt-3 border-t border-gray-100 mt-2">
+
+                {/* Date/Location */}
+                <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
+                    <MapPinIcon className="h-4 w-4 text-gray-400"/>
+                    <span>{item.dateLocation || 'N/A'}</span>
+                </div>
+
+                {/* Document Link */}
+                {item.proofUrl ? (
+                     <a
+                        href={item.proofUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md px-2 py-1 transition duration-200"
+                        title={item.proofUrl}
+                    >
+                       <DocumentTextIcon className="h-4 w-4" />
+                       <span>View Proof/Details</span>
+                    </a>
+                ) : (
+                    <span className="text-xs text-gray-400 italic">No proof</span>
+                )}
+
+                {/* Status Display */}
+                <div className="w-full sm:w-auto flex justify-end pt-1 sm:pt-0">
+                    <StatusDisplay status={item.status} rejectionReason={item.rejectionReason} />
+                </div>
+            </div>
+        </div>
     );
 }

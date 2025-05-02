@@ -1,7 +1,8 @@
 // src/components/profile/ProfessionalDevelopmentDisplay.tsx
 import React from 'react';
 import type { ProfessionalDevelopment } from '@/generated/prisma';
-import { PaperClipIcon } from '@heroicons/react/24/outline';
+import StatusDisplay from './StatusDisplay'; // Import the new StatusDisplay component
+import { PaperClipIcon, DocumentTextIcon, CalendarDaysIcon, BuildingLibraryIcon, SparklesIcon, MapPinIcon } from '@heroicons/react/24/outline'; // Added SparklesIcon, MapPinIcon
 
 interface Props {
     item: ProfessionalDevelopment;
@@ -9,26 +10,52 @@ interface Props {
 
 export default function ProfessionalDevelopmentDisplay({ item }: Props) {
     return (
-        <>
-            <p className="font-semibold text-gray-800">{item.title || 'N/A'}</p>
-            <p className="text-gray-600">
-                <span className="font-medium">Organizer:</span> {item.organizer || 'N/A'}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-                <span className="font-medium">Date/Location:</span> {item.dateLocation || 'N/A'}
-            </p>
-            {item.certificateFileUrl && (
-                <a
-                    href={item.certificateFileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-1 truncate max-w-[200px]" // Added max-w for long URLs
-                    title={item.certificateFileUrl} // Show full URL on hover
-                >
-                   <PaperClipIcon className="h-3 w-3 flex-shrink-0" />
-                   View Certificate
-                </a>
-            )}
-        </>
+        // Mimic the 'qualification' div structure
+        <div className="flex flex-col gap-2">
+            {/* Development Title */}
+            <h3 className="text-base font-bold text-gray-800 tracking-tight">
+                {item.title || 'N/A'}
+            </h3>
+
+            {/* Organizer */}
+            <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
+                <div className="flex items-center justify-center w-6 h-6 rounded-md bg-yellow-50 text-yellow-600 flex-shrink-0">
+                    {/* Use a relevant icon */}
+                    <SparklesIcon className="h-4 w-4" />
+                </div>
+                <span>Organizer: {item.organizer || 'N/A'}</span>
+            </div>
+
+            {/* Details Row */}
+            <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 pt-3 border-t border-gray-100 mt-2">
+
+                {/* Date/Location */}
+                <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
+                    <MapPinIcon className="h-4 w-4 text-gray-400"/>
+                    <span>{item.dateLocation || 'N/A'}</span>
+                </div>
+
+                {/* Document Link */}
+                {item.certificateFileUrl ? (
+                     <a
+                        href={item.certificateFileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md px-2 py-1 transition duration-200"
+                        title={item.certificateFileUrl}
+                    >
+                       <DocumentTextIcon className="h-4 w-4" />
+                       <span>View Certificate</span>
+                    </a>
+                ) : (
+                    <span className="text-xs text-gray-400 italic">No certificate</span>
+                )}
+
+                {/* Status Display */}
+                <div className="w-full sm:w-auto flex justify-end pt-1 sm:pt-0">
+                    <StatusDisplay status={item.status} rejectionReason={item.rejectionReason} />
+                </div>
+            </div>
+        </div>
     );
 }

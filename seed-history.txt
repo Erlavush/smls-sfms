@@ -1,0 +1,363 @@
+// prisma/seed.js
+const { PrismaClient } = require('../src/generated/prisma/index.js');
+const bcrypt = require('bcrypt');
+
+const prisma = new PrismaClient();
+
+async function main() {
+  // Clear existing data if needed
+  await clearExistingData();
+  
+  // Create a faculty user
+  const facultyUser = await createFacultyUser();
+  
+  // Add academic qualifications
+  await addAcademicQualifications(facultyUser.id);
+  
+  // Add professional licenses
+  await addProfessionalLicenses(facultyUser.id);
+  
+  // Add work experiences
+  await addWorkExperiences(facultyUser.id);
+  
+  // Add professional affiliations
+  await addProfessionalAffiliations(facultyUser.id);
+  
+  // Add awards and recognitions
+  await addAwardsRecognitions(facultyUser.id);
+  
+  // Add professional developments
+  await addProfessionalDevelopments(facultyUser.id);
+  
+  // Add community involvements
+  await addCommunityInvolvements(facultyUser.id);
+  
+  // Add publications
+  await addPublications(facultyUser.id);
+  
+  // Add conference presentations
+  await addConferencePresentations(facultyUser.id);
+  
+  console.log(`Faculty user created with email: ${facultyUser.email}`);
+}
+
+async function clearExistingData() {
+  // Delete all existing records in reverse order of dependencies
+  await prisma.conferencePresentation.deleteMany({});
+  await prisma.publication.deleteMany({});
+  await prisma.communityInvolvement.deleteMany({});
+  await prisma.professionalDevelopment.deleteMany({});
+  await prisma.awardRecognition.deleteMany({});
+  await prisma.professionalAffiliation.deleteMany({});
+  await prisma.workExperience.deleteMany({});
+  await prisma.professionalLicense.deleteMany({});
+  await prisma.academicQualification.deleteMany({});
+  await prisma.user.deleteMany({});
+}
+
+async function createFacultyUser() {
+  const hashedPassword = await bcrypt.hash('password123', 10);
+  
+  return prisma.user.create({
+    data: {
+      name: 'Dr. Jane Smith',
+      email: 'jsmith@university.edu',
+      password: hashedPassword,
+      role: 'FACULTY',
+    }
+  });
+}
+
+async function addAcademicQualifications(userId) {
+  await prisma.academicQualification.createMany({
+    data: [
+      {
+        userId,
+        degree: 'Ph.D.',
+        institution: 'Stanford University',
+        program: 'Computer Science',
+        yearCompleted: 2015,
+        diplomaFileUrl: 'https://example.com/diploma1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        degree: 'Master of Science',
+        institution: 'Massachusetts Institute of Technology',
+        program: 'Artificial Intelligence',
+        yearCompleted: 2010,
+        diplomaFileUrl: 'https://example.com/diploma2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        degree: 'Bachelor of Science',
+        institution: 'University of California, Berkeley',
+        program: 'Information Technology',
+        yearCompleted: 2008,
+        diplomaFileUrl: 'https://example.com/diploma3.pdf',
+        status: 'APPROVED'
+      }
+    ]
+  });
+}
+
+async function addProfessionalLicenses(userId) {
+  await prisma.professionalLicense.createMany({
+    data: [
+      {
+        userId,
+        examination: 'Professional Teaching License',
+        monthYear: 'June 2016',
+        licenseNumber: 'PTL-123456',
+        expiration: new Date('2026-06-30'),
+        licenseFileUrl: 'https://example.com/license1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        examination: 'Certified Information Systems Security Professional',
+        monthYear: 'March 2018',
+        licenseNumber: 'CISSP-789012',
+        expiration: new Date('2027-03-15'),
+        licenseFileUrl: 'https://example.com/license2.pdf',
+        status: 'PENDING'
+      }
+    ]
+  });
+}
+
+async function addWorkExperiences(userId) {
+  await prisma.workExperience.createMany({
+    data: [
+      {
+        userId,
+        institution: 'University of Technology',
+        position: 'Associate Professor',
+        natureOfWork: 'Teaching undergraduate and graduate courses',
+        inclusiveYears: '2018-Present',
+        proofUrl: 'https://example.com/work1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        institution: 'Research Institute of Computer Science',
+        position: 'Senior Researcher',
+        natureOfWork: 'Leading research projects in AI',
+        inclusiveYears: '2015-2018',
+        proofUrl: 'https://example.com/work2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        institution: 'Tech Innovations Inc.',
+        position: 'Software Engineer',
+        natureOfWork: 'Developing enterprise applications',
+        inclusiveYears: '2010-2015',
+        proofUrl: 'https://example.com/work3.pdf',
+        status: 'APPROVED'
+      }
+    ]
+  });
+}
+
+async function addProfessionalAffiliations(userId) {
+  await prisma.professionalAffiliation.createMany({
+    data: [
+      {
+        userId,
+        organization: 'Association for Computing Machinery (ACM)',
+        position: 'Member',
+        inclusiveYears: '2010-Present',
+        membershipProofUrl: 'https://example.com/affiliation1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        organization: 'IEEE Computer Society',
+        position: 'Senior Member',
+        inclusiveYears: '2015-Present',
+        membershipProofUrl: 'https://example.com/affiliation2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        organization: 'National Association of Educators',
+        position: 'Board Member',
+        inclusiveYears: '2019-Present',
+        membershipProofUrl: 'https://example.com/affiliation3.pdf',
+        status: 'PENDING'
+      }
+    ]
+  });
+}
+
+async function addAwardsRecognitions(userId) {
+  await prisma.awardRecognition.createMany({
+    data: [
+      {
+        userId,
+        awardName: 'Outstanding Educator Award',
+        awardingBody: 'National Education Association',
+        yearReceived: 2022,
+        certificateUrl: 'https://example.com/award1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        awardName: 'Best Research Paper',
+        awardingBody: 'International Conference on Computer Science',
+        yearReceived: 2020,
+        certificateUrl: 'https://example.com/award2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        awardName: 'Innovation in Teaching',
+        awardingBody: 'University of Technology',
+        yearReceived: 2019,
+        certificateUrl: 'https://example.com/award3.pdf',
+        status: 'PENDING'
+      }
+    ]
+  });
+}
+
+async function addProfessionalDevelopments(userId) {
+  await prisma.professionalDevelopment.createMany({
+    data: [
+      {
+        userId,
+        title: 'Advanced Teaching Methodologies Workshop',
+        organizer: 'Center for Teaching Excellence',
+        dateLocation: 'June 2023, New York',
+        certificateFileUrl: 'https://example.com/development1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        title: 'AI in Education Conference',
+        organizer: 'International Educational Technology Association',
+        dateLocation: 'March 2022, San Francisco',
+        certificateFileUrl: 'https://example.com/development2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        title: 'Data Science for Educators',
+        organizer: 'Online Learning Consortium',
+        dateLocation: 'January 2021, Virtual',
+        certificateFileUrl: 'https://example.com/development3.pdf',
+        status: 'PENDING'
+      }
+    ]
+  });
+}
+
+async function addCommunityInvolvements(userId) {
+  await prisma.communityInvolvement.createMany({
+    data: [
+      {
+        userId,
+        engagementTitle: 'Code Mentorship Program',
+        role: 'Lead Mentor',
+        locationDate: 'Local High Schools, 2020-Present',
+        proofUrl: 'https://example.com/community1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        engagementTitle: 'Technology for Seniors',
+        role: 'Workshop Facilitator',
+        locationDate: 'Community Center, 2021-2022',
+        proofUrl: 'https://example.com/community2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        engagementTitle: 'STEM Education Initiative',
+        role: 'Volunteer Instructor',
+        locationDate: 'Various Elementary Schools, 2019-2020',
+        proofUrl: 'https://example.com/community3.pdf',
+        status: 'PENDING'
+      }
+    ]
+  });
+}
+
+async function addPublications(userId) {
+  await prisma.publication.createMany({
+    data: [
+      {
+        userId,
+        researchTitle: 'Innovative Approaches to Teaching Programming in Higher Education',
+        journal: 'Journal of Computer Science Education',
+        datePublished: new Date('2023-05-15'),
+        doiLink: 'https://doi.org/10.1234/jcse.2023.0501',
+        pdfUrl: 'https://example.com/publication1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        researchTitle: 'Machine Learning Applications in Educational Assessment',
+        journal: 'International Journal of AI in Education',
+        datePublished: new Date('2021-11-03'),
+        doiLink: 'https://doi.org/10.5678/ijaie.2021.1103',
+        pdfUrl: 'https://example.com/publication2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        researchTitle: 'The Future of Virtual Learning Environments',
+        journal: 'Educational Technology Review',
+        datePublished: new Date('2022-08-22'),
+        doiLink: 'https://doi.org/10.9012/etr.2022.0822',
+        pdfUrl: 'https://example.com/publication3.pdf',
+        status: 'PENDING'
+      }
+    ]
+  });
+}
+
+async function addConferencePresentations(userId) {
+  await prisma.conferencePresentation.createMany({
+    data: [
+      {
+        userId,
+        paperTitle: 'Integrating AI Chatbots in Learning Management Systems',
+        eventName: 'International Conference on Educational Technology',
+        dateLocation: 'Paris, France, September 2023',
+        proofUrl: 'https://example.com/presentation1.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        paperTitle: 'Data Analytics for Student Performance Prediction',
+        eventName: 'Annual Learning Analytics Symposium',
+        dateLocation: 'Singapore, May 2022',
+        proofUrl: 'https://example.com/presentation2.pdf',
+        status: 'APPROVED'
+      },
+      {
+        userId,
+        paperTitle: 'Blockchain Technology in Academic Credentialing',
+        eventName: 'Future of Education Technology Conference',
+        dateLocation: 'Toronto, Canada, February 2024',
+        proofUrl: 'https://example.com/presentation3.pdf',
+        status: 'PENDING'
+      }
+    ]
+  });
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+
+
+//____________________________________________________________________________________________________________//

@@ -1,21 +1,63 @@
 // src/components/profile/ProfessionalAffiliationDisplay.tsx
 import React from 'react';
 import type { ProfessionalAffiliation } from '@/generated/prisma';
-import { PaperClipIcon } from '@heroicons/react/24/outline';
+import StatusDisplay from './StatusDisplay'; // Import the new StatusDisplay component
+import { PaperClipIcon, DocumentTextIcon, CalendarDaysIcon, UserGroupIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline'; // Added BuildingOfficeIcon
 
-interface Props { item: ProfessionalAffiliation }
+interface Props {
+    item: ProfessionalAffiliation;
+}
 
 export default function ProfessionalAffiliationDisplay({ item }: Props) {
     return (
-        <>
-            <p className="font-semibold text-gray-800">{item.organization || 'N/A'}</p>
-            {item.position && <p className="text-gray-600">Position: {item.position}</p>}
-            <p className="text-xs text-gray-500 mt-1">Years: {item.inclusiveYears || 'N/A'}</p>
-            {item.membershipProofUrl && (
-                 <a href={item.membershipProofUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-1 truncate max-w-[200px]" title={item.membershipProofUrl}>
-                   <PaperClipIcon className="h-3 w-3 flex-shrink-0" /> View Proof
-                 </a>
+        // Mimic the 'qualification' div structure
+        <div className="flex flex-col gap-2">
+            {/* Organization Name */}
+            <h3 className="text-base font-bold text-gray-800 tracking-tight">
+                {item.organization || 'N/A'}
+            </h3>
+
+            {/* Position (Conditional) */}
+            {item.position && (
+                <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
+                    <div className="flex items-center justify-center w-6 h-6 rounded-md bg-cyan-50 text-cyan-600 flex-shrink-0">
+                        {/* Use a relevant icon */}
+                        <UserGroupIcon className="h-4 w-4" />
+                    </div>
+                    <span>Position: {item.position}</span>
+                </div>
             )}
-        </>
+
+            {/* Details Row */}
+            <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 pt-3 border-t border-gray-100 mt-2">
+
+                {/* Inclusive Years */}
+                <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
+                    <CalendarDaysIcon className="h-4 w-4 text-gray-400"/>
+                    <span>Years: {item.inclusiveYears || 'N/A'}</span>
+                </div>
+
+                {/* Document Link */}
+                {item.membershipProofUrl ? (
+                     <a
+                        href={item.membershipProofUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md px-2 py-1 transition duration-200"
+                        title={item.membershipProofUrl}
+                    >
+                       <DocumentTextIcon className="h-4 w-4" />
+                       <span>View Proof</span>
+                    </a>
+                ) : (
+                    <span className="text-xs text-gray-400 italic">No proof</span>
+                )}
+
+                {/* Status Display */}
+                <div className="w-full sm:w-auto flex justify-end pt-1 sm:pt-0">
+                    <StatusDisplay status={item.status} rejectionReason={item.rejectionReason} />
+                </div>
+            </div>
+        </div>
     );
 }

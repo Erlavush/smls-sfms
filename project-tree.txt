@@ -1,0 +1,103 @@
+smls-sfms
+├── .roo
+│   └── mcp.json
+├── prisma
+│   └── schema.prisma
+├── public
+│   ├── dot.png
+│   ├── smls-logo.png
+│   └── spc-logo.png
+├── src
+│   ├── app
+│   │   ├── (auth)
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   └── layout.tsx
+│   │   ├── (protected)
+│   │   │   ├── (faculty)
+│   │   │   │   ├── dashboard
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── documents
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── profile
+│   │   │   │       └── page.tsx
+│   │   │   ├── admin
+│   │   │   │   ├── approvals
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── dashboard
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── faculty
+│   │   │   │   │   ├── [facultyId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── matrix
+│   │   │   │       └── page.tsx
+│   │   │   └── layout.tsx
+│   │   ├── api
+│   │   │   ├── auth
+│   │   │   │   └── [...nextauth]
+│   │   │   │       └── route.ts
+│   │   │   ├── documents
+│   │   │   │   └── route.ts
+│   │   │   └── faculty
+│   │   │       └── route.ts
+│   │   ├── image-test
+│   │   │   └── page.tsx
+│   │   ├── services
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── admin
+│   │   ├── auth
+│   │   ├── faculty
+│   │   ├── layout
+│   │   ├── profile
+│   │   │   ├── AcademicQualificationDisplay.tsx
+│   │   │   ├── AcademicQualificationForm.tsx
+│   │   │   ├── AwardRecognitionDisplay.tsx
+│   │   │   ├── AwardRecognitionForm.tsx
+│   │   │   ├── CommunityInvolvementDisplay.tsx
+│   │   │   ├── CommunityInvolvementForm.tsx
+│   │   │   ├── ConferencePresentationDisplay.tsx
+│   │   │   ├── ConferencePresentationForm.tsx
+│   │   │   ├── ProfessionalAffiliationDisplay.tsx
+│   │   │   ├── ProfessionalAffiliationForm.tsx
+│   │   │   ├── ProfessionalDevelopmentDisplay.tsx
+│   │   │   ├── ProfessionalDevelopmentForm.tsx
+│   │   │   ├── ProfessionalLicenseDisplay.tsx
+│   │   │   ├── ProfessionalLicenseForm.tsx
+│   │   │   ├── PublicationDisplay.tsx
+│   │   │   ├── PublicationForm.tsx
+│   │   │   ├── StatusDisplay.tsx
+│   │   │   ├── WorkExperienceDisplay.tsx
+│   │   │   └── WorkExperienceForm.tsx
+│   │   ├── providers
+│   │   │   └── NextAuthProvider.tsx
+│   │   └── ui
+│   │       ├── Footer.tsx
+│   │       └── Header.tsx
+│   ├── contexts
+│   ├── hooks
+│   ├── lib
+│   │   ├── adminActions.ts
+│   │   ├── auth.ts
+│   │   ├── db.ts
+│   │   ├── prisma.ts
+│   │   ├── userActions.ts
+│   │   └── utils.ts
+│   ├── types
+│   │   └── index.ts
+│   └── middleware.ts
+├── .gitignore
+├── create_context.ps1
+├── eslint.config.mjs
+├── generate-context.js
+├── generate-tree.cjs
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── project_context.txt
+├── README.md
+├── tailwind.config.ts
+└── tsconfig.json

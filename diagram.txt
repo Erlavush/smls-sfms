@@ -1,0 +1,63 @@
+graph TD
+    %% Actors
+    Faculty[Faculty Member]:::actors
+    Admin[Administrator]:::actors
+
+    %% Connections to Subgraphs
+    Faculty --> Upload
+    Admin --> Review
+    Faculty --> ViewCV
+    Admin --> ViewCV
+    Admin --> ViewMatrix
+
+    %% Subgraph: Document Submission & Approval
+    subgraph SubmitProcess["Document Submission & Approval"]
+        direction TB
+        Upload(Upload Document):::processes
+        SubmitForApproval(Submit for Approval):::processes
+        NotifyAdmin(Notify Admin In-System):::processes
+        Review(Review Document In-System):::processes
+        Decision{Approve / Reject?}:::decisions
+        Store(Store Document):::processes
+        UpdateCV(Update Digital CV/Profile):::processes
+        NotifyFaculty(Notify Faculty In-System):::processes
+        %% Use () for database shape if cylinder not desired for rejected
+        RejectedDoc[(Rejected Document Record)]:::storage_rejected
+
+        Upload --> SubmitForApproval
+        SubmitForApproval -- Approval Request --> NotifyAdmin
+        NotifyAdmin --> Review
+        Review --> Decision
+        Decision -- Approved --> Store
+        Decision -- Approved --> UpdateCV
+        Decision -- Rejected --> NotifyFaculty
+        Decision -- Rejected --> RejectedDoc
+        Decision -- Approved/Rejected --> NotifyFaculty
+    end
+
+    %% Subgraph: Data Retrieval & Viewing
+    subgraph RetrieveProcess["Data Retrieval & Viewing"]
+        direction TB
+        Retrieve(Retrieve Data):::processes
+        ViewCV(View Digital CV/Profile):::processes
+        ViewMatrix(View Matrix of Specializations):::processes
+
+        Retrieve -- CV Data --> ViewCV
+        Retrieve -- CV/Matrix Data --> ViewMatrix
+        Retrieve --> DigitalStorage
+    end
+
+    %% External Storage Node
+    DigitalStorage[System Digital Storage]:::storage
+
+    %% Connections involving Storage
+    Store -- Document Data --> DigitalStorage
+    UpdateCV -- Profile Data --> DigitalStorage
+    RejectedDoc -- Record Data --> DigitalStorage
+
+    %% Class Definitions
+    classDef actors fill:#f9f,stroke:#333,stroke-width:2px
+    classDef processes fill:#ccf,stroke:#333,stroke-width:2px
+    classDef decisions fill:#ff9,stroke:#333,stroke-width:2px
+    classDef storage fill:#cfc,stroke:#333,stroke-width:2px,shape:cylinder
+    classDef storage_rejected fill:#fcc,stroke:#c33,stroke-width:2px,shape:cylinder
