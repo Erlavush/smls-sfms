@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Specialization
+ * 
+ */
+export type Specialization = $Result.DefaultSelection<Prisma.$SpecializationPayload>
+/**
  * Model User
  * 
  */
@@ -101,8 +106,8 @@ export const ApprovalStatus: typeof $Enums.ApprovalStatus
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Specializations
+ * const specializations = await prisma.specialization.findMany()
  * ```
  *
  *
@@ -122,8 +127,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more Specializations
+   * const specializations = await prisma.specialization.findMany()
    * ```
    *
    *
@@ -220,6 +225,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.specialization`: Exposes CRUD operations for the **Specialization** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Specializations
+    * const specializations = await prisma.specialization.findMany()
+    * ```
+    */
+  get specialization(): Prisma.SpecializationDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -758,6 +773,7 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Specialization: 'Specialization',
     User: 'User',
     AcademicQualification: 'AcademicQualification',
     ProfessionalLicense: 'ProfessionalLicense',
@@ -786,10 +802,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "academicQualification" | "professionalLicense" | "workExperience" | "professionalAffiliation" | "awardRecognition" | "professionalDevelopment" | "communityInvolvement" | "publication" | "conferencePresentation"
+      modelProps: "specialization" | "user" | "academicQualification" | "professionalLicense" | "workExperience" | "professionalAffiliation" | "awardRecognition" | "professionalDevelopment" | "communityInvolvement" | "publication" | "conferencePresentation"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Specialization: {
+        payload: Prisma.$SpecializationPayload<ExtArgs>
+        fields: Prisma.SpecializationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SpecializationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SpecializationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>
+          }
+          findFirst: {
+            args: Prisma.SpecializationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SpecializationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>
+          }
+          findMany: {
+            args: Prisma.SpecializationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>[]
+          }
+          create: {
+            args: Prisma.SpecializationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>
+          }
+          createMany: {
+            args: Prisma.SpecializationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SpecializationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>[]
+          }
+          delete: {
+            args: Prisma.SpecializationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>
+          }
+          update: {
+            args: Prisma.SpecializationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>
+          }
+          deleteMany: {
+            args: Prisma.SpecializationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SpecializationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SpecializationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>[]
+          }
+          upsert: {
+            args: Prisma.SpecializationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecializationPayload>
+          }
+          aggregate: {
+            args: Prisma.SpecializationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSpecialization>
+          }
+          groupBy: {
+            args: Prisma.SpecializationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SpecializationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SpecializationCountArgs<ExtArgs>
+            result: $Utils.Optional<SpecializationCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -1614,6 +1704,7 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    specialization?: SpecializationOmit
     user?: UserOmit
     academicQualification?: AcademicQualificationOmit
     professionalLicense?: ProfessionalLicenseOmit
@@ -1714,10 +1805,42 @@ export namespace Prisma {
 
 
   /**
+   * Count Type SpecializationCountOutputType
+   */
+
+  export type SpecializationCountOutputType = {
+    faculty: number
+  }
+
+  export type SpecializationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | SpecializationCountOutputTypeCountFacultyArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SpecializationCountOutputType without action
+   */
+  export type SpecializationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecializationCountOutputType
+     */
+    select?: SpecializationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SpecializationCountOutputType without action
+   */
+  export type SpecializationCountOutputTypeCountFacultyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+
+  /**
    * Count Type UserCountOutputType
    */
 
   export type UserCountOutputType = {
+    specializations: number
     academicQualifications: number
     professionalLicenses: number
     workExperiences: number
@@ -1730,6 +1853,7 @@ export namespace Prisma {
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    specializations?: boolean | UserCountOutputTypeCountSpecializationsArgs
     academicQualifications?: boolean | UserCountOutputTypeCountAcademicQualificationsArgs
     professionalLicenses?: boolean | UserCountOutputTypeCountProfessionalLicensesArgs
     workExperiences?: boolean | UserCountOutputTypeCountWorkExperiencesArgs
@@ -1750,6 +1874,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSpecializationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpecializationWhereInput
   }
 
   /**
@@ -1819,6 +1950,1074 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model Specialization
+   */
+
+  export type AggregateSpecialization = {
+    _count: SpecializationCountAggregateOutputType | null
+    _min: SpecializationMinAggregateOutputType | null
+    _max: SpecializationMaxAggregateOutputType | null
+  }
+
+  export type SpecializationMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SpecializationMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SpecializationCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SpecializationMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SpecializationMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SpecializationCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SpecializationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Specialization to aggregate.
+     */
+    where?: SpecializationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Specializations to fetch.
+     */
+    orderBy?: SpecializationOrderByWithRelationInput | SpecializationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SpecializationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Specializations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Specializations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Specializations
+    **/
+    _count?: true | SpecializationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SpecializationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SpecializationMaxAggregateInputType
+  }
+
+  export type GetSpecializationAggregateType<T extends SpecializationAggregateArgs> = {
+        [P in keyof T & keyof AggregateSpecialization]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSpecialization[P]>
+      : GetScalarType<T[P], AggregateSpecialization[P]>
+  }
+
+
+
+
+  export type SpecializationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpecializationWhereInput
+    orderBy?: SpecializationOrderByWithAggregationInput | SpecializationOrderByWithAggregationInput[]
+    by: SpecializationScalarFieldEnum[] | SpecializationScalarFieldEnum
+    having?: SpecializationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SpecializationCountAggregateInputType | true
+    _min?: SpecializationMinAggregateInputType
+    _max?: SpecializationMaxAggregateInputType
+  }
+
+  export type SpecializationGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SpecializationCountAggregateOutputType | null
+    _min: SpecializationMinAggregateOutputType | null
+    _max: SpecializationMaxAggregateOutputType | null
+  }
+
+  type GetSpecializationGroupByPayload<T extends SpecializationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SpecializationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SpecializationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SpecializationGroupByOutputType[P]>
+            : GetScalarType<T[P], SpecializationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SpecializationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    faculty?: boolean | Specialization$facultyArgs<ExtArgs>
+    _count?: boolean | SpecializationCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["specialization"]>
+
+  export type SpecializationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["specialization"]>
+
+  export type SpecializationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["specialization"]>
+
+  export type SpecializationSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SpecializationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["specialization"]>
+  export type SpecializationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | Specialization$facultyArgs<ExtArgs>
+    _count?: boolean | SpecializationCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SpecializationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SpecializationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $SpecializationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Specialization"
+    objects: {
+      faculty: Prisma.$UserPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["specialization"]>
+    composites: {}
+  }
+
+  type SpecializationGetPayload<S extends boolean | null | undefined | SpecializationDefaultArgs> = $Result.GetResult<Prisma.$SpecializationPayload, S>
+
+  type SpecializationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SpecializationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SpecializationCountAggregateInputType | true
+    }
+
+  export interface SpecializationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Specialization'], meta: { name: 'Specialization' } }
+    /**
+     * Find zero or one Specialization that matches the filter.
+     * @param {SpecializationFindUniqueArgs} args - Arguments to find a Specialization
+     * @example
+     * // Get one Specialization
+     * const specialization = await prisma.specialization.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SpecializationFindUniqueArgs>(args: SelectSubset<T, SpecializationFindUniqueArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Specialization that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SpecializationFindUniqueOrThrowArgs} args - Arguments to find a Specialization
+     * @example
+     * // Get one Specialization
+     * const specialization = await prisma.specialization.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SpecializationFindUniqueOrThrowArgs>(args: SelectSubset<T, SpecializationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Specialization that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecializationFindFirstArgs} args - Arguments to find a Specialization
+     * @example
+     * // Get one Specialization
+     * const specialization = await prisma.specialization.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SpecializationFindFirstArgs>(args?: SelectSubset<T, SpecializationFindFirstArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Specialization that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecializationFindFirstOrThrowArgs} args - Arguments to find a Specialization
+     * @example
+     * // Get one Specialization
+     * const specialization = await prisma.specialization.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SpecializationFindFirstOrThrowArgs>(args?: SelectSubset<T, SpecializationFindFirstOrThrowArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Specializations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecializationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Specializations
+     * const specializations = await prisma.specialization.findMany()
+     * 
+     * // Get first 10 Specializations
+     * const specializations = await prisma.specialization.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const specializationWithIdOnly = await prisma.specialization.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SpecializationFindManyArgs>(args?: SelectSubset<T, SpecializationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Specialization.
+     * @param {SpecializationCreateArgs} args - Arguments to create a Specialization.
+     * @example
+     * // Create one Specialization
+     * const Specialization = await prisma.specialization.create({
+     *   data: {
+     *     // ... data to create a Specialization
+     *   }
+     * })
+     * 
+     */
+    create<T extends SpecializationCreateArgs>(args: SelectSubset<T, SpecializationCreateArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Specializations.
+     * @param {SpecializationCreateManyArgs} args - Arguments to create many Specializations.
+     * @example
+     * // Create many Specializations
+     * const specialization = await prisma.specialization.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SpecializationCreateManyArgs>(args?: SelectSubset<T, SpecializationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Specializations and returns the data saved in the database.
+     * @param {SpecializationCreateManyAndReturnArgs} args - Arguments to create many Specializations.
+     * @example
+     * // Create many Specializations
+     * const specialization = await prisma.specialization.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Specializations and only return the `id`
+     * const specializationWithIdOnly = await prisma.specialization.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SpecializationCreateManyAndReturnArgs>(args?: SelectSubset<T, SpecializationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Specialization.
+     * @param {SpecializationDeleteArgs} args - Arguments to delete one Specialization.
+     * @example
+     * // Delete one Specialization
+     * const Specialization = await prisma.specialization.delete({
+     *   where: {
+     *     // ... filter to delete one Specialization
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SpecializationDeleteArgs>(args: SelectSubset<T, SpecializationDeleteArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Specialization.
+     * @param {SpecializationUpdateArgs} args - Arguments to update one Specialization.
+     * @example
+     * // Update one Specialization
+     * const specialization = await prisma.specialization.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SpecializationUpdateArgs>(args: SelectSubset<T, SpecializationUpdateArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Specializations.
+     * @param {SpecializationDeleteManyArgs} args - Arguments to filter Specializations to delete.
+     * @example
+     * // Delete a few Specializations
+     * const { count } = await prisma.specialization.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SpecializationDeleteManyArgs>(args?: SelectSubset<T, SpecializationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Specializations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecializationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Specializations
+     * const specialization = await prisma.specialization.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SpecializationUpdateManyArgs>(args: SelectSubset<T, SpecializationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Specializations and returns the data updated in the database.
+     * @param {SpecializationUpdateManyAndReturnArgs} args - Arguments to update many Specializations.
+     * @example
+     * // Update many Specializations
+     * const specialization = await prisma.specialization.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Specializations and only return the `id`
+     * const specializationWithIdOnly = await prisma.specialization.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SpecializationUpdateManyAndReturnArgs>(args: SelectSubset<T, SpecializationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Specialization.
+     * @param {SpecializationUpsertArgs} args - Arguments to update or create a Specialization.
+     * @example
+     * // Update or create a Specialization
+     * const specialization = await prisma.specialization.upsert({
+     *   create: {
+     *     // ... data to create a Specialization
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Specialization we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SpecializationUpsertArgs>(args: SelectSubset<T, SpecializationUpsertArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Specializations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecializationCountArgs} args - Arguments to filter Specializations to count.
+     * @example
+     * // Count the number of Specializations
+     * const count = await prisma.specialization.count({
+     *   where: {
+     *     // ... the filter for the Specializations we want to count
+     *   }
+     * })
+    **/
+    count<T extends SpecializationCountArgs>(
+      args?: Subset<T, SpecializationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SpecializationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Specialization.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecializationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SpecializationAggregateArgs>(args: Subset<T, SpecializationAggregateArgs>): Prisma.PrismaPromise<GetSpecializationAggregateType<T>>
+
+    /**
+     * Group by Specialization.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecializationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SpecializationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SpecializationGroupByArgs['orderBy'] }
+        : { orderBy?: SpecializationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SpecializationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSpecializationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Specialization model
+   */
+  readonly fields: SpecializationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Specialization.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SpecializationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    faculty<T extends Specialization$facultyArgs<ExtArgs> = {}>(args?: Subset<T, Specialization$facultyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Specialization model
+   */
+  interface SpecializationFieldRefs {
+    readonly id: FieldRef<"Specialization", 'String'>
+    readonly name: FieldRef<"Specialization", 'String'>
+    readonly description: FieldRef<"Specialization", 'String'>
+    readonly createdAt: FieldRef<"Specialization", 'DateTime'>
+    readonly updatedAt: FieldRef<"Specialization", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Specialization findUnique
+   */
+  export type SpecializationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * Filter, which Specialization to fetch.
+     */
+    where: SpecializationWhereUniqueInput
+  }
+
+  /**
+   * Specialization findUniqueOrThrow
+   */
+  export type SpecializationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * Filter, which Specialization to fetch.
+     */
+    where: SpecializationWhereUniqueInput
+  }
+
+  /**
+   * Specialization findFirst
+   */
+  export type SpecializationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * Filter, which Specialization to fetch.
+     */
+    where?: SpecializationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Specializations to fetch.
+     */
+    orderBy?: SpecializationOrderByWithRelationInput | SpecializationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Specializations.
+     */
+    cursor?: SpecializationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Specializations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Specializations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Specializations.
+     */
+    distinct?: SpecializationScalarFieldEnum | SpecializationScalarFieldEnum[]
+  }
+
+  /**
+   * Specialization findFirstOrThrow
+   */
+  export type SpecializationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * Filter, which Specialization to fetch.
+     */
+    where?: SpecializationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Specializations to fetch.
+     */
+    orderBy?: SpecializationOrderByWithRelationInput | SpecializationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Specializations.
+     */
+    cursor?: SpecializationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Specializations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Specializations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Specializations.
+     */
+    distinct?: SpecializationScalarFieldEnum | SpecializationScalarFieldEnum[]
+  }
+
+  /**
+   * Specialization findMany
+   */
+  export type SpecializationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * Filter, which Specializations to fetch.
+     */
+    where?: SpecializationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Specializations to fetch.
+     */
+    orderBy?: SpecializationOrderByWithRelationInput | SpecializationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Specializations.
+     */
+    cursor?: SpecializationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Specializations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Specializations.
+     */
+    skip?: number
+    distinct?: SpecializationScalarFieldEnum | SpecializationScalarFieldEnum[]
+  }
+
+  /**
+   * Specialization create
+   */
+  export type SpecializationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Specialization.
+     */
+    data: XOR<SpecializationCreateInput, SpecializationUncheckedCreateInput>
+  }
+
+  /**
+   * Specialization createMany
+   */
+  export type SpecializationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Specializations.
+     */
+    data: SpecializationCreateManyInput | SpecializationCreateManyInput[]
+  }
+
+  /**
+   * Specialization createManyAndReturn
+   */
+  export type SpecializationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Specializations.
+     */
+    data: SpecializationCreateManyInput | SpecializationCreateManyInput[]
+  }
+
+  /**
+   * Specialization update
+   */
+  export type SpecializationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Specialization.
+     */
+    data: XOR<SpecializationUpdateInput, SpecializationUncheckedUpdateInput>
+    /**
+     * Choose, which Specialization to update.
+     */
+    where: SpecializationWhereUniqueInput
+  }
+
+  /**
+   * Specialization updateMany
+   */
+  export type SpecializationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Specializations.
+     */
+    data: XOR<SpecializationUpdateManyMutationInput, SpecializationUncheckedUpdateManyInput>
+    /**
+     * Filter which Specializations to update
+     */
+    where?: SpecializationWhereInput
+    /**
+     * Limit how many Specializations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Specialization updateManyAndReturn
+   */
+  export type SpecializationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * The data used to update Specializations.
+     */
+    data: XOR<SpecializationUpdateManyMutationInput, SpecializationUncheckedUpdateManyInput>
+    /**
+     * Filter which Specializations to update
+     */
+    where?: SpecializationWhereInput
+    /**
+     * Limit how many Specializations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Specialization upsert
+   */
+  export type SpecializationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Specialization to update in case it exists.
+     */
+    where: SpecializationWhereUniqueInput
+    /**
+     * In case the Specialization found by the `where` argument doesn't exist, create a new Specialization with this data.
+     */
+    create: XOR<SpecializationCreateInput, SpecializationUncheckedCreateInput>
+    /**
+     * In case the Specialization was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SpecializationUpdateInput, SpecializationUncheckedUpdateInput>
+  }
+
+  /**
+   * Specialization delete
+   */
+  export type SpecializationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    /**
+     * Filter which Specialization to delete.
+     */
+    where: SpecializationWhereUniqueInput
+  }
+
+  /**
+   * Specialization deleteMany
+   */
+  export type SpecializationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Specializations to delete
+     */
+    where?: SpecializationWhereInput
+    /**
+     * Limit how many Specializations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Specialization.faculty
+   */
+  export type Specialization$facultyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Specialization without action
+   */
+  export type SpecializationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model User
@@ -2000,6 +3199,7 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    specializations?: boolean | User$specializationsArgs<ExtArgs>
     academicQualifications?: boolean | User$academicQualificationsArgs<ExtArgs>
     professionalLicenses?: boolean | User$professionalLicensesArgs<ExtArgs>
     workExperiences?: boolean | User$workExperiencesArgs<ExtArgs>
@@ -2044,6 +3244,7 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    specializations?: boolean | User$specializationsArgs<ExtArgs>
     academicQualifications?: boolean | User$academicQualificationsArgs<ExtArgs>
     professionalLicenses?: boolean | User$professionalLicensesArgs<ExtArgs>
     workExperiences?: boolean | User$workExperiencesArgs<ExtArgs>
@@ -2061,6 +3262,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      specializations: Prisma.$SpecializationPayload<ExtArgs>[]
       academicQualifications: Prisma.$AcademicQualificationPayload<ExtArgs>[]
       professionalLicenses: Prisma.$ProfessionalLicensePayload<ExtArgs>[]
       workExperiences: Prisma.$WorkExperiencePayload<ExtArgs>[]
@@ -2473,6 +3675,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    specializations<T extends User$specializationsArgs<ExtArgs> = {}>(args?: Subset<T, User$specializationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicQualifications<T extends User$academicQualificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$academicQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     professionalLicenses<T extends User$professionalLicensesArgs<ExtArgs> = {}>(args?: Subset<T, User$professionalLicensesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalLicensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     workExperiences<T extends User$workExperiencesArgs<ExtArgs> = {}>(args?: Subset<T, User$workExperiencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2901,6 +4104,30 @@ export namespace Prisma {
      * Limit how many Users to delete.
      */
     limit?: number
+  }
+
+  /**
+   * User.specializations
+   */
+  export type User$specializationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    where?: SpecializationWhereInput
+    orderBy?: SpecializationOrderByWithRelationInput | SpecializationOrderByWithRelationInput[]
+    cursor?: SpecializationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SpecializationScalarFieldEnum | SpecializationScalarFieldEnum[]
   }
 
   /**
@@ -13358,6 +14585,17 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const SpecializationScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SpecializationScalarFieldEnum = (typeof SpecializationScalarFieldEnum)[keyof typeof SpecializationScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -13548,16 +14786,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Role'
+   * Reference to a field of type 'DateTime'
    */
-  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Role'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
     
 
 
@@ -13585,6 +14823,61 @@ export namespace Prisma {
    */
 
 
+  export type SpecializationWhereInput = {
+    AND?: SpecializationWhereInput | SpecializationWhereInput[]
+    OR?: SpecializationWhereInput[]
+    NOT?: SpecializationWhereInput | SpecializationWhereInput[]
+    id?: StringFilter<"Specialization"> | string
+    name?: StringFilter<"Specialization"> | string
+    description?: StringNullableFilter<"Specialization"> | string | null
+    createdAt?: DateTimeFilter<"Specialization"> | Date | string
+    updatedAt?: DateTimeFilter<"Specialization"> | Date | string
+    faculty?: UserListRelationFilter
+  }
+
+  export type SpecializationOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    faculty?: UserOrderByRelationAggregateInput
+  }
+
+  export type SpecializationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: SpecializationWhereInput | SpecializationWhereInput[]
+    OR?: SpecializationWhereInput[]
+    NOT?: SpecializationWhereInput | SpecializationWhereInput[]
+    description?: StringNullableFilter<"Specialization"> | string | null
+    createdAt?: DateTimeFilter<"Specialization"> | Date | string
+    updatedAt?: DateTimeFilter<"Specialization"> | Date | string
+    faculty?: UserListRelationFilter
+  }, "id" | "name">
+
+  export type SpecializationOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SpecializationCountOrderByAggregateInput
+    _max?: SpecializationMaxOrderByAggregateInput
+    _min?: SpecializationMinOrderByAggregateInput
+  }
+
+  export type SpecializationScalarWhereWithAggregatesInput = {
+    AND?: SpecializationScalarWhereWithAggregatesInput | SpecializationScalarWhereWithAggregatesInput[]
+    OR?: SpecializationScalarWhereWithAggregatesInput[]
+    NOT?: SpecializationScalarWhereWithAggregatesInput | SpecializationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Specialization"> | string
+    name?: StringWithAggregatesFilter<"Specialization"> | string
+    description?: StringNullableWithAggregatesFilter<"Specialization"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Specialization"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Specialization"> | Date | string
+  }
+
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -13596,6 +14889,7 @@ export namespace Prisma {
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    specializations?: SpecializationListRelationFilter
     academicQualifications?: AcademicQualificationListRelationFilter
     professionalLicenses?: ProfessionalLicenseListRelationFilter
     workExperiences?: WorkExperienceListRelationFilter
@@ -13615,6 +14909,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    specializations?: SpecializationOrderByRelationAggregateInput
     academicQualifications?: AcademicQualificationOrderByRelationAggregateInput
     professionalLicenses?: ProfessionalLicenseOrderByRelationAggregateInput
     workExperiences?: WorkExperienceOrderByRelationAggregateInput
@@ -13637,6 +14932,7 @@ export namespace Prisma {
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    specializations?: SpecializationListRelationFilter
     academicQualifications?: AcademicQualificationListRelationFilter
     professionalLicenses?: ProfessionalLicenseListRelationFilter
     workExperiences?: WorkExperienceListRelationFilter
@@ -14418,6 +15714,66 @@ export namespace Prisma {
     rejectionReason?: StringNullableWithAggregatesFilter<"ConferencePresentation"> | string | null
   }
 
+  export type SpecializationCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty?: UserCreateNestedManyWithoutSpecializationsInput
+  }
+
+  export type SpecializationUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty?: UserUncheckedCreateNestedManyWithoutSpecializationsInput
+  }
+
+  export type SpecializationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: UserUpdateManyWithoutSpecializationsNestedInput
+  }
+
+  export type SpecializationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: UserUncheckedUpdateManyWithoutSpecializationsNestedInput
+  }
+
+  export type SpecializationCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SpecializationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpecializationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -14426,6 +15782,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -14445,6 +15802,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -14464,6 +15822,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -14483,6 +15842,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -15390,13 +16750,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type EnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[]
-    notIn?: $Enums.Role[]
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -15406,6 +16759,106 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SpecializationCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SpecializationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SpecializationMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[]
+    notIn?: $Enums.Role[]
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
+  export type SpecializationListRelationFilter = {
+    every?: SpecializationWhereInput
+    some?: SpecializationWhereInput
+    none?: SpecializationWhereInput
   }
 
   export type AcademicQualificationListRelationFilter = {
@@ -15462,9 +16915,8 @@ export namespace Prisma {
     none?: ConferencePresentationWhereInput
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
+  export type SpecializationOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type AcademicQualificationOrderByRelationAggregateInput = {
@@ -15533,40 +16985,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[]
@@ -15575,20 +16993,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRoleFilter<$PrismaModel>
     _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -16019,6 +17423,62 @@ export namespace Prisma {
     rejectionReason?: SortOrder
   }
 
+  export type UserCreateNestedManyWithoutSpecializationsInput = {
+    create?: XOR<UserCreateWithoutSpecializationsInput, UserUncheckedCreateWithoutSpecializationsInput> | UserCreateWithoutSpecializationsInput[] | UserUncheckedCreateWithoutSpecializationsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSpecializationsInput | UserCreateOrConnectWithoutSpecializationsInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutSpecializationsInput = {
+    create?: XOR<UserCreateWithoutSpecializationsInput, UserUncheckedCreateWithoutSpecializationsInput> | UserCreateWithoutSpecializationsInput[] | UserUncheckedCreateWithoutSpecializationsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSpecializationsInput | UserCreateOrConnectWithoutSpecializationsInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type UserUpdateManyWithoutSpecializationsNestedInput = {
+    create?: XOR<UserCreateWithoutSpecializationsInput, UserUncheckedCreateWithoutSpecializationsInput> | UserCreateWithoutSpecializationsInput[] | UserUncheckedCreateWithoutSpecializationsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSpecializationsInput | UserCreateOrConnectWithoutSpecializationsInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutSpecializationsInput | UserUpsertWithWhereUniqueWithoutSpecializationsInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutSpecializationsInput | UserUpdateWithWhereUniqueWithoutSpecializationsInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutSpecializationsInput | UserUpdateManyWithWhereWithoutSpecializationsInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutSpecializationsNestedInput = {
+    create?: XOR<UserCreateWithoutSpecializationsInput, UserUncheckedCreateWithoutSpecializationsInput> | UserCreateWithoutSpecializationsInput[] | UserUncheckedCreateWithoutSpecializationsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSpecializationsInput | UserCreateOrConnectWithoutSpecializationsInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutSpecializationsInput | UserUpsertWithWhereUniqueWithoutSpecializationsInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutSpecializationsInput | UserUpdateWithWhereUniqueWithoutSpecializationsInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutSpecializationsInput | UserUpdateManyWithWhereWithoutSpecializationsInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type SpecializationCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput> | SpecializationCreateWithoutFacultyInput[] | SpecializationUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutFacultyInput | SpecializationCreateOrConnectWithoutFacultyInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+  }
+
   export type AcademicQualificationCreateNestedManyWithoutUserInput = {
     create?: XOR<AcademicQualificationCreateWithoutUserInput, AcademicQualificationUncheckedCreateWithoutUserInput> | AcademicQualificationCreateWithoutUserInput[] | AcademicQualificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AcademicQualificationCreateOrConnectWithoutUserInput | AcademicQualificationCreateOrConnectWithoutUserInput[]
@@ -16080,6 +17540,12 @@ export namespace Prisma {
     connectOrCreate?: ConferencePresentationCreateOrConnectWithoutUserInput | ConferencePresentationCreateOrConnectWithoutUserInput[]
     createMany?: ConferencePresentationCreateManyUserInputEnvelope
     connect?: ConferencePresentationWhereUniqueInput | ConferencePresentationWhereUniqueInput[]
+  }
+
+  export type SpecializationUncheckedCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput> | SpecializationCreateWithoutFacultyInput[] | SpecializationUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutFacultyInput | SpecializationCreateOrConnectWithoutFacultyInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
   }
 
   export type AcademicQualificationUncheckedCreateNestedManyWithoutUserInput = {
@@ -16145,20 +17611,21 @@ export namespace Prisma {
     connect?: ConferencePresentationWhereUniqueInput | ConferencePresentationWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type EnumRoleFieldUpdateOperationsInput = {
     set?: $Enums.Role
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type SpecializationUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput> | SpecializationCreateWithoutFacultyInput[] | SpecializationUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutFacultyInput | SpecializationCreateOrConnectWithoutFacultyInput[]
+    upsert?: SpecializationUpsertWithWhereUniqueWithoutFacultyInput | SpecializationUpsertWithWhereUniqueWithoutFacultyInput[]
+    set?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    disconnect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    delete?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    update?: SpecializationUpdateWithWhereUniqueWithoutFacultyInput | SpecializationUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: SpecializationUpdateManyWithWhereWithoutFacultyInput | SpecializationUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
   }
 
   export type AcademicQualificationUpdateManyWithoutUserNestedInput = {
@@ -16285,6 +17752,19 @@ export namespace Prisma {
     update?: ConferencePresentationUpdateWithWhereUniqueWithoutUserInput | ConferencePresentationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ConferencePresentationUpdateManyWithWhereWithoutUserInput | ConferencePresentationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ConferencePresentationScalarWhereInput | ConferencePresentationScalarWhereInput[]
+  }
+
+  export type SpecializationUncheckedUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput> | SpecializationCreateWithoutFacultyInput[] | SpecializationUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutFacultyInput | SpecializationCreateOrConnectWithoutFacultyInput[]
+    upsert?: SpecializationUpsertWithWhereUniqueWithoutFacultyInput | SpecializationUpsertWithWhereUniqueWithoutFacultyInput[]
+    set?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    disconnect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    delete?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    update?: SpecializationUpdateWithWhereUniqueWithoutFacultyInput | SpecializationUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: SpecializationUpdateManyWithWhereWithoutFacultyInput | SpecializationUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
   }
 
   export type AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput = {
@@ -16579,13 +18059,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedEnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[]
-    notIn?: $Enums.Role[]
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -16653,16 +18126,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[]
-    notIn?: $Enums.Role[]
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -16675,6 +18138,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[]
+    notIn?: $Enums.Role[]
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[]
+    notIn?: $Enums.Role[]
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedEnumApprovalStatusFilter<$PrismaModel = never> = {
@@ -16719,6 +18199,99 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumApprovalStatusFilter<$PrismaModel>
     _max?: NestedEnumApprovalStatusFilter<$PrismaModel>
+  }
+
+  export type UserCreateWithoutSpecializationsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
+    professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
+    workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
+    professionalAffiliations?: ProfessionalAffiliationCreateNestedManyWithoutUserInput
+    awardsRecognitions?: AwardRecognitionCreateNestedManyWithoutUserInput
+    professionalDevelopments?: ProfessionalDevelopmentCreateNestedManyWithoutUserInput
+    communityInvolvements?: CommunityInvolvementCreateNestedManyWithoutUserInput
+    publications?: PublicationCreateNestedManyWithoutUserInput
+    conferencePresentations?: ConferencePresentationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSpecializationsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
+    professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
+    workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
+    professionalAffiliations?: ProfessionalAffiliationUncheckedCreateNestedManyWithoutUserInput
+    awardsRecognitions?: AwardRecognitionUncheckedCreateNestedManyWithoutUserInput
+    professionalDevelopments?: ProfessionalDevelopmentUncheckedCreateNestedManyWithoutUserInput
+    communityInvolvements?: CommunityInvolvementUncheckedCreateNestedManyWithoutUserInput
+    publications?: PublicationUncheckedCreateNestedManyWithoutUserInput
+    conferencePresentations?: ConferencePresentationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSpecializationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSpecializationsInput, UserUncheckedCreateWithoutSpecializationsInput>
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutSpecializationsInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutSpecializationsInput, UserUncheckedUpdateWithoutSpecializationsInput>
+    create: XOR<UserCreateWithoutSpecializationsInput, UserUncheckedCreateWithoutSpecializationsInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutSpecializationsInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutSpecializationsInput, UserUncheckedUpdateWithoutSpecializationsInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutSpecializationsInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutSpecializationsInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    name?: StringNullableFilter<"User"> | string | null
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+  }
+
+  export type SpecializationCreateWithoutFacultyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SpecializationUncheckedCreateWithoutFacultyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SpecializationCreateOrConnectWithoutFacultyInput = {
+    where: SpecializationWhereUniqueInput
+    create: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput>
   }
 
   export type AcademicQualificationCreateWithoutUserInput = {
@@ -17026,6 +18599,33 @@ export namespace Prisma {
     data: ConferencePresentationCreateManyUserInput | ConferencePresentationCreateManyUserInput[]
   }
 
+  export type SpecializationUpsertWithWhereUniqueWithoutFacultyInput = {
+    where: SpecializationWhereUniqueInput
+    update: XOR<SpecializationUpdateWithoutFacultyInput, SpecializationUncheckedUpdateWithoutFacultyInput>
+    create: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type SpecializationUpdateWithWhereUniqueWithoutFacultyInput = {
+    where: SpecializationWhereUniqueInput
+    data: XOR<SpecializationUpdateWithoutFacultyInput, SpecializationUncheckedUpdateWithoutFacultyInput>
+  }
+
+  export type SpecializationUpdateManyWithWhereWithoutFacultyInput = {
+    where: SpecializationScalarWhereInput
+    data: XOR<SpecializationUpdateManyMutationInput, SpecializationUncheckedUpdateManyWithoutFacultyInput>
+  }
+
+  export type SpecializationScalarWhereInput = {
+    AND?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
+    OR?: SpecializationScalarWhereInput[]
+    NOT?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
+    id?: StringFilter<"Specialization"> | string
+    name?: StringFilter<"Specialization"> | string
+    description?: StringNullableFilter<"Specialization"> | string | null
+    createdAt?: DateTimeFilter<"Specialization"> | Date | string
+    updatedAt?: DateTimeFilter<"Specialization"> | Date | string
+  }
+
   export type AcademicQualificationUpsertWithWhereUniqueWithoutUserInput = {
     where: AcademicQualificationWhereUniqueInput
     update: XOR<AcademicQualificationUpdateWithoutUserInput, AcademicQualificationUncheckedUpdateWithoutUserInput>
@@ -17326,6 +18926,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
     professionalAffiliations?: ProfessionalAffiliationCreateNestedManyWithoutUserInput
@@ -17344,6 +18945,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
     professionalAffiliations?: ProfessionalAffiliationUncheckedCreateNestedManyWithoutUserInput
@@ -17378,6 +18980,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
     professionalAffiliations?: ProfessionalAffiliationUpdateManyWithoutUserNestedInput
@@ -17396,6 +18999,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
     professionalAffiliations?: ProfessionalAffiliationUncheckedUpdateManyWithoutUserNestedInput
@@ -17414,6 +19018,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
     professionalAffiliations?: ProfessionalAffiliationCreateNestedManyWithoutUserInput
@@ -17432,6 +19037,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
     professionalAffiliations?: ProfessionalAffiliationUncheckedCreateNestedManyWithoutUserInput
@@ -17466,6 +19072,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
     professionalAffiliations?: ProfessionalAffiliationUpdateManyWithoutUserNestedInput
@@ -17484,6 +19091,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
     professionalAffiliations?: ProfessionalAffiliationUncheckedUpdateManyWithoutUserNestedInput
@@ -17502,6 +19110,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     professionalAffiliations?: ProfessionalAffiliationCreateNestedManyWithoutUserInput
@@ -17520,6 +19129,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     professionalAffiliations?: ProfessionalAffiliationUncheckedCreateNestedManyWithoutUserInput
@@ -17554,6 +19164,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     professionalAffiliations?: ProfessionalAffiliationUpdateManyWithoutUserNestedInput
@@ -17572,6 +19183,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     professionalAffiliations?: ProfessionalAffiliationUncheckedUpdateManyWithoutUserNestedInput
@@ -17590,6 +19202,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -17608,6 +19221,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -17642,6 +19256,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -17660,6 +19275,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -17678,6 +19294,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -17696,6 +19313,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -17730,6 +19348,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -17748,6 +19367,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -17766,6 +19386,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -17784,6 +19405,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -17818,6 +19440,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -17836,6 +19459,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -17854,6 +19478,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -17872,6 +19497,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -17906,6 +19532,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -17924,6 +19551,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -17942,6 +19570,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -17960,6 +19589,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -17994,6 +19624,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -18012,6 +19643,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -18030,6 +19662,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -18048,6 +19681,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -18082,6 +19716,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -18100,6 +19735,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -18108,6 +19744,54 @@ export namespace Prisma {
     professionalDevelopments?: ProfessionalDevelopmentUncheckedUpdateManyWithoutUserNestedInput
     communityInvolvements?: CommunityInvolvementUncheckedUpdateManyWithoutUserNestedInput
     publications?: PublicationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpdateWithoutSpecializationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
+    professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
+    workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
+    professionalAffiliations?: ProfessionalAffiliationUpdateManyWithoutUserNestedInput
+    awardsRecognitions?: AwardRecognitionUpdateManyWithoutUserNestedInput
+    professionalDevelopments?: ProfessionalDevelopmentUpdateManyWithoutUserNestedInput
+    communityInvolvements?: CommunityInvolvementUpdateManyWithoutUserNestedInput
+    publications?: PublicationUpdateManyWithoutUserNestedInput
+    conferencePresentations?: ConferencePresentationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSpecializationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
+    professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
+    workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
+    professionalAffiliations?: ProfessionalAffiliationUncheckedUpdateManyWithoutUserNestedInput
+    awardsRecognitions?: AwardRecognitionUncheckedUpdateManyWithoutUserNestedInput
+    professionalDevelopments?: ProfessionalDevelopmentUncheckedUpdateManyWithoutUserNestedInput
+    communityInvolvements?: CommunityInvolvementUncheckedUpdateManyWithoutUserNestedInput
+    publications?: PublicationUncheckedUpdateManyWithoutUserNestedInput
+    conferencePresentations?: ConferencePresentationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutSpecializationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AcademicQualificationCreateManyUserInput = {
@@ -18220,6 +19904,30 @@ export namespace Prisma {
     proofUrl?: string | null
     status?: $Enums.ApprovalStatus
     rejectionReason?: string | null
+  }
+
+  export type SpecializationUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpecializationUncheckedUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpecializationUncheckedUpdateManyWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AcademicQualificationUpdateWithoutUserInput = {

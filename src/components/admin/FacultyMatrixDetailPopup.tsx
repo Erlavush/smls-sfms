@@ -1,0 +1,95 @@
+// src/components/admin/FacultyMatrixDetailPopup.tsx
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { ArrowTopRightOnSquareIcon, TagIcon, CheckIcon } from '@heroicons/react/24/outline';
+import type { FacultyLinkedSpecialization } from '@/types';
+
+interface Props {
+    faculty: FacultyLinkedSpecialization | null;
+    onClose: () => void;
+}
+
+export default function FacultyMatrixDetailPopup({ faculty, onClose }: Props) {
+    // Null check at the beginning handles the potential null faculty for the rest of the component
+    if (!faculty) {
+        return null;
+    }
+
+    const specializations = faculty.linkedSpecializationNames?.sort() || [];
+
+    return (
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 transition-opacity duration-300"
+            aria-labelledby="faculty-detail-popup-title"
+            role="dialog"
+            aria-modal="true"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white rounded-lg shadow-xl w-full max-w-lg relative transform transition-all duration-300 scale-95 opacity-0 animate-fade-in-scale flex flex-col max-h-[90vh]"
+                onClick={(e) => e.stopPropagation()}
+            >
+                {/* Header */}
+                <div className="flex justify-between items-center p-4 border-b border-gray-200 flex-shrink-0">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2" id="faculty-detail-popup-title">
+                        <TagIcon className="h-5 w-5 text-indigo-600"/>
+                        {faculty.name || 'Unnamed Faculty'} - Linked Specializations
+                    </h3>
+                    <button
+                        onClick={onClose}
+                        className="p-1 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1"
+                        aria-label="Close detail view"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Scrollable Content Area */}
+                <div className="p-5 overflow-y-auto flex-grow">
+                    <p className="text-sm text-gray-600 mb-5">
+                        <span className="font-medium text-gray-700">Email:</span> {faculty.email || 'N/A'}
+                    </p>
+
+                    {specializations.length === 0 ? (
+                        <p className="italic text-gray-500 text-sm">No specializations linked to this faculty member.</p>
+                    ) : (
+                        // *** FIX: Ensure this div closes correctly ***
+                        <div>
+                            <h4 className="text-md font-semibold text-indigo-700 mb-3 border-b border-indigo-100 pb-1">
+                                Linked Specializations ({specializations.length})
+                            </h4>
+                            {/* *** FIX: Correct map and ul/li structure *** */}
+                            <ul className="space-y-2 pl-2">
+                                {specializations.map((specName, index) => (
+                                    // The key should be on the outermost element returned by map
+                                    <li key={`${faculty.userId}-spec-${index}`} className="flex items-center gap-2 text-sm text-gray-800">
+                                        <CheckIcon className="h-4 w-4 text-green-600 flex-shrink-0"/>
+                                        <span>{specName}</span>
+                                    </li>
+                                ))} {/* Closing parenthesis for map */}
+                            </ul> {/* Closing tag for ul */}
+                        </div> // *** FIX: Added closing div here ***
+                    )} {/* Closing parenthesis for ternary */}
+                </div> {/* Closing tag for Scrollable Content Area */}
+
+                 {/* Footer with Profile Link */}
+                 <div className="p-4 border-t border-gray-200 bg-gray-50 text-right flex-shrink-0">
+                    <Link
+                        // The null check at the start ensures faculty is not null here
+                        href={`/admin/faculty/${faculty.userId}`}
+                        className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        View Full Profile
+                        <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                    </Link>
+                </div> {/* Closing tag for Footer */}
+            </div> {/* Closing tag for Modal Box */}
+        </div> // Closing tag for Backdrop
+    ); // Closing parenthesis for return
+} // Closing brace for component function

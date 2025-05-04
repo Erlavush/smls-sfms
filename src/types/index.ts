@@ -3,8 +3,9 @@ import type {
     AcademicQualification, ProfessionalLicense, WorkExperience,
     ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
     CommunityInvolvement, Publication, ConferencePresentation,
-    ApprovalStatus // <-- Import the enum
+    ApprovalStatus, Specialization // <-- Import the enum & Specialization
 } from '@/generated/prisma';
+import type { Role as PrismaRole } from '@/generated/prisma'; // Import Role if needed elsewhere
 import prisma from '@/lib/prisma';
 // Common temporary properties used during editing state
 export type TempCommon = {
@@ -49,6 +50,45 @@ export type ItemType =
     | 'publication'
     | 'conferencePresentation';
 
+// --- Define Evidence Source ---
+export interface EvidenceSource {
+    source: string; // e.g., "Academic Qualification - Degree"
+    evidence: string; // The actual text where the keyword was found
+}
+
+// --- Define Faculty Specialization Detail (Used by old keyword scanning, might be obsolete) ---
+export interface FacultySpecializationDetail {
+    userId: string;
+    name: string | null;
+    email: string | null;
+    // Use the EvidenceSource interface defined above
+    specializationDetails: {
+        [specializationKeyword: string]: EvidenceSource[];
+    };
+}
+
+// --- Define Admin Actions Response Type (For old keyword scanning, might be obsolete) ---
+export interface GetSpecializationResponse {
+    success: boolean;
+    data?: FacultySpecializationDetail[]; // Use the centralized type
+    error?: string;
+}
+
+// --- Type for data returned by the REVISED getFacultySpecializationData action ---
+export interface FacultyLinkedSpecialization {
+    userId: string;
+    name: string | null;
+    email: string | null;
+    linkedSpecializationNames: string[]; // Array of names of linked specializations
+}
+
+// --- Renamed Response type for the REVISED getFacultySpecializationData action ---
+export interface GetMatrixDataResponse { // Renamed from GetSpecializationResponse
+    success: boolean;
+    data?: FacultyLinkedSpecialization[]; // Use the new linked specialization type
+    error?: string;
+}
+
 // Helper function to map Prisma model names to ItemType strings
 // (Useful for admin actions if needed, but Prisma client uses camelCase keys directly)
 export function getModelKeyFromItemType(itemType: ItemType): keyof typeof prisma {
@@ -64,4 +104,11 @@ export function getModelKeyFromItemType(itemType: ItemType): keyof typeof prisma
         conferencePresentation: 'conferencePresentation',
     };
     return map[itemType];
+}
+
+// --- Keep the response type for the action that gets ALL specializations ---
+export interface GetSpecializationsResponse { // This is for getSpecializations()
+    success: boolean;
+    specializations?: Specialization[]; // Uses the Prisma Specialization type
+    error?: string;
 }

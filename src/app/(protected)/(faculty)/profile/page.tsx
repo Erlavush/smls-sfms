@@ -78,14 +78,154 @@ export default function ProfilePage() {
     const handleCancelEdit = () => { setIsEditing(false); setEditableData(null); setEditingItemId(null); setOriginalItemData(null); setEditError(null); setEditSuccess(null); };
 
     // --- Save Changes ---
-    const handleSaveChanges = () => { if (!editableData) { setEditError("No changes to save."); return; } setEditError(null); setEditSuccess(null); startTransition(async () => { try { const formData = new FormData(); const categoriesWithFiles: CategoryKey[] = [ 'academicQualifications', 'professionalDevelopments', 'professionalLicenses', 'workExperiences', 'professionalAffiliations', 'awardsRecognitions', 'communityInvolvements', 'publications', 'conferencePresentations' ]; (Object.keys(categoryMetadata) as CategoryKey[]).forEach(categoryKey => { const categoryData = editableData[categoryKey] as EditableItem[] | undefined; if (categoryData) { const dataToSend = categoryData.map(item => { const { _selectedFile, ...rest } = item as any; const finalRest = { ...rest }; if (item._isNew) { finalRest._isNew = true; } const cleanedRest: { [key: string]: any } = {}; for (const key in finalRest) { const value = finalRest[key]; if (value instanceof Date) { cleanedRest[key] = !isNaN(value.getTime()) ? value.toISOString() : null; } else { cleanedRest[key] = value; } } return cleanedRest; }); formData.append(`${categoryKey}_json`, JSON.stringify(dataToSend)); if (categoriesWithFiles.includes(categoryKey)) { categoryData.forEach((item) => { if (item && '_selectedFile' in item && item._selectedFile && (item._isNew || editingItemId === item.id)) { formData.append(`${categoryKey}_file_${item.id}`, item._selectedFile); } }); } } }); const result = await updateMyProfile(formData); if (result.success) { setEditSuccess("Profile updated successfully!"); setIsEditing(false); setEditableData(null); setEditingItemId(null); setOriginalItemData(null); await fetchProfileData(false); } else { setEditError(result.error || "Failed to save profile changes."); } } catch (err: any) { console.error("Save error:", err); setEditError(err.message || "An unexpected error occurred while saving."); } }); };
+    const handleSaveChanges = () => {
+        if (!editableData) {
+            setEditError("No changes to save.");
+            return;
+        }
+        if (editingItemId !== null) {
+            setEditError("Please save or cancel the current item edit before saving all changes.");
+            return;
+        }
+        setEditError(null);
+        setEditSuccess(null);
+
+        startTransition(async () => {
+            try {
+                const formData = new FormData();
+                const categoriesWithFiles: CategoryKey[] = [
+                    'academicQualifications', 'professionalDevelopments', 'professionalLicenses',
+                    'workExperiences', 'professionalAffiliations', 'awardsRecognitions',
+                    'communityInvolvements', 'publications', 'conferencePresentations'
+                ];
+
+                // Iterate through each category in editableData
+                (Object.keys(categoryMetadata) as CategoryKey[]).forEach(categoryKey => {
+                    const categoryData = editableData[categoryKey] as EditableItem[] | undefined;
+                    
+                    if (categoryData) {
+                        // 1. First prepare and append the JSON data (excluding file objects)
+                        const dataToSend = categoryData.map(item => {
+                            const { _selectedFile, ...rest } = item as any;
+                            const finalRest = { ...rest };
+                            if (item._isNew) {
+                                finalRest._isNew = true;
+                            }
+                            // Clean up dates and handle special fields for JSON
+                            const cleanedRest: { [key: string]: any } = {};
+                            for (const key in finalRest) {
+                                const value = finalRest[key];
+                                if (value instanceof Date) {
+                                    cleanedRest[key] = !isNaN(value.getTime()) ? value.toISOString() : null;
+                                } else {
+                                    cleanedRest[key] = value;
+                                }
+                            }
+                            return cleanedRest;
+                        });
+                        formData.append(`${categoryKey}_json`, JSON.stringify(dataToSend));
+
+                        // 2. Then handle file attachments if this category supports them
+                        if (categoriesWithFiles.includes(categoryKey)) {
+                            categoryData.forEach(item => {
+                                if (item && '_selectedFile' in item && item._selectedFile instanceof File) {
+                                    const fileKey = `${categoryKey}_file_${item.id}`;
+                                    formData.append(fileKey, item._selectedFile);
+                                    console.log(`[Frontend] Appending file to FormData: Key=${fileKey}, File=${item._selectedFile.name}`);
+                                }
+                            });
+                        }
+                    }
+                });
+
+                // Log FormData contents before sending
+                console.log("[Frontend] FormData prepared. Keys:");
+                for (const pair of formData.entries()) {
+                    console.log(`- ${pair[0]}: ${pair[1] instanceof File ? pair[1].name : 'JSON data'}`);
+                }
+
+                // Call the server action
+                const result = await updateMyProfile(formData);
+
+                if (result.success) {
+                    setEditSuccess("Profile updated successfully!");
+                    setIsEditing(false);
+                    setEditableData(null);
+                    setEditingItemId(null);
+                    setOriginalItemData(null);
+                    // Refetch data to show updated status and info
+                    await fetchProfileData(false); // Fetch without showing main loading spinner
+                } else {
+                    setEditError(result.error || "Failed to save profile changes.");
+                }
+            } catch (err: any) {
+                console.error("Save error:", err);
+                setEditError(err.message || "An unexpected error occurred while saving.");
+            }
+        });
+    };
 
     // --- Category/Item Local Edit Handlers ---
     const handleAddCategory = (categoryKey: CategoryKey) => { setVisibleCategories(prev => new Set(prev).add(categoryKey)); setShowCategoryDropdown(false); };
     const handleDeleteItemLocally = (category: CategoryKey, id: string) => { if (!editableData) return; setEditableData(prevData => { if (!prevData || !Array.isArray(prevData[category])) return prevData; const updatedEditableData = { ...prevData }; updatedEditableData[category] = (updatedEditableData[category] as any[]).filter(item => item.id !== id); return updatedEditableData; }); if (editingItemId === id) { setEditingItemId(null); setOriginalItemData(null); } };
     const handleAddItemLocally = (category: CategoryKey) => { if (!editableData || !profileData?.user?.id) return; const newEditableData = { ...editableData }; const newItemId = uuidv4(); let placeholderItem: EditableItem; const now = new Date(); const currentUserId = profileData.user.id; const nextYear = new Date(now); nextYear.setFullYear(nextYear.getFullYear() + 1); const defaultStatus: ApprovalStatus = 'PENDING'; switch (category) { case 'academicQualifications': placeholderItem = { id: newItemId, degree: '', institution: '', program: '', yearCompleted: now.getFullYear(), diplomaFileUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempAcademicQualification; break; case 'professionalLicenses': placeholderItem = { id: newItemId, examination: '', monthYear: '', licenseNumber: '', expiration: nextYear, licenseFileUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempProfessionalLicense; break; case 'workExperiences': placeholderItem = { id: newItemId, institution: '', position: '', natureOfWork: null, inclusiveYears: '', proofUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempWorkExperience; break; case 'professionalAffiliations': placeholderItem = { id: newItemId, organization: '', position: null, inclusiveYears: '', membershipProofUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempProfessionalAffiliation; break; case 'awardsRecognitions': placeholderItem = { id: newItemId, awardName: '', awardingBody: '', yearReceived: now.getFullYear(), certificateUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempAwardRecognition; break; case 'professionalDevelopments': placeholderItem = { id: newItemId, title: '', organizer: '', dateLocation: '', certificateFileUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempProfessionalDevelopment; break; case 'communityInvolvements': placeholderItem = { id: newItemId, engagementTitle: '', role: '', locationDate: '', proofUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempCommunityInvolvement; break; case 'publications': placeholderItem = { id: newItemId, researchTitle: '', journal: '', datePublished: now, doiLink: null, pdfUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempPublication; break; case 'conferencePresentations': placeholderItem = { id: newItemId, paperTitle: '', eventName: '', dateLocation: '', proofUrl: null, userId: currentUserId, createdAt: now, updatedAt: now, status: defaultStatus, rejectionReason: null, _isNew: true, _selectedFile: null } as TempConferencePresentation; break; default: console.error(`Add handler not implemented for: ${category}`); return; } if (!Array.isArray(newEditableData[category])) { newEditableData[category] = []; } (newEditableData[category] as EditableItem[]) = [placeholderItem, ...(newEditableData[category] as EditableItem[])]; setEditableData(newEditableData); handleStartEditingItem(category, newItemId); };
     const handleInputChange = (category: CategoryKey, itemId: string, fieldName: string, value: string | number | Date | null) => { if (!editableData) return; setEditableData(prevData => { if (!prevData || !prevData[category]) return prevData; const updatedCategoryData = structuredClone(prevData[category]) as any[]; const itemIndex = updatedCategoryData.findIndex(item => item.id === itemId); if (itemIndex === -1) { console.warn(`Item ${itemId} not found in ${category}`); return prevData; } const numericFields = ['yearCompleted', 'yearReceived']; let finalValue = value; if (typeof value === 'string' && value.trim() === '') { const requiredFields: { [key: string]: string[] } = { professionalLicenses: ['examination', 'licenseNumber', 'monthYear', 'expiration'], academicQualifications: ['degree', 'institution', 'program', 'yearCompleted'], /* ... other required fields ... */ }; if (!requiredFields[category]?.includes(fieldName)) { finalValue = null; } } else if (numericFields.includes(fieldName)) { finalValue = typeof value === 'string' ? parseInt(value, 10) : value; if (isNaN(finalValue as number)) finalValue = null; } updatedCategoryData[itemIndex] = { ...updatedCategoryData[itemIndex], [fieldName]: finalValue, updatedAt: new Date() }; return { ...prevData, [category]: updatedCategoryData }; }); };
-    const handleFileChange = (category: CategoryKey, itemId: string, file: File | null | undefined) => { const categoriesWithFiles: CategoryKey[] = [ 'academicQualifications', 'professionalDevelopments', 'professionalLicenses', 'workExperiences', 'professionalAffiliations', 'awardsRecognitions', 'communityInvolvements', 'publications', 'conferencePresentations' ]; if (!categoriesWithFiles.includes(category)) { console.warn(`File change not supported for: ${category}`); return; } if (!editableData || !editableData[category]) { console.warn(`Cannot handle file change: Category ${category} not found`); return; } const MAX_FILE_SIZE = 5 * 1024 * 1024; const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg']; if (file && file.size > MAX_FILE_SIZE) { alert(`File size exceeds limit.`); return; } if (file && !ALLOWED_TYPES.includes(file.type)) { alert('Invalid file type.'); return; } setEditableData(prevData => { if (!prevData) return null; const updatedCategoryData = structuredClone(prevData[category]) as EditableItem[]; const itemIndex = updatedCategoryData.findIndex(item => item.id === itemId); if (itemIndex === -1) return prevData; const currentItem = updatedCategoryData[itemIndex]; if (currentItem && '_selectedFile' in currentItem) { updatedCategoryData[itemIndex] = { ...currentItem, _selectedFile: file ?? null, updatedAt: new Date() }; } else if (file) { console.warn(`Attempted file assign for category ${category} w/o _selectedFile`); updatedCategoryData[itemIndex] = { ...currentItem, updatedAt: new Date() }; } else { updatedCategoryData[itemIndex] = { ...currentItem, updatedAt: new Date() }; } return { ...prevData, [category]: updatedCategoryData }; }); };
+    const handleFileChange = (category: CategoryKey, itemId: string, file: File | null | undefined) => {
+        console.log(`[handleFileChange] Category: ${category}, ItemID: ${itemId}, File:`, file); // Log input
+        const categoriesWithFiles: CategoryKey[] = [
+            'academicQualifications', 'professionalDevelopments', 'professionalLicenses',
+            'workExperiences', 'professionalAffiliations', 'awardsRecognitions',
+            'communityInvolvements', 'publications', 'conferencePresentations'
+        ];
+        if (!categoriesWithFiles.includes(category)) {
+            console.warn(`File change not supported for: ${category}`);
+            return;
+        }
+        if (!editableData || !editableData[category]) {
+            console.warn(`Cannot handle file change: Category ${category} not found`);
+            return;
+        }
+
+        const MAX_FILE_SIZE = 5 * 1024 * 1024;
+        const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+
+        if (file && file.size > MAX_FILE_SIZE) {
+            alert(`File size exceeds limit.`);
+            return;
+        }
+        if (file && !ALLOWED_TYPES.includes(file.type)) {
+            alert('Invalid file type.');
+            return;
+        }
+
+        setEditableData(prevData => {
+            if (!prevData) return null;
+            const updatedCategoryData = structuredClone(prevData[category]) as EditableItem[];
+            const itemIndex = updatedCategoryData.findIndex(item => item.id === itemId);
+            if (itemIndex === -1) {
+                console.warn(`[handleFileChange] Item ${itemId} not found in ${category}`);
+                return prevData;
+            }
+            const currentItem = updatedCategoryData[itemIndex];
+
+            // Ensure the item structure supports _selectedFile before assigning
+            if (currentItem && typeof currentItem === 'object') {
+                // Directly update the property
+                updatedCategoryData[itemIndex] = {
+                    ...currentItem,
+                    _selectedFile: file ?? null, // Set the file or null
+                    updatedAt: new Date()
+                };
+                console.log(`[handleFileChange] Updated item ${itemId} state with file:`, file?.name ?? 'null');
+            } else {
+                console.warn(`[handleFileChange] Item ${itemId} structure issue.`);
+            }
+
+            const newState = { ...prevData, [category]: updatedCategoryData };
+            console.log("[handleFileChange] New editableData state (relevant item):", updatedCategoryData[itemIndex]);
+            return newState;
+        });
+    };
     const handleStartEditingItem = (category: CategoryKey, itemId: string) => { if (!editableData || !editableData[category]) return; const itemToEdit = (editableData[category] as EditableItem[]).find(item => item.id === itemId); if (itemToEdit) { setOriginalItemData(structuredClone(itemToEdit)); setEditingItemId(itemId); setEditError(null); } else { console.error("Item not found:", itemId); } };
     const handleCancelItemEdit = (category: CategoryKey, itemId: string) => { if (!editableData || !originalItemData || originalItemData.id !== itemId || !editableData[category]) { setEditingItemId(null); setOriginalItemData(null); return; }; setEditableData(prevData => { if (!prevData) return null; const updatedCategoryData = structuredClone(prevData[category]) as EditableItem[]; const itemIndex = updatedCategoryData.findIndex(item => item.id === itemId); if (itemIndex !== -1) { updatedCategoryData[itemIndex] = originalItemData; } return { ...prevData, [category]: updatedCategoryData }; }); setEditingItemId(null); setOriginalItemData(null); };
     const handleSaveEditedItem = (itemId: string) => { setEditingItemId(null); setOriginalItemData(null); };

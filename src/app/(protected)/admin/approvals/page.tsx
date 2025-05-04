@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, useTransition } from 'react';
-import { getPendingSubmissions, approveSubmission, rejectSubmission } from '@/lib/adminActions'; // Import admin actions
+import { getPendingSubmissions, approveSubmission, rejectSubmission } from '@/lib/actions/approvalActions'; // Import admin actions
 import type { ItemType } from '@/types'; // Import ItemType
 import { CheckCircleIcon, XCircleIcon, PaperClipIcon, UserCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
 

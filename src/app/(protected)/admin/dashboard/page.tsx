@@ -1,7 +1,7 @@
 // src/app/admin/dashboard/page.tsx
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import {
@@ -11,6 +11,7 @@ import {
     ChartBarIcon, // Added for stats
     ArrowRightIcon,
 } from '@heroicons/react/24/outline'; // Using outline icons
+import { getAdminDashboardStats } from '@/lib/actions/dashboardActions'; // Import the action
 
 // Interface for Dashboard Card props
 interface DashboardCardProps {
@@ -63,6 +64,34 @@ export default function AdminDashboardPage() {
     const { data: session, status } = useSession();
     const userRole = (session?.user as any)?.role;
 
+    // --- State for Dashboard Stats ---
+    const [stats, setStats] = useState<{ totalFaculty: number; pendingApprovals: number } | null>(null);
+    const [isLoadingStats, setIsLoadingStats] = useState(true);
+    const [statsError, setStatsError] = useState<string | null>(null);
+
+    // --- Fetch Stats on Mount ---
+    useEffect(() => {
+        setIsLoadingStats(true);
+        setStatsError(null);
+        getAdminDashboardStats()
+            .then(response => {
+                if (response.success && response.stats) {
+                    setStats(response.stats);
+                } else {
+                    setStatsError(response.error || 'Failed to load dashboard statistics.');
+                    setStats(null); // Clear stats on error
+                }
+            })
+            .catch(err => {
+                console.error("Dashboard stats fetch error:", err);
+                setStatsError('An unexpected error occurred while fetching statistics.');
+                setStats(null);
+            })
+            .finally(() => {
+                setIsLoadingStats(false);
+            });
+    }, []); // Empty dependency array means run once on mount
+
     if (status === 'loading') {
         return (
             <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-sky-50 via-white to-blue-50 p-6">
@@ -108,7 +137,10 @@ export default function AdminDashboardPage() {
                         </div>
                         <div>
                             <p className="text-sm font-medium text-gray-500">Total Faculty</p>
-                            <p className="text-xl font-semibold text-gray-900">[Num]</p> {/* Placeholder */}
+                            <p className="text-xl font-semibold text-gray-900">
+                                {/* Display count, loading, or error */}
+                                {isLoadingStats ? '...' : statsError ? 'Error' : stats?.totalFaculty ?? 0}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -119,7 +151,10 @@ export default function AdminDashboardPage() {
                         </div>
                         <div>
                             <p className="text-sm font-medium text-gray-500">Pending Approvals</p>
-                            <p className="text-xl font-semibold text-gray-900">[Num]</p> {/* Placeholder */}
+                            <p className="text-xl font-semibold text-gray-900">
+                                {/* Display count, loading, or error */}
+                                {isLoadingStats ? '...' : statsError ? 'Error' : stats?.pendingApprovals ?? 0}
+                            </p>
                         </div>
                     </div>
                 </div>

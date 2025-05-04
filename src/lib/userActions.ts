@@ -1,5 +1,4 @@
-// src/lib/userActions.ts
-'use server';
+"use server";
 
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -167,11 +166,32 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
                 for (const incomingItem of data) {
                     const fileKey = `${sectionKey}_file_${incomingItem.id}`;
                     const file = formData.get(fileKey) as File | null;
-                    let uploadedFileUrl: string | null | undefined = undefined;
-                    let fileChanged = false;
+                    let uploadedFileUrl: string | null | undefined = undefined; // Store URL if a *new* file is uploaded
+                    let fileChanged = false; // Track if a file was uploaded/removed in this iteration
 
-                    if (file) { uploadedFileUrl = await uploadFile(file, userId, subDir); fileChanged = true; }
+                    // --- *** Enhanced Logging for File Input *** ---
+                    if (file) {
+                        console.log(`[${sectionKey} - ${incomingItem.id}] File found in FormData: ${file.name}, Size: ${file.size}, Type: ${file.type}`); // Use incomingItem.id
+                        try {
+                            uploadedFileUrl = await uploadFile(file, userId, subDir);
+                            fileChanged = true;
+                            console.log(`[${sectionKey} - ${incomingItem.id}] File uploaded successfully. URL: ${uploadedFileUrl}`); // Use incomingItem.id
+                        } catch (uploadError: any) {
+                             // Make sure upload errors are clearly logged and potentially stop processing this item
+                             console.error(`[${sectionKey} - ${incomingItem.id}] CRITICAL: File upload failed! Error: ${uploadError.message}`); // Use incomingItem.id
+                             // Depending on requirements, you might want to: // Use incomingItem.id
+                             // throw uploadError; // Stop the whole transaction
+                             // or just skip updating this specific item's file URL
+                             uploadedFileUrl = undefined; // Ensure it's not used
+                             fileChanged = false; // Mark as no file change occurred
+                             // Potentially add an error message to be returned to the user later
+                        }
+                    } else {
+                        console.log(`[${sectionKey} - ${incomingItem.id}] No file found in FormData for key ${fileKey}.`); // Use incomingItem.id
+                    }
+                    // --- *** End Enhanced Logging *** ---
 
+                    // Destructure incoming data, handle cleaning/formatting
                     const { _isNew, id, status, rejectionReason, ...dataForPrisma } = incomingItem as any;
                     Object.keys(dataForPrisma).forEach(key => {
                         if (['yearCompleted', 'yearReceived'].includes(key) && typeof dataForPrisma[key] === 'string') { const num = parseInt(dataForPrisma[key], 10); dataForPrisma[key] = isNaN(num) ? null : num; }
@@ -179,26 +199,61 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
                         if (sectionDateFields.includes(key)) { if (!(dataForPrisma[key] instanceof Date) && dataForPrisma[key] !== null) { try { const parsedDate = new Date(dataForPrisma[key]); dataForPrisma[key] = !isNaN(parsedDate.getTime()) ? parsedDate : null; } catch { dataForPrisma[key] = null; } } else if (dataForPrisma[key] instanceof Date && isNaN(dataForPrisma[key].getTime())) { dataForPrisma[key] = null; } }
                     });
                     dataForPrisma.userId = userId;
-                    if (urlFieldName && uploadedFileUrl !== undefined) { dataForPrisma[urlFieldName] = uploadedFileUrl; }
 
                     if (_isNew) {
+                        // --- Create Logic ---
                         console.log(`Attempting create for ${sectionKey} - ID: ${id}`);
                         for (const field of requiredFields) { if (dataForPrisma[field] === null || dataForPrisma[field] === undefined || dataForPrisma[field] === '') { throw new Error(`Missing required field "${field}" for new ${sectionKey}.`); } }
-                        dataForPrisma.status = 'PENDING'; dataForPrisma.rejectionReason = null;
+                        dataForPrisma.status = 'PENDING';
+                        dataForPrisma.rejectionReason = null;
+                        // Set the URL field if it exists for this section
+                        if (urlFieldName) { // Check if this section *has* a URL field
+                            dataForPrisma[urlFieldName] = uploadedFileUrl ?? null; // Use uploaded URL or null
+                            console.log(`[${sectionKey} - ${id}] Setting URL field '${urlFieldName}' for new item to: ${dataForPrisma[urlFieldName]}`);
+                        }
                         await prismaModel.create({ data: dataForPrisma });
                         console.log(`Created ${sectionKey} item.`);
+
                     } else {
                         const currentItem = currentItemMap.get(id);
                         if (!currentItem) { console.warn(`${sectionKey} Update: ID ${id} not found. Skipping.`); continue; }
 
+                        // --- Update Logic ---
                         const updateData: Partial<any> = {};
                         let needsDbUpdate = false;
-                        let significantChange = false;
+                        let significantChange = false; // Reset flag for each item
 
-                        // --- Comparison Loop with Logging ---
-                        console.log(`\n--- Comparing item ${id} in section ${sectionKey} ---`); // Log item start
+                        // --- *** STEP 1: Handle File Change FIRST *** ---
+                        const currentFileUrl = urlFieldName ? currentItem[urlFieldName] : undefined;
+                        let newFileUrl = currentFileUrl; // Default to current
+
+                        if (fileChanged && uploadedFileUrl !== undefined) { // A new file was successfully uploaded
+                            console.log(`[${sectionKey} - ${id}] File changed. New URL: ${uploadedFileUrl}`);
+                            newFileUrl = uploadedFileUrl;
+                            significantChange = true; // *** SET SIGNIFICANT CHANGE HERE ***
+                            needsDbUpdate = true;     // Mark for DB update due to file change
+                            if (currentFileUrl) { filesToDelete.push(currentFileUrl); }
+                        } else if (fileChanged && uploadedFileUrl === undefined) {
+                             // This means an upload was attempted but failed (error logged above)
+                             console.warn(`[${sectionKey} - ${id}] File upload attempted but failed. URL will not be updated.`);
+                             newFileUrl = currentFileUrl; // Explicitly keep the current one
+                             // Optionally set significantChange = true here too if failed upload needs review
+                             // significantChange = true;
+                        }
+
+                        // Add URL to updateData ONLY IF it exists for this section AND it has changed
+                        if (urlFieldName && newFileUrl !== currentFileUrl) {
+                            console.log(`[${sectionKey} - ${id}] Adding field '${urlFieldName}' to updateData. New value: '${newFileUrl}'`);
+                            updateData[urlFieldName] = newFileUrl;
+                            // needsDbUpdate is already true if fileChanged was true and upload succeeded
+                        }
+                        // --- *** END STEP 1 *** ---
+
+                        // --- STEP 2: Compare other fields ---
+                        console.log(`\n--- Comparing other fields for item ${id} in section ${sectionKey} ---`);
                         Object.keys(dataForPrisma).forEach(key => {
-                            if (key !== 'userId' && key !== 'createdAt' && key !== 'updatedAt' && key !== 'status' && key !== 'rejectionReason') {
+                             // Exclude fields that shouldn't be directly compared/updated this way
+                            if (key !== 'userId' && key !== 'createdAt' && key !== 'updatedAt' && key !== 'status' && key !== 'rejectionReason' && key !== urlFieldName /* Handle URL separately */) {
                                 const incomingValue = dataForPrisma[key];
                                 const currentValue = currentItem[key];
                                 let fieldChanged = false;
@@ -209,45 +264,66 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
                                     fieldChanged = incomingValue !== currentValue;
                                 }
 
-                                // *** ADDED: Detailed Logging ***
                                 if (fieldChanged) {
-                                    console.log(`[${sectionKey} - ${id}] Field "${key}" CHANGED:`);
-                                    console.log(`  Incoming (${typeof incomingValue}):`, incomingValue);
-                                    console.log(`  Current  (${typeof currentValue}):`, currentValue);
+                                    console.log(`[${sectionKey} - ${id}] Field "${key}" CHANGED.`); // Simplified log
+                                    // console.log(`  Incoming (${typeof incomingValue}):`, incomingValue); // Keep if detailed needed
+                                    // console.log(`  Current  (${typeof currentValue}):`, currentValue); // Keep if detailed needed
                                     updateData[key] = incomingValue;
                                     needsDbUpdate = true;
-                                    const keyFields = ['degree', 'institution', 'program', 'yearCompleted', 'examination', 'licenseNumber', 'expiration', 'title', 'organizer', 'dateLocation', 'researchTitle', 'journal', 'datePublished', 'paperTitle', 'eventName'];
-                                    if (keyFields.includes(key) || (urlFieldName && key === urlFieldName)) {
-                                        significantChange = true;
+                                    // Define key fields that trigger status reset
+                                    const keyFieldsForStatusReset = [
+                                        ...requiredFields, // Always consider required fields significant
+                                        // Add other important descriptive fields
+                                        'degree', 'program', 'examination', 'title', 'awardName', 'researchTitle', 'paperTitle', 'position'
+                                    ];
+                                    if (keyFieldsForStatusReset.includes(key)) {
+                                        significantChange = true; // *** ALSO SET SIGNIFICANT CHANGE HERE ***
+                                        console.log(`   -> Significant change detected due to field: ${key}`);
                                     }
                                 } else {
                                      // Optional: Log fields that didn't change for debugging completeness
                                      // console.log(`[${sectionKey} - ${id}] Field "${key}" UNCHANGED.`);
                                 }
-                                // *** END ADDED LOGGING ***
                             }
                         });
-                        console.log(`--- Finished comparing item ${id}. Needs DB update: ${needsDbUpdate}, Significant change: ${significantChange} ---`); // Log item end
-                        // --- End Comparison Loop ---
+                        // --- END STEP 2 ---
 
+                        console.log(`--- Comparison finished for item ${id}. Needs DB update: ${needsDbUpdate}, Significant change: ${significantChange} ---`);
+
+                        // --- STEP 3: Determine Status Reset ---
                         const currentStatus = currentItem.status;
-                        if (significantChange || fileChanged) {
+                        // Reset if EITHER a significant field changed OR the file changed
+                        if (significantChange) {
                             if (currentStatus !== 'PENDING') {
-                                updateData.status = 'PENDING'; updateData.rejectionReason = null; needsDbUpdate = true;
+                                updateData.status = 'PENDING';
+                                updateData.rejectionReason = null; // Clear reason when resubmitting
+                                needsDbUpdate = true;
                                 console.log(`Significant change detected for ${sectionKey} ID: ${id}. Resetting status to PENDING.`);
                             }
                         } else if (currentStatus === 'REJECTED' && needsDbUpdate) {
-                            updateData.status = 'PENDING'; updateData.rejectionReason = null; needsDbUpdate = true;
-                             console.log(`Minor edit on REJECTED ${sectionKey} ID: ${id}. Setting status to PENDING.`);
+                            // Reset if REJECTED and ANY change occurred
+                            updateData.status = 'PENDING';
+                            updateData.rejectionReason = null;
+                            needsDbUpdate = true;
+                            console.log(`Minor edit on REJECTED ${sectionKey} ID: ${id}. Setting status to PENDING.`);
                         }
+                        // --- END STEP 3 ---
 
+                        // --- STEP 4: Perform DB Update ---
                         if (needsDbUpdate) {
-                            console.log(`Updating ${sectionKey} ID: ${id} with data:`, updateData);
-                            if (urlFieldName && updateData[urlFieldName] !== currentItem[urlFieldName] && currentItem[urlFieldName]) {
-                                filesToDelete.push(currentItem[urlFieldName]);
+                            console.log(`>>> Updating DB for ${sectionKey} ID: ${id} with data:`, JSON.stringify(updateData)); // Log exactly what's being sent
+                            try {
+                                await prismaModel.update({ where: { id: id, userId: userId }, data: updateData });
+                                console.log(`<<< Successfully updated DB for ${sectionKey} ID: ${id}`);
+                            } catch (dbError: any) {
+                                 console.error(`XXX Database update FAILED for ${sectionKey} ID: ${id}! Error: ${dbError.message}`, dbError);
+                                 // Decide how to handle DB errors - stop transaction? log and continue?
+                                 throw new Error(`Database update failed for item ${id} in ${sectionKey}.`); // Stop transaction
                             }
-                            await prismaModel.update({ where: { id: id, userId: userId }, data: updateData });
+                        } else {
+                             console.log(`[${sectionKey} - ${id}] No database update needed.`);
                         }
+                        // --- END STEP 4 ---
                     }
                 }
             } // end processSection
@@ -274,8 +350,8 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
         }
 
         if (result.success) {
-            revalidatePath('/profile'); revalidatePath('/admin/approvals');
-            console.log("Profile and Admin Approvals revalidated.");
+            revalidatePath('/profile'); revalidatePath('/admin/approvals'); revalidatePath('/documents'); // Also revalidate documents page
+            console.log("Profile, Admin Approvals, and Documents page revalidated.");
         }
 
         console.log(`--- Finished updateMyProfile for user: ${userId} ---`); // Added end log
@@ -283,6 +359,6 @@ export async function updateMyProfile(formData: FormData): Promise<UpdateProfile
 
     } catch (error: any) {
         console.error("Error in updateMyProfile transaction or file deletion:", error);
-        return { success: false, error: error.message || 'Failed to update profile data' };
+        return { success: false, error: error.message || 'An unexpected error occurred while updating the profile.' };
     }
 }

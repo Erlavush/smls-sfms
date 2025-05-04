@@ -2,7 +2,12 @@ smls-sfms
 ├── .roo
 │   └── mcp.json
 ├── prisma
-│   └── schema.prisma
+│   ├── add_faculty_hematology.cjs
+│   ├── add_faculty.cjs
+│   ├── create_admin.cjs
+│   ├── delete_user.cjs
+│   ├── schema.prisma
+│   └── seed.cjs
 ├── public
 │   ├── dot.png
 │   ├── smls-logo.png
@@ -30,7 +35,9 @@ smls-sfms
 │   │   │   │   │   ├── [facultyId]
 │   │   │   │   │   │   └── page.tsx
 │   │   │   │   │   └── page.tsx
-│   │   │   │   └── matrix
+│   │   │   │   ├── matrix
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── specializations
 │   │   │   │       └── page.tsx
 │   │   │   └── layout.tsx
 │   │   ├── api
@@ -49,6 +56,7 @@ smls-sfms
 │   │   └── page.tsx
 │   ├── components
 │   │   ├── admin
+│   │   │   └── FacultyMatrixDetailPopup.tsx
 │   │   ├── auth
 │   │   ├── faculty
 │   │   ├── layout
@@ -80,6 +88,11 @@ smls-sfms
 │   ├── contexts
 │   ├── hooks
 │   ├── lib
+│   │   ├── actions
+│   │   │   ├── approvalActions.ts
+│   │   │   ├── dashboardActions.ts
+│   │   │   ├── facultyActions.ts
+│   │   │   └── specializationActions.ts
 │   │   ├── adminActions.ts
 │   │   ├── auth.ts
 │   │   ├── db.ts
@@ -91,6 +104,7 @@ smls-sfms
 │   └── middleware.ts
 ├── .gitignore
 ├── create_context.ps1
+├── diagram.txt
 ├── eslint.config.mjs
 ├── generate-context.js
 ├── generate-tree.cjs
@@ -99,5 +113,6 @@ smls-sfms
 ├── postcss.config.mjs
 ├── project_context.txt
 ├── README.md
+├── seed-history.txt
 ├── tailwind.config.ts
 └── tsconfig.json

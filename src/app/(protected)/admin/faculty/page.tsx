@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useTransition, FormEvent, useRef } from 'react'; // Added useTransition, FormEvent, useRef
 import Link from 'next/link';
-import { getAllFaculty, createFacultyUser } from '@/lib/adminActions'; // Import createFacultyUser action
+import { getAllFaculty, createFacultyUser } from '@/lib/actions/facultyActions'; // Import createFacultyUser action
 import {
     UserGroupIcon, EnvelopeIcon, CalendarDaysIcon, ArrowRightIcon, ExclamationTriangleIcon,
     PlusIcon, // Added PlusIcon

@@ -24,6 +24,19 @@ enum ApprovalStatus {
 }
 // --- END ADDED ---
 
+// --- NEW: Specialization Model ---
+model Specialization {
+  id          String @id @default(cuid())
+  name        String @unique // Name of the specialization (e.g., "Hematology")
+  description String? // Optional description
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Many-to-many relation with User (Faculty)
+  faculty   User[]     @relation("FacultySpecializations") // Relation name
+}
+// --- END NEW ---
+
 // Define the User model
 model User {
   id        String   @id @default(cuid())
@@ -33,6 +46,10 @@ model User {
   role      Role     @default(FACULTY)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // --- ADDED: Relation to Specialization ---
+  specializations Specialization[] @relation("FacultySpecializations") // Relation name must match
+  // --- END ADDED ---
 
   // Relationships
   academicQualifications AcademicQualification[]
