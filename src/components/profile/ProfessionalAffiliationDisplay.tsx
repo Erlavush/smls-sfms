@@ -6,9 +6,11 @@ import { PaperClipIcon, DocumentTextIcon, CalendarDaysIcon, UserGroupIcon, Build
 
 interface Props {
     item: ProfessionalAffiliation;
+    isEditing?: boolean; // Added for edit mode context
+    stagedFile?: File | null; // Added for pending file display
 }
 
-export default function ProfessionalAffiliationDisplay({ item }: Props) {
+export default function ProfessionalAffiliationDisplay({ item, isEditing, stagedFile }: Props) {
     return (
         // Mimic the 'qualification' div structure
         <div className="flex flex-col gap-2">
@@ -37,8 +39,13 @@ export default function ProfessionalAffiliationDisplay({ item }: Props) {
                     <span>Years: {item.inclusiveYears || 'N/A'}</span>
                 </div>
 
-                {/* Document Link */}
-                {item.membershipProofUrl ? (
+                {/* Document Link / Staged File Indicator */}
+                {isEditing && stagedFile ? (
+                    <div className="mt-1 flex items-center gap-1 text-xs text-purple-700 bg-purple-50 p-1 rounded">
+                        <PaperClipIcon className="h-3 w-3 flex-shrink-0" />
+                        <span>Pending upload: {stagedFile.name}</span>
+                    </div>
+                ) : item.membershipProofUrl ? (
                      <a
                         href={item.membershipProofUrl}
                         target="_blank"

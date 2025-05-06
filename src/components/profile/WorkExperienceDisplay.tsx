@@ -6,9 +6,11 @@ import { PaperClipIcon, DocumentTextIcon, CalendarDaysIcon, BuildingOfficeIcon, 
 
 interface Props {
     item: WorkExperience;
+    isEditing?: boolean; // Added for edit mode context
+    stagedFile?: File | null; // Added for pending file display
 }
 
-export default function WorkExperienceDisplay({ item }: Props) {
+export default function WorkExperienceDisplay({ item, isEditing, stagedFile }: Props) {
     return (
         // Mimic the 'qualification' div structure
         <div className="flex flex-col gap-2">
@@ -42,8 +44,13 @@ export default function WorkExperienceDisplay({ item }: Props) {
                     <span>Years: {item.inclusiveYears || 'N/A'}</span>
                 </div>
 
-                {/* Document Link */}
-                {item.proofUrl ? (
+                {/* Document Link / Staged File Indicator */}
+                {isEditing && stagedFile ? (
+                    <div className="mt-1 flex items-center gap-1 text-xs text-purple-700 bg-purple-50 p-1 rounded">
+                        <PaperClipIcon className="h-3 w-3 flex-shrink-0" />
+                        <span>Pending upload: {stagedFile.name}</span>
+                    </div>
+                ) : item.proofUrl ? (
                      <a
                         href={item.proofUrl}
                         target="_blank"

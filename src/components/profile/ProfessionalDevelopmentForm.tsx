@@ -6,16 +6,24 @@ import type { TempProfessionalDevelopment } from '@/types'; // Import from share
 interface Props {
     item: TempProfessionalDevelopment;
     isPending: boolean;
-    handleInputChange: (itemId: string, fieldName: keyof TempProfessionalDevelopment, value: string) => void; // value is always string from input event
-    handleFileChange: (itemId: string, file: File | null | undefined) => void;
+    // Simplified signature (assuming bound in parent)
+    handleInputChange: (fieldName: keyof TempProfessionalDevelopment, value: string) => void;
+    // Updated signature for file change
+    handleFileChange: (file: File | null | undefined) => void;
 }
 
-// Input and Label classes (consistent with AcademicQualificationForm)
+// Input and Label classes
 const inputClass = "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm disabled:opacity-70";
 const labelClass = "block text-xs font-medium text-gray-600 mb-0.5";
 
 export default function ProfessionalDevelopmentForm({ item, isPending, handleInputChange, handleFileChange }: Props) {
     const isNewItem = !!item._isNew;
+
+    // Helper for input change to match simplified signature
+    const onInputChange = (fieldName: keyof TempProfessionalDevelopment, value: string) => {
+        handleInputChange(fieldName, value);
+    };
+
     return (
         <div className="space-y-3">
             <p className="text-xs font-semibold text-blue-700">
@@ -30,7 +38,7 @@ export default function ProfessionalDevelopmentForm({ item, isPending, handleInp
                     id={`title-${item.id}`}
                     name="title"
                     value={item.title || ''}
-                    onChange={(e) => handleInputChange(item.id, 'title', e.target.value)}
+                    onChange={(e) => onInputChange('title', e.target.value)}
                     className={inputClass}
                     placeholder="e.g., Seminar on Advanced Lab Techniques"
                     required
@@ -46,7 +54,7 @@ export default function ProfessionalDevelopmentForm({ item, isPending, handleInp
                     id={`organizer-${item.id}`}
                     name="organizer"
                     value={item.organizer || ''}
-                    onChange={(e) => handleInputChange(item.id, 'organizer', e.target.value)}
+                    onChange={(e) => onInputChange('organizer', e.target.value)}
                     className={inputClass}
                     placeholder="e.g., PAMET"
                     required
@@ -62,7 +70,7 @@ export default function ProfessionalDevelopmentForm({ item, isPending, handleInp
                     id={`dateLocation-${item.id}`}
                     name="dateLocation"
                     value={item.dateLocation || ''}
-                    onChange={(e) => handleInputChange(item.id, 'dateLocation', e.target.value)}
+                    onChange={(e) => onInputChange('dateLocation', e.target.value)}
                     className={inputClass}
                     placeholder="e.g., May 2024 / Davao City"
                     required
@@ -84,11 +92,12 @@ export default function ProfessionalDevelopmentForm({ item, isPending, handleInp
                         </a>
                     </div>
                 )}
+                {/* *** UPDATED onChange *** */}
                 <input
                     type="file"
                     id={`certificateFile-${item.id}`}
                     name="certificateFile"
-                    onChange={(e) => handleFileChange(item.id, e.target.files?.[0])}
+                    onChange={(e) => handleFileChange(e.target.files?.[0])} // Pass only the file
                     className="block w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 disabled:opacity-70"
                     accept=".pdf,.png,.jpg,.jpeg" // Consistent file types
                     disabled={isPending}
@@ -97,9 +106,10 @@ export default function ProfessionalDevelopmentForm({ item, isPending, handleInp
                     <div className="mt-1.5 flex items-center gap-1 text-xs text-gray-600">
                         <PaperClipIcon className="h-3 w-3 flex-shrink-0" />
                         New: <span>{item._selectedFile.name}</span>
+                        {/* *** UPDATED onClick *** */}
                         <button
                             type="button"
-                            onClick={() => handleFileChange(item.id, null)} // Clear selection
+                            onClick={() => handleFileChange(null)} // Pass null to clear
                             className="ml-1 text-red-500 hover:text-red-700 focus:outline-none"
                             title="Remove selection"
                             disabled={isPending}

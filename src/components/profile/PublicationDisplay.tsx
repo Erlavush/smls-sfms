@@ -16,9 +16,11 @@ const formatDateOnly = (date: string | Date | null | undefined): string => {
 
 interface Props {
     item: Publication;
+    isEditing?: boolean; // Added for edit mode context
+    stagedFile?: File | null; // Added for pending file display
 }
 
-export default function PublicationDisplay({ item }: Props) {
+export default function PublicationDisplay({ item, isEditing, stagedFile }: Props) {
     return (
         // Mimic the 'qualification' div structure
         <div className="flex flex-col gap-2">
@@ -45,31 +47,42 @@ export default function PublicationDisplay({ item }: Props) {
                     <span>Published: {formatDateOnly(item.datePublished)}</span>
                 </div>
 
-                {/* Links (DOI & PDF) */}
+                {/* Links (DOI & PDF / Staged File) */}
                 <div className="flex items-center gap-x-3 gap-y-1">
-                    {item.doiLink && (
-                        <a
-                            href={item.doiLink.startsWith('http') ? item.doiLink : `https://${item.doiLink}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md px-2 py-1 transition duration-200"
-                            title={item.doiLink}
-                        >
-                        <LinkIcon className="h-4 w-4" /> DOI Link
-                        </a>
-                    )}
-                    {item.pdfUrl && (
-                        <a
-                            href={item.pdfUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                             className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md px-2 py-1 transition duration-200"
-                            title={item.pdfUrl}>
-                        <DocumentTextIcon className="h-4 w-4" /> View PDF
-                        </a>
-                    )}
-                    {!item.doiLink && !item.pdfUrl && (
-                         <span className="text-xs text-gray-400 italic">No links</span>
+                    {/* Show Staged File if present in edit mode */}
+                    {isEditing && stagedFile ? (
+                        <div className="mt-1 flex items-center gap-1 text-xs text-purple-700 bg-purple-50 p-1 rounded">
+                            <PaperClipIcon className="h-3 w-3 flex-shrink-0" />
+                            <span>Pending upload: {stagedFile.name}</span>
+                        </div>
+                    ) : (
+                        // Otherwise, show existing links
+                        <>
+                            {item.doiLink && (
+                                <a
+                                    href={item.doiLink.startsWith('http') ? item.doiLink : `https://${item.doiLink}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md px-2 py-1 transition duration-200"
+                                    title={item.doiLink}
+                                >
+                                <LinkIcon className="h-4 w-4" /> DOI Link
+                                </a>
+                            )}
+                            {item.pdfUrl && (
+                                <a
+                                    href={item.pdfUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md px-2 py-1 transition duration-200"
+                                    title={item.pdfUrl}>
+                                <DocumentTextIcon className="h-4 w-4" /> View PDF
+                                </a>
+                            )}
+                            {!item.doiLink && !item.pdfUrl && !isEditing && ( // Only show "No links" if not editing
+                                 <span className="text-xs text-gray-400 italic">No links/file</span>
+                            )}
+                        </>
                     )}
                 </div>
 

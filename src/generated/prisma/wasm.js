@@ -253,6 +253,15 @@ exports.Prisma.ConferencePresentationScalarFieldEnum = {
   rejectionReason: 'rejectionReason'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  message: 'message',
+  link: 'link',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -284,7 +293,8 @@ exports.Prisma.ModelName = {
   ProfessionalDevelopment: 'ProfessionalDevelopment',
   CommunityInvolvement: 'CommunityInvolvement',
   Publication: 'Publication',
-  ConferencePresentation: 'ConferencePresentation'
+  ConferencePresentation: 'ConferencePresentation',
+  Notification: 'Notification'
 };
 
 /**

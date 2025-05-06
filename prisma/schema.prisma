@@ -1,5 +1,3 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma" // Keep custom output path
@@ -16,28 +14,24 @@ enum Role {
   ADMIN
 }
 
-// --- ADDED: Approval Status Enum ---
+// Approval Status Enum
 enum ApprovalStatus {
   PENDING
   APPROVED
   REJECTED
 }
-// --- END ADDED ---
 
-// --- NEW: Specialization Model ---
+// Specialization Model
 model Specialization {
   id          String @id @default(cuid())
-  name        String @unique // Name of the specialization (e.g., "Hematology")
-  description String? // Optional description
+  name        String @unique
+  description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  // Many-to-many relation with User (Faculty)
-  faculty   User[]     @relation("FacultySpecializations") // Relation name
+  faculty   User[]     @relation("FacultySpecializations")
 }
-// --- END NEW ---
 
-// Define the User model
+// User model
 model User {
   id        String   @id @default(cuid())
   name      String?
@@ -47,11 +41,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // --- ADDED: Relation to Specialization ---
-  specializations Specialization[] @relation("FacultySpecializations") // Relation name must match
-  // --- END ADDED ---
+  specializations Specialization[] @relation("FacultySpecializations")
 
-  // Relationships
+  // Relationships to CV items
   academicQualifications AcademicQualification[]
   professionalLicenses   ProfessionalLicense[]
   workExperiences        WorkExperience[]
@@ -61,10 +53,12 @@ model User {
   communityInvolvements  CommunityInvolvement[]
   publications           Publication[]
   conferencePresentations ConferencePresentation[]
+
+  // *** ADDED: Relation to Notifications ***
+  notifications          Notification[] // A user can have many notifications
 }
 
-// --- CV Related Models (Add status and rejectionReason to ALL below) ---
-
+// --- CV Related Models (Keep existing definitions) ---
 model AcademicQualification {
   id            String   @id @default(cuid())
   degree        String
@@ -76,11 +70,8 @@ model AcademicQualification {
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   diplomaFileUrl String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model ProfessionalLicense {
@@ -94,11 +85,8 @@ model ProfessionalLicense {
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   licenseFileUrl String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model WorkExperience {
@@ -112,11 +100,8 @@ model WorkExperience {
   userId         String
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   proofUrl       String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model ProfessionalAffiliation {
@@ -129,11 +114,8 @@ model ProfessionalAffiliation {
   userId            String
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   membershipProofUrl String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model AwardRecognition {
@@ -146,11 +128,8 @@ model AwardRecognition {
   userId         String
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   certificateUrl String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model ProfessionalDevelopment {
@@ -163,11 +142,8 @@ model ProfessionalDevelopment {
   userId            String
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   certificateFileUrl String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model CommunityInvolvement {
@@ -180,11 +156,8 @@ model CommunityInvolvement {
   userId          String
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   proofUrl        String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model Publication {
@@ -198,11 +171,8 @@ model Publication {
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   pdfUrl        String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
 
 model ConferencePresentation {
@@ -215,9 +185,23 @@ model ConferencePresentation {
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   proofUrl      String?
-
-  // --- ADDED ---
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
-  // --- END ADDED ---
 }
+
+// --- *** NEW: Notification Model *** ---
+model Notification {
+  id        String   @id @default(cuid())
+  message   String   // The content of the notification
+  link      String?  // Optional link for navigation (e.g., to the item or page)
+  isRead    Boolean  @default(false) // Tracks if the user has seen it
+  createdAt DateTime @default(now()) // When the notification was created
+
+  // Relation to the User who should receive the notification
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete if user is deleted
+
+  // Optional: Add an index for faster querying of user notifications
+  @@index([userId])
+}
+// --- *** END: Notification Model *** ---
