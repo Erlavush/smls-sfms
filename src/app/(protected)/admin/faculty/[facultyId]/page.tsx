@@ -39,9 +39,13 @@ import {
     LightBulbIcon, // <-- Ensure this is imported
     BookOpenIcon, // <-- Added for Potential Courses
     CheckIcon, // Added CheckIcon
+    CheckCircleIcon, // <-- ADD THIS
     TrashIcon, XMarkIcon,
     PencilIcon
 } from '@heroicons/react/24/outline';
+
+// Define Match Strength Type
+type CourseMatchStrength = 'FULL_MATCH' | 'PARTIAL_MATCH' | 'NO_MATCH';
 
 // Updated structure for faculty profile data
 interface FacultyProfileData {
@@ -54,7 +58,10 @@ interface FacultyProfileData {
         specializations: Specialization[]; // Keep raw data
     };
     // This array now holds the names derived from user.specializations
-    potentialCourses: (Course & { requiredSpecializations: Pick<Specialization, 'id' | 'name'>[] })[]; // <-- NEW: Add potential courses
+    potentialCourses: (Course & {
+        requiredSpecializations: Pick<Specialization, 'id' | 'name'>[];
+        matchStrength: CourseMatchStrength; // <-- ADD THIS
+    })[];
     suggestedTeachingAreas: string[];
     academicQualifications: AcademicQualification[];
     professionalLicenses: ProfessionalLicense[];
@@ -373,22 +380,48 @@ export default function AdminFacultyProfilePage() {
                     {facultyProfile.potentialCourses && facultyProfile.potentialCourses.length > 0 ? (
                         <ul className="space-y-3">
                             {facultyProfile.potentialCourses.map((course) => (
-                                <li key={course.id} className="pb-2 border-b border-gray-100 last:border-b-0 last:pb-0">
-                                    <p className="text-sm font-semibold text-gray-800">
-                                        {course.name} {course.code && `(${course.code})`}
-                                    </p>
-                                    {course.description && (
-                                        <p className="mt-0.5 text-xs text-gray-600">{course.description}</p>
-                                    )}
-                                    {course.requiredSpecializations && course.requiredSpecializations.length > 0 && (
-                                        <p className="mt-1 text-xs text-gray-500">
-                                            <span className="font-medium">Matches expertise in:</span>{' '}
-                                            {course.requiredSpecializations
-                                                .filter(reqSpec => facultyProfile.user.specializations.some(facultySpec => facultySpec.id === reqSpec.id))
-                                                .map(spec => spec.name)
-                                                .join(', ')}
-                                        </p>
-                                    )}
+                                <li key={course.id} className="pb-3 mb-3 border-b border-gray-100 last:border-b-0 last:pb-0 last:mb-0">
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-800">
+                                                {course.name} {course.code && <span className="text-xs text-gray-500">({course.code})</span>}
+                                            </p>
+                                            {course.description && (
+                                                <p className="mt-0.5 text-xs text-gray-600">{course.description}</p>
+                                            )}
+                                            {course.requiredSpecializations && course.requiredSpecializations.length > 0 && (
+                                                <p className="mt-1 text-xs text-gray-500">
+                                                    <span className="font-medium">Matches expertise in:</span>{' '}
+                                                    {course.requiredSpecializations
+                                                        .filter(reqSpec => facultyProfile.user.specializations.some(facultySpec => facultySpec.id === reqSpec.id))
+                                                        .map(spec => spec.name)
+                                                        .join(', ')}
+                                                </p>
+                                            )}
+                                        </div>
+                                        {/* --- NEW: Match Strength Indicator --- */}
+                                        <div className="ml-4 flex-shrink-0">
+                                            {course.matchStrength === 'FULL_MATCH' && (
+                                                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-800" title="Faculty meets all required specializations for this course.">
+                                                    <CheckCircleIcon className="h-4 w-4 mr-1 text-green-600" />
+                                                    Full Match
+                                                </span>
+                                            )}
+                                            {course.matchStrength === 'PARTIAL_MATCH' && (
+                                                <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-semibold text-yellow-800" title="Faculty meets some required specializations for this course.">
+                                                    <ExclamationTriangleIcon className="h-4 w-4 mr-1 text-yellow-600" /> {/* Or InformationCircleIcon */}
+                                                    Partial Match
+                                                </span>
+                                            )}
+                                            {/* We are not expecting 'NO_MATCH' here as the backend filters them out, but good for completeness if logic changes */}
+                                            {/* {course.matchStrength === 'NO_MATCH' && (
+                                                <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                                                    No Match
+                                                </span>
+                                            )} */}
+                                        </div>
+                                        {/* --- END: Match Strength Indicator --- */}
+                                    </div>
                                 </li>
                             ))}
                         </ul>

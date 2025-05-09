@@ -14,6 +14,9 @@ import { Role, // Import Role enum
        } from '@/generated/prisma';
 import bcrypt from 'bcrypt';
 
+// Define Match Strength Type
+type CourseMatchStrength = 'FULL_MATCH' | 'PARTIAL_MATCH' | 'NO_MATCH';
+
 // --- Action: Get All Faculty Users ---
 export async function getAllFaculty() {
     const session = await getServerSession(authOptions);
@@ -58,7 +61,10 @@ interface FacultyProfileData {
         // Add the specializations array here
         specializations: Specialization[]; // Keep this raw data
     };
-    potentialCourses: (Course & { requiredSpecializations: Pick<Specialization, 'id' | 'name'>[] })[]; // <-- ADD THIS LINE
+    potentialCourses: (Course & {
+        requiredSpecializations: Pick<Specialization, 'id' | 'name'>[];
+        matchStrength: CourseMatchStrength; // <-- ADD THIS
+    })[];
     suggestedTeachingAreas: string[]; // Array of specialization names
     academicQualifications: AcademicQualification[];
     professionalLicenses: ProfessionalLicense[];
@@ -145,19 +151,46 @@ export async function getFacultyProfileById(facultyId: string): Promise<GetFacul
         const specializationNames = (facultyUser.specializations ?? []).map(spec => spec.name);
         const facultySpecializationIds = new Set((facultyUser.specializations ?? []).map(spec => spec.id));
 
-        // --- *** NEW: Determine potential courses for the faculty member *** ---
-        const potentialCoursesList: (Course & { requiredSpecializations: Pick<Specialization, 'id' | 'name'>[] })[] = [];
-        if (facultySpecializationIds.size > 0) {
+        // --- *** NEW: Determine potential courses AND THEIR MATCH STRENGTH for the faculty member *** ---
+        const potentialCoursesList: (Course & {
+            requiredSpecializations: Pick<Specialization, 'id' | 'name'>[];
+            matchStrength: CourseMatchStrength;
+        })[] = [];
+
+        if (facultySpecializationIds.size > 0 || allCourses.some(c => !c.requiredSpecializations || c.requiredSpecializations.length === 0)) { // Consider courses with no required specs
             allCourses.forEach(course => {
-                if (course.requiredSpecializations && course.requiredSpecializations.length > 0) {
-                    // Suggest course if faculty has AT LEAST ONE of the required specializations
-                    // More advanced logic (e.g., requiring ALL) can be added later if needed.
-                    const hasMatchingSpec = course.requiredSpecializations.some(reqSpec =>
-                        facultySpecializationIds.has(reqSpec.id)
-                    );
-                    if (hasMatchingSpec) {
-                        potentialCoursesList.push(course);
+                let matchStrength: CourseMatchStrength = 'NO_MATCH'; // Default
+                let facultyHasAtLeastOneRequiredSpec = false;
+                let facultyHasAllRequiredSpecs = true; // Assume true until a missing one is found
+
+                if (!course.requiredSpecializations || course.requiredSpecializations.length === 0) {
+                    // If a course has NO required specializations, any faculty is technically a "full match" for teaching it based on specialization criteria alone.
+                    // Or, you might decide such courses aren't "suggested" based on specialization. For now, let's call it a full match.
+                    matchStrength = 'FULL_MATCH';
+                    potentialCoursesList.push({ ...course, matchStrength });
+                    return; // Move to next course
+                }
+
+                // Check against the course's required specializations
+                for (const reqSpec of course.requiredSpecializations) {
+                    if (facultySpecializationIds.has(reqSpec.id)) {
+                        facultyHasAtLeastOneRequiredSpec = true;
+                        // Keep checking for 'facultyHasAllRequiredSpecs'
+                    } else {
+                        facultyHasAllRequiredSpecs = false; // Found a required spec the faculty doesn't have
                     }
+                }
+
+                if (facultyHasAllRequiredSpecs) {
+                    matchStrength = 'FULL_MATCH';
+                } else if (facultyHasAtLeastOneRequiredSpec) {
+                    matchStrength = 'PARTIAL_MATCH';
+                }
+                // Else, it remains 'NO_MATCH' (faculty has none of the required specs)
+
+                // Only add to potential list if there's at least a partial match
+                if (matchStrength === 'FULL_MATCH' || matchStrength === 'PARTIAL_MATCH') {
+                    potentialCoursesList.push({ ...course, matchStrength });
                 }
             });
         }

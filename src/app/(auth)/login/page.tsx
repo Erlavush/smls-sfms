@@ -78,13 +78,13 @@ export default function LoginPage() {
                      {/* Container for the card */}
                      <div className="w-full">
                          {/* Gradient border effect - Using softer blues */}
-                         <div className="rounded-3xl bg-gradient-to-r from-sky-400 to-blue-500 p-1 shadow-2xl"> {/* Changed gradient, increased shadow */}
+                         <div className="rounded-3xl bg-gradient-to-r from-spc-blue-light to-spc-blue-DEFAULT p-1 shadow-2xl animate-fade-in-scale"> {/* Changed gradient, increased shadow */}
                              {/* Inner white card - Kept white for contrast */}
-                            <div className="rounded-[22px] bg-white p-8 sm:p-10">
-
-                                <h1 className="cursor-default pb-6 text-center text-4xl font-bold text-gray-800"> {/* Slightly lighter text */}
-                                    Log in
-                                </h1>
+                             <div className="rounded-[22px] bg-white p-8 sm:p-10">
+ 
+                                 <h1 className="cursor-default pb-6 text-center text-4xl font-bold text-spc-blue-darker"> {/* Slightly lighter text */}
+                                     Log in
+                                 </h1>
 
                                 <form onSubmit={handleSubmit} className="space-y-5">
                                     {error && (
@@ -98,7 +98,7 @@ export default function LoginPage() {
                                         <input
                                             id="email" name="email" type="email" placeholder="Email" required disabled={isLoading}
                                             value={email} onChange={(e) => setEmail(e.target.value)}
-                                            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50" // Adjusted text color
+                                            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-spc-blue-DEFAULT focus:ring-1 focus:ring-spc-blue-DEFAULT disabled:opacity-50" // Adjusted text color
                                         />
                                     </div>
                                     {/* Password Input */}
@@ -107,24 +107,30 @@ export default function LoginPage() {
                                         <input
                                             id="password" name="password" type="password" placeholder="Password" required disabled={isLoading}
                                             value={password} onChange={(e) => setPassword(e.target.value)}
-                                            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50" // Adjusted text color
+                                            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-spc-blue-DEFAULT focus:ring-1 focus:ring-spc-blue-DEFAULT disabled:opacity-50" // Adjusted text color
                                         />
                                     </div>
                                     {/* Forget Password Link - *** UPDATED href *** */}
                                     <div className="text-right">
-                                        <Link href="/forgot-password" className="text-sm text-sky-600 hover:text-sky-700 hover:underline"> Forget your password? </Link>
+                                        <Link href="/forgot-password" className="text-sm text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline"> Forget your password? </Link>
                                     </div>
                                     {/* Submit Button - Matching softer gradient */}
                                     <button
-                                        type="submit" disabled={isLoading}
-                                        className="mt-6 w-full rounded-lg bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-2.5 text-sm font-semibold uppercase tracking-wider text-white shadow-md transition duration-300 ease-in-out hover:from-sky-600 hover:to-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"> {/* Changed gradient and hover */}
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="mt-6 w-full rounded-lg bg-gradient-to-r from-spc-blue-light to-spc-blue-DEFAULT px-4 py-2.5 text-sm font-semibold uppercase tracking-wider text-white shadow-md
+                                                   transition-all duration-200 ease-out  /* Base transition */
+                                                   hover:from-spc-blue-DEFAULT hover:to-spc-blue-darker hover:shadow-lg hover:scale-[1.02] /* Hover effects */
+                                                   active:scale-[0.98] active:brightness-90 /* Active/press effects */
+                                                   disabled:opacity-60 disabled:cursor-not-allowed"
+                                    >
                                         {isLoading ? 'LOGGING IN...' : 'LOG IN'}
                                     </button>
                                 </form>
                                 {/* Sign Up - Adjusted color */}
                                <div className="mt-5 text-center text-sm">
                                     <span className="text-gray-500">Don't have an account?{' '}</span> {/* Lighter text */}
-                                    <Link href="#" className="font-semibold text-sky-600 hover:text-sky-700 hover:underline"> Sign Up </Link>
+                                    <Link href="#" className="font-semibold text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline"> Sign Up </Link>
                                </div>
                                 {/* Separator - Adjusted color */}
                                <div className="my-6 flex items-center">
@@ -142,7 +148,7 @@ export default function LoginPage() {
                                </div>
                                 {/* Terms - Adjusted color and link color */}
                                 <div className="mt-6 text-center text-xs text-gray-500"> {/* Lighter text */}
-                                    <p> By signing in, you agree to our{' '} <Link className="font-medium text-sky-600 hover:underline" href="#">Terms</Link> {' '}and{' '} <Link className="font-medium text-sky-600 hover:underline" href="#">Privacy Policy</Link>. </p>
+                                    <p> By signing in, you agree to our{' '} <Link className="font-medium text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline" href="#">Terms</Link> {' '}and{' '} <Link className="font-medium text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline" href="#">Privacy Policy</Link>. </p>
                                 </div>
                             </div> {/* End Inner Card */}
                         </div> {/* End Gradient Border */}

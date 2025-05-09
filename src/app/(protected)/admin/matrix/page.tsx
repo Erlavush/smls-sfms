@@ -4,9 +4,11 @@
 
 import React, { useState, useEffect, useMemo, useTransition } from 'react';
 import { getFacultySpecializationData, generateMatrixCsv } from '@/lib/actions/dashboardActions'; // Import actions
-import { TableCellsIcon, ExclamationTriangleIcon, UserCircleIcon, FunnelIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { getCourses } from '@/lib/courseActions'; // <-- CORRECTED IMPORT PATH
+import { TableCellsIcon, ExclamationTriangleIcon, UserCircleIcon, FunnelIcon, ArrowDownTrayIcon, BookOpenIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline'; // <-- ADDED BookOpenIcon, CheckIcon, XMarkIcon
 import FacultyMatrixDetailPopup from '@/components/admin/FacultyMatrixDetailPopup';
 import type { FacultyLinkedSpecialization } from '@/types';
+import type { Course, Specialization } from '@/generated/prisma/client'; // <-- NEW IMPORT for types
 
 export default function AdminMatrixPage() {
     // --- State Declarations ---
@@ -21,35 +23,55 @@ export default function AdminMatrixPage() {
     const [isDownloading, startDownloadTransition] = useTransition();
     const [downloadError, setDownloadError] = useState<string | null>(null);
 
+    // --- NEW STATE FOR COURSE SUITABILITY CHECK ---
+    const [allCourses, setAllCourses] = useState<(Course & { requiredSpecializations: Pick<Specialization, 'id' | 'name'>[] })[]>([]);
+    const [selectedCourseIdForCheck, setSelectedCourseIdForCheck] = useState<string>(''); // Store ID of selected course
+    const [isLoadingCourses, setIsLoadingCourses] = useState(true);
+    // --- END NEW STATE ---
+
     // --- Fetch Initial Data ---
     useEffect(() => {
-        setIsLoading(true);
+        setIsLoading(true); // Combined loading state
+        setIsLoadingCourses(true);
         setError(null);
-        setDownloadError(null); // Clear download error on refresh
+        setDownloadError(null);
 
-        getFacultySpecializationData()
-            .then(response => {
-                if (response.success && response.data && response.allSpecializationNames) {
-                    // *** MODIFIED: Set both states from the single response ***
-                    setMatrixData(response.data);
-                    setAllSpecializations(response.allSpecializationNames);
-                    // *** END MODIFICATION ***
-                } else {
-                    setError(response.error || 'Failed to load specialization data.');
-                    setMatrixData([]);
-                    setAllSpecializations([]);
-                }
-            })
-            .catch(err => {
-                setError('An unexpected error occurred while loading the matrix.');
+        Promise.all([
+            getFacultySpecializationData(),
+            getCourses() // Fetch courses
+        ]).then(([matrixResponse, coursesResponse]) => {
+            // Process matrixResponse (faculty and all specialization names)
+            if (matrixResponse.success && matrixResponse.data && matrixResponse.allSpecializationNames) {
+                setMatrixData(matrixResponse.data);
+                setAllSpecializations(matrixResponse.allSpecializationNames);
+            } else {
+                setError(prev => prev ? `${prev}\n${matrixResponse.error || 'Failed to load matrix data.'}` : (matrixResponse.error || 'Failed to load matrix data.'));
                 setMatrixData([]);
                 setAllSpecializations([]);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-        // *** REMOVED: Incorrect Prisma call and related logic ***
-    }, []); // Fetch on mount
+            }
+
+            // Process coursesResponse
+            if (coursesResponse.success && coursesResponse.courses) {
+                const processedCourses = coursesResponse.courses.map(course => ({
+                    ...course,
+                    requiredSpecializations: course.requiredSpecializations || [], // Default to empty array if undefined
+                }));
+                setAllCourses(processedCourses);
+            } else {
+                setError(prev => prev ? `${prev}\n${coursesResponse.error || 'Failed to load courses.'}` : (coursesResponse.error || 'Failed to load courses.'));
+                setAllCourses([]);
+            }
+        }).catch(err => {
+            console.error("Error fetching page data:", err);
+            setError('An unexpected error occurred while loading page data.');
+            setMatrixData([]);
+            setAllSpecializations([]);
+            setAllCourses([]);
+        }).finally(() => {
+            setIsLoading(false);
+            setIsLoadingCourses(false);
+        });
+    }, []);
 
     // --- Filtering Logic ---
     const filteredMatrixData = useMemo(() => {
@@ -115,6 +137,15 @@ export default function AdminMatrixPage() {
         });
     };
 
+    const selectedCourseDetails = useMemo(() => {
+        if (!selectedCourseIdForCheck) return null;
+        return allCourses.find(course => course.id === selectedCourseIdForCheck);
+    }, [selectedCourseIdForCheck, allCourses]);
+
+    const requiredSpecsForSelectedCourse = useMemo(() => {
+        if (!selectedCourseDetails || !selectedCourseDetails.requiredSpecializations) return new Set<string>();
+        return new Set(selectedCourseDetails.requiredSpecializations.map(spec => spec.name)); // Store names for easy lookup
+    }, [selectedCourseDetails]);
 
     // --- Loading State ---
     if (isLoading) {
@@ -157,7 +188,31 @@ export default function AdminMatrixPage() {
                     Faculty Specialization Matrix
                 </h1>
 
-                <div className="flex items-center gap-x-4 gap-y-2 flex-wrap"> {/* Wrapper for filter and download */}
+                <div className="flex items-center gap-x-4 gap-y-2 flex-wrap">
+                    {/* --- NEW: Course Suitability Check Dropdown --- */}
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="courseCheckFilter" className="text-sm font-medium text-gray-700 flex-shrink-0 flex items-center gap-1">
+                            <BookOpenIcon className="h-4 w-4 text-gray-500"/>
+                            Check Suitability for Course:
+                        </label>
+                        <select
+                            id="courseCheckFilter"
+                            name="courseCheckFilter"
+                            value={selectedCourseIdForCheck}
+                            onChange={(e) => setSelectedCourseIdForCheck(e.target.value)}
+                            disabled={isLoadingCourses || allCourses.length === 0}
+                            className="block w-full md:w-auto rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-1.5 pl-3 pr-8"
+                        >
+                            <option value="">-- Select a Course --</option>
+                            {allCourses.map(course => (
+                                <option key={course.id} value={course.id}>
+                                    {course.name} {course.code && `(${course.code})`}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {/* --- END NEW Dropdown --- */}
+
                     {/* Filter Section - Changed from Dropdown to Checkboxes */}
                     <div className="flex items-start gap-2"> {/* Changed to items-start for better alignment with multi-line checkboxes */}
                         <label className="text-sm font-medium text-gray-700 flex-shrink-0 flex items-center gap-1 pt-1"> {/* Added pt-1 for alignment */}
@@ -260,13 +315,29 @@ export default function AdminMatrixPage() {
                                             </button>
                                         </td>
                                         {/* *** Uses allSpecializations state correctly *** */}
-                                        {allSpecializations.map(spec => (
-                                            <td key={`${faculty.userId}-${spec}`} className="px-3 py-3 text-center">
-                                                {linkedSpecsSet.has(spec) ? (
-                                                    <span className="text-green-600" title={`${faculty.name} has specialization: ${spec}`}>✔️</span>
-                                                ) : (
-                                                    <span className="text-gray-300">-</span>
-                                                )}
+                                        {allSpecializations.map(specName => (
+                                            <td key={`${faculty.userId}-${specName}`} className="px-3 py-3 text-center">
+                                                {(() => {
+                                                    const facultyHasThisSpec = linkedSpecsSet.has(specName);
+                                                    
+                                                    if (selectedCourseIdForCheck && requiredSpecsForSelectedCourse.size > 0) {
+                                                        // A course is selected for suitability check
+                                                        if (requiredSpecsForSelectedCourse.has(specName)) {
+                                                            // This column (specName) IS one of the required specializations for the selected course
+                                                            if (facultyHasThisSpec) {
+                                                                return <CheckIcon className="h-5 w-5 text-green-500 mx-auto" title={`${faculty.name} has required specialization: ${specName}`} />;
+                                                            } else {
+                                                                return <XMarkIcon className="h-5 w-5 text-red-500 mx-auto" title={`${faculty.name} is missing required specialization: ${specName}`} />;
+                                                            }
+                                                        } else {
+                                                            // This column (specName) is NOT required by the selected course, show normal status
+                                                            return facultyHasThisSpec ? <CheckIcon className="h-5 w-5 text-gray-400 mx-auto" title={`${faculty.name} has specialization: ${specName}`} /> : <span className="text-gray-300">-</span>;
+                                                        }
+                                                    } else {
+                                                        // No course selected for check, show normal status
+                                                        return facultyHasThisSpec ? <CheckIcon className="h-5 w-5 text-green-500 mx-auto" title={`${faculty.name} has specialization: ${specName}`} /> : <span className="text-gray-300">-</span>;
+                                                    }
+                                                })()}
                                             </td>
                                         ))}
                                     </tr>
@@ -278,10 +349,11 @@ export default function AdminMatrixPage() {
             )}
 
             {/* --- Pop-up Component Integration --- */}
-            {isPopupOpen && (
+            {isPopupOpen && selectedFaculty && ( // Ensure selectedFaculty is also not null
                  <FacultyMatrixDetailPopup
                     faculty={selectedFaculty}
                     onClose={handleClosePopup}
+                    selectedCourseForCheck={selectedCourseDetails} // <-- PASS THE SELECTED COURSE DETAILS
                  />
             )}
         </div>

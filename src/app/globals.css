@@ -1,26 +1,62 @@
-/* src/app/globals.css (Updated for v3) */
+/* src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Add minimal body styling */
-/* body { */
-   /* font-family: sans-serif; /* REMOVED - Tailwind will apply font-sans */ */
-   /* Add other base styles if needed e.g., background color */
-/* } */
+@layer base {
+  body {
+    /* Using a very light gray from Tailwind's palette as a base background */
+    /* You could also use a custom color like 'bg-spc-blue-lighter' if defined and desired */
+    @apply bg-slate-100 text-slate-700 antialiased;
+  }
 
-/* You can leave the body selector empty or remove it if no other base body styles are needed */
-body {
-    /* Example: Add a default background if desired */
-    /* background-color: #f8fafc; */ /* Light gray */
+  /* Optional: Style headings for consistency if needed, though Tailwind classes are often preferred */
+  /* h1 { @apply text-3xl font-bold text-spc-blue-DEFAULT; } */
+  /* h2 { @apply text-2xl font-semibold text-spc-blue-DEFAULT; } */
 }
 
+/* Custom scrollbar for a more modern feel (Webkit browsers) */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the vertical scrollbar */
+  height: 8px; /* Height of the horizontal scrollbar */
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-200; /* Or bg-spc-blue-lighter/50 */
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-400 rounded-full; /* Or bg-spc-blue-light/50 */
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500; /* Or bg-spc-blue-DEFAULT */
+}
+
+/* Animation utility (already present, just confirming) */
 @layer utilities {
-    @keyframes fade-in-scale {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
+  @keyframes fade-in-scale {
+    0% {
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+      visibility: hidden; /* Initially hidden */
     }
-    .animate-fade-in-scale {
-      animation: fade-in-scale 0.2s ease-out forwards;
+    1%, 100% { /* Become visible right as animation starts and stay visible */
+      visibility: visible;
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
   }
+  .animate-fade-in-scale {
+    animation: fade-in-scale 0.4s ease-out forwards; /* Let's try 0.4s */
+  }
+
+  /* Animation delay utilities (REMOVED as they are no longer used for staggered card animations) */
+  /*
+  .animation-delay-100 { animation-delay: 0.1s; }
+  .animation-delay-200 { animation-delay: 0.2s; }
+  .animation-delay-300 { animation-delay: 0.3s; }
+  .animation-delay-400 { animation-delay: 0.4s; }
+  .animation-delay-500 { animation-delay: 0.5s; }
+  */
+  /* For animation-delay-[600ms], Tailwind JIT handles it, no need for a separate class here */
+}

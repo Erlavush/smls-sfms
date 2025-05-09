@@ -3,21 +3,66 @@
 import React from 'react';
 import Link from 'next/link';
 // Updated imports: Added LightBulbIcon, CheckIcon is already there
-import { ArrowTopRightOnSquareIcon, TagIcon, CheckIcon, LightBulbIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, TagIcon, CheckIcon, LightBulbIcon, XMarkIcon, BookOpenIcon, CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import type { FacultyLinkedSpecialization } from '@/types';
+import type { Course, Specialization } from '@/generated/prisma/client'; // <-- ADD THIS IMPORT
+
+// Define CourseMatchStrength type (can be imported from a shared types file if it exists there too)
+type CourseMatchStrength = 'FULL_MATCH' | 'PARTIAL_MATCH' | 'NO_MATCH';
 
 interface Props {
     faculty: FacultyLinkedSpecialization | null;
     onClose: () => void;
+    selectedCourseForCheck?: (Course & { // Make it optional, as a course might not always be selected
+        requiredSpecializations: Pick<Specialization, 'id' | 'name'>[];
+    }) | null;
 }
 
-export default function FacultyMatrixDetailPopup({ faculty, onClose }: Props) {
+export default function FacultyMatrixDetailPopup({ faculty, onClose, selectedCourseForCheck }: Props) {
     if (!faculty) {
         return null; // Return null if no faculty data is provided
     }
 
     // Ensure linkedSpecializationNames is always an array, sort it
     const specializations = faculty.linkedSpecializationNames?.sort() || [];
+
+    // --- NEW: Calculate match strength for the selected course ---
+    let courseSuitability: {
+        strength: CourseMatchStrength;
+        possessedReqSpecs: string[];
+        missingReqSpecs: string[];
+    } | null = null;
+
+    if (selectedCourseForCheck && selectedCourseForCheck.requiredSpecializations) {
+        const facultySpecNamesSet = new Set(faculty.linkedSpecializationNames || []);
+        const courseReqSpecNames = selectedCourseForCheck.requiredSpecializations.map(s => s.name);
+        
+        let possessedCount = 0;
+        const possessedSpecs: string[] = [];
+        const missingSpecs: string[] = [];
+
+        if (courseReqSpecNames.length === 0) { // Course has no specific requirements
+            courseSuitability = { strength: 'FULL_MATCH', possessedReqSpecs: [], missingReqSpecs: [] };
+        } else {
+            courseReqSpecNames.forEach(reqSpecName => {
+                if (facultySpecNamesSet.has(reqSpecName)) {
+                    possessedCount++;
+                    possessedSpecs.push(reqSpecName);
+                } else {
+                    missingSpecs.push(reqSpecName);
+                }
+            });
+
+            if (possessedCount === courseReqSpecNames.length) {
+                courseSuitability = { strength: 'FULL_MATCH', possessedReqSpecs: possessedSpecs, missingReqSpecs: missingSpecs };
+            } else if (possessedCount > 0) {
+                courseSuitability = { strength: 'PARTIAL_MATCH', possessedReqSpecs: possessedSpecs, missingReqSpecs: missingSpecs };
+            } else {
+                courseSuitability = { strength: 'NO_MATCH', possessedReqSpecs: possessedSpecs, missingReqSpecs: missingSpecs };
+            }
+        }
+    }
+    // --- END NEW LOGIC ---
 
     return (
         <div
@@ -83,6 +128,49 @@ export default function FacultyMatrixDetailPopup({ faculty, onClose }: Props) {
                             Consider these areas when assigning teaching loads or responsibilities.
                          </p>
                     </div>
+
+                    {/* --- NEW: Course Specific Suitability Section --- */}
+                    {selectedCourseForCheck && courseSuitability && (
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                            <h4 className="text-md font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                <BookOpenIcon className="h-5 w-5 text-gray-500" />
+                                Suitability for: <span className="text-blue-600">{selectedCourseForCheck.name}</span>
+                            </h4>
+                            <div className="text-sm space-y-1">
+                                {courseSuitability.strength === 'FULL_MATCH' && (
+                                    <p className="flex items-center gap-1 text-green-700">
+                                        <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                                        <strong>Full Match:</strong> Meets all required specializations.
+                                    </p>
+                                )}
+                                {courseSuitability.strength === 'PARTIAL_MATCH' && (
+                                    <p className="flex items-center gap-1 text-yellow-700">
+                                        <ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />
+                                        <strong>Partial Match:</strong> Meets some required specializations.
+                                    </p>
+                                )}
+                                {courseSuitability.strength === 'NO_MATCH' && (
+                                    <p className="flex items-center gap-1 text-red-700">
+                                        <XCircleIcon className="h-5 w-5 text-red-500" />
+                                        <strong>No Direct Match:</strong> Does not meet primary specializations for this course.
+                                    </p>
+                                )}
+
+                                {/* Optionally list possessed and missing specializations for the selected course */}
+                                {courseSuitability.possessedReqSpecs.length > 0 && (
+                                    <p className="text-xs text-gray-600 pl-6">
+                                        <span className="font-medium text-green-600">Possesses:</span> {courseSuitability.possessedReqSpecs.join(', ')}
+                                    </p>
+                                )}
+                                {courseSuitability.missingReqSpecs.length > 0 && (
+                                    <p className="text-xs text-gray-600 pl-6">
+                                        <span className="font-medium text-red-600">Lacks:</span> {courseSuitability.missingReqSpecs.join(', ')}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                    {/* --- END NEW Section --- */}
                 </div>
 
                  {/* Footer with Profile Link */}

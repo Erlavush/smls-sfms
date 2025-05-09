@@ -9,14 +9,41 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // Add the font family extension
       fontFamily: {
-        // Define 'sans' to use the Inter variable, making it the default sans-serif font
-        // Tailwind will automatically apply this to the body via preflight/base styles
         sans: ['var(--font-inter)', 'sans-serif'],
+      },
+      colors: {
+        'spc-blue': {
+          DEFAULT: '#003153',
+          light: '#004A7C',
+          lighter: '#E0F2FE',
+          darker: '#002742',
+        },
+        'smls-gold': {
+          DEFAULT: '#FFB81C',
+          light: '#FFD466',
+          dark: '#E6A000',
+        },
+      },
+      // textShadow can be kept or removed for now if you suspect it
+      textShadow: {
+        sm: '0 1px 2px var(--tw-shadow-color)',
+        DEFAULT: '0 2px 4px var(--tw-shadow-color)',
+        lg: '0 8px 16px var(--tw-shadow-color)',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ matchUtilities, theme }: { matchUtilities: any, theme: any }) {
+      matchUtilities(
+        {
+          'text-shadow': (value: any) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') }
+      )
+    },
+  ],
 };
 export default config;
