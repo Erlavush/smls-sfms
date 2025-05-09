@@ -153,16 +153,16 @@ export default function DocumentsPage() {
     if (error || sessionStatus === 'unauthenticated') {
          return (
              <div className="p-6 text-center bg-red-50 min-h-[calc(100vh-8rem)] flex flex-col items-center justify-center">
-                <ExclamationTriangleIcon className="h-10 w-10 text-red-400 mb-3" />
+                 <ExclamationTriangleIcon className="h-10 w-10 text-red-400 mb-3" />
                  <p className="mb-4 text-lg font-semibold text-red-700">Access Denied or Error</p>
                  <p className="mb-5 text-red-600">{error || "You must be signed in to view this page."}</p>
-                 <Link href="/login">
+                 <Link href="/login" legacyBehavior>
                      <button className="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                          Go to Login
                      </button>
                  </Link>
              </div>
-        );
+         );
     }
 
     // --- Display Document List ---

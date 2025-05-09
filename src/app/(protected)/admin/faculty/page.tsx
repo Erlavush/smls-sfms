@@ -121,7 +121,6 @@ export default function AdminFacultyListPage() {
                     Add Faculty
                 </button>
             </div>
-
             {/* --- Loading and Error Display for List --- */}
             {isLoading && (
                  <div className="flex items-center gap-3 text-gray-500">
@@ -138,7 +137,6 @@ export default function AdminFacultyListPage() {
                     <span className="block sm:inline">{error}</span>
                 </div>
             )}
-
             {/* --- Faculty List Table/UL --- */}
             {!isLoading && !error && (
                 <div className="bg-white shadow overflow-hidden rounded-lg border border-gray-200">
@@ -149,7 +147,10 @@ export default function AdminFacultyListPage() {
                         ) : (
                             facultyList.map((faculty) => (
                                 <li key={faculty.id}>
-                                    <Link href={`/admin/faculty/${faculty.id}`} className="block hover:bg-gray-50 transition duration-150 ease-in-out group"> {/* Added group class */}
+                                    <Link
+                                        href={`/admin/faculty/${faculty.id}`}
+                                        className="block hover:bg-gray-50 transition duration-150 ease-in-out group"
+                                    > {/* Added group class, removed legacyBehavior */}
                                         <div className="px-4 py-4 sm:px-6 flex items-center justify-between">
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-semibold text-indigo-600 truncate group-hover:text-indigo-700"> {/* Added group-hover effect */}
@@ -178,7 +179,6 @@ export default function AdminFacultyListPage() {
                     </ul>
                 </div>
             )}
-
             {/* --- Add Faculty Modal --- */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" aria-labelledby="modal-title" role="dialog" aria-modal="true">

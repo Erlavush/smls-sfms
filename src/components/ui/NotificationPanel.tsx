@@ -113,7 +113,6 @@ export default function NotificationPanel({ onClose, onUpdateCount }: Notificati
                     Mark all read
                 </button>
             </div>
-
             {/* Notification List Area (Scrollable) */}
             <div className="flex-grow overflow-y-auto">
                 {isLoading ? (
@@ -168,7 +167,6 @@ export default function NotificationPanel({ onClose, onUpdateCount }: Notificati
                     </ul>
                 )}
             </div>
-
             {/* Panel Footer (Optional) */}
             {/* <div className="px-4 py-2 border-t border-gray-200 bg-gray-50 text-center flex-shrink-0">
                 <Link href="/notifications" onClick={onClose} className="text-sm font-medium text-indigo-600 hover:text-indigo-800">

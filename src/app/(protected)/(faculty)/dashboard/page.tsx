@@ -133,17 +133,17 @@ export default function FacultyDashboardPage() {
     if (error || status === 'unauthenticated') {
          return (
              <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-6 text-center bg-red-50">
-                <ExclamationTriangleIcon className="h-12 w-12 text-red-400 mb-4" />
+                 <ExclamationTriangleIcon className="h-12 w-12 text-red-400 mb-4" />
                  <p className="mb-4 text-xl font-semibold text-red-700">Access Denied or Error</p>
                  <p className="mb-6 text-red-600">{error || "You must be signed in to view this page."}</p>
-                 <Link href="/login">
+                 <Link href="/login" legacyBehavior>
                      <button className="inline-flex items-center gap-2 rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                          Go to Login
                          <ArrowRightIcon className="h-4 w-4" />
                      </button>
                  </Link>
              </div>
-        );
+         );
     }
 
     // --- Authenticated State ---
@@ -183,23 +183,23 @@ export default function FacultyDashboardPage() {
                                     {dashboardData.pendingItems.length > 0 ? (
                                         <ul className="space-y-3">
                                             {dashboardData.pendingItems.slice(0, 5).map(item => ( // Show first 5
-                                                <li key={item.id} className="text-sm text-yellow-900 flex justify-between items-center">
+                                                (<li key={item.id} className="text-sm text-yellow-900 flex justify-between items-center">
                                                     <span>{getItemDisplayName(item)}</span>
                                                     <Link href="/profile" className="text-xs text-blue-600 hover:underline">
                                                         View in Profile
                                                     </Link>
-                                                </li>
+                                                </li>)
                                             ))}
                                             {dashboardData.pendingItems.length > 5 && (
                                                 <li className="text-center text-xs text-gray-500 pt-2">
-                                                    <Link href="/profile" className="hover:underline">
+                                                    <Link href="/profile" className="hover:underline" legacyBehavior>
                                                         + {dashboardData.pendingItems.length - 5} more pending...
                                                     </Link>
                                                 </li>
                                             )}
                                         </ul>
                                     ) : (
-                                        <p className="text-sm text-yellow-700 italic">No items currently pending.</p> // Should not happen if count > 0, but safe fallback
+                                        (<p className="text-sm text-yellow-700 italic">No items currently pending.</p>) // Should not happen if count > 0, but safe fallback
                                     )}
                                 </div>
                             </div>
@@ -208,41 +208,51 @@ export default function FacultyDashboardPage() {
                         {/* Quick Links Card */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                              {/* Profile Card */}
-                             <Link href="/profile" className="group flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition duration-300 ease-in-out hover:shadow-md hover:border-blue-300">
-                                <div>
-                                    <div className="mb-2 flex items-center gap-3">
-                                        <UserCircleIcon className="h-7 w-7 text-blue-600" />
-                                        <h2 className="text-lg font-semibold text-gray-800">
-                                            My Profile
-                                        </h2>
+                             <Link
+                                 href="/profile"
+                                 className="group flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition duration-300 ease-in-out hover:shadow-md hover:border-blue-300"
+                             >
+                                <> {/* Single React Fragment as the child */}
+                                    <div>
+                                        <div className="mb-2 flex items-center gap-3">
+                                            <UserCircleIcon className="h-7 w-7 text-blue-600" />
+                                            <h2 className="text-lg font-semibold text-gray-800">
+                                                My Profile
+                                            </h2>
+                                        </div>
+                                        <p className="text-sm text-gray-600">
+                                            View and manage your CV, qualifications, and details.
+                                        </p>
                                     </div>
-                                    <p className="text-sm text-gray-600">
-                                        View and manage your CV, qualifications, and details.
-                                    </p>
-                                </div>
-                                <div className="mt-4 flex items-center justify-end text-sm font-medium text-blue-600 group-hover:underline">
-                                    Go to Profile
-                                    <ArrowRightIcon className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                                </div>
+                                    <div className="mt-4 flex items-center justify-end text-sm font-medium text-blue-600 group-hover:underline">
+                                        Go to Profile
+                                        <ArrowRightIcon className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                                    </div>
+                                </>
                             </Link>
 
                             {/* Documents Card */}
-                            <Link href="/documents" className="group flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition duration-300 ease-in-out hover:shadow-md hover:border-green-300">
-                                <div>
-                                    <div className="mb-2 flex items-center gap-3">
-                                        <DocumentTextIcon className="h-7 w-7 text-green-600" />
-                                        <h2 className="text-lg font-semibold text-gray-800">
-                                            My Documents
-                                        </h2>
+                            <Link
+                                href="/documents"
+                                className="group flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition duration-300 ease-in-out hover:shadow-md hover:border-green-300"
+                            >
+                                <> {/* Single React Fragment as the child */}
+                                    <div>
+                                        <div className="mb-2 flex items-center gap-3">
+                                            <DocumentTextIcon className="h-7 w-7 text-green-600" />
+                                            <h2 className="text-lg font-semibold text-gray-800">
+                                                My Documents
+                                            </h2>
+                                        </div>
+                                        <p className="text-sm text-gray-600">
+                                            Upload and manage your supporting credentials.
+                                        </p>
                                     </div>
-                                    <p className="text-sm text-gray-600">
-                                        Upload and manage your supporting credentials.
-                                    </p>
-                                </div>
-                                <div className="mt-4 flex items-center justify-end text-sm font-medium text-green-600 group-hover:underline">
-                                    Manage Documents
-                                    <ArrowRightIcon className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                                </div>
+                                    <div className="mt-4 flex items-center justify-end text-sm font-medium text-green-600 group-hover:underline">
+                                        Manage Documents
+                                        <ArrowRightIcon className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                                    </div>
+                                </>
                             </Link>
                         </div>
                     </div>

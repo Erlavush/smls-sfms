@@ -270,8 +270,6 @@ export default function AdminMatrixPage() {
                 </div>
             )}
             {/* --- End Header Row --- */}
-
-
             {/* --- Matrix Table --- */}
             {filteredMatrixData.length === 0 && !isLoading ? (
                  <p className="text-gray-500 italic text-center mt-10 py-5 bg-white rounded-md shadow-sm border border-gray-200">
@@ -347,14 +345,13 @@ export default function AdminMatrixPage() {
                     </table>
                 </div>
             )}
-
             {/* --- Pop-up Component Integration --- */}
             {isPopupOpen && selectedFaculty && ( // Ensure selectedFaculty is also not null
-                 <FacultyMatrixDetailPopup
+                 (<FacultyMatrixDetailPopup
                     faculty={selectedFaculty}
                     onClose={handleClosePopup}
                     selectedCourseForCheck={selectedCourseDetails} // <-- PASS THE SELECTED COURSE DETAILS
-                 />
+                 />)
             )}
         </div>
     );

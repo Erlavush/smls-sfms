@@ -20,7 +20,6 @@ export default function AcademicQualificationDisplay({ item, isEditing, stagedFi
             <h3 className="text-base font-bold text-gray-800 tracking-tight"> {/* Adjusted size */}
                 {item.degree || 'N/A'}
             </h3>
-
             {/* Institution */}
             <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold"> {/* Adjusted size/gap */}
                 <div className="flex items-center justify-center w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex-shrink-0"> {/* Adjusted size */}
@@ -29,7 +28,6 @@ export default function AcademicQualificationDisplay({ item, isEditing, stagedFi
                 </div>
                 <span>{item.institution || 'N/A'}{item.program ? ` - ${item.program}` : ''}</span>
             </div>
-
             {/* Details Row */}
             <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 pt-3 border-t border-gray-100 mt-2"> {/* Added gap/margin */}
 

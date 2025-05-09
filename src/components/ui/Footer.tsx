@@ -16,10 +16,15 @@ export default function Footer() {
 
                     {/* Right Side (Optional Links) */}
                     <div className="flex space-x-4 mt-2 sm:mt-0">
-                        <Link href="#" className="text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline transition-colors duration-200"> {/* UPDATED CLASSES */}
+                        <Link
+                            href="#"
+                            className="text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline transition-colors duration-200"
+                            > {/* UPDATED CLASSES */}
                             Privacy Policy
                         </Link>
-                        <Link href="#" className="text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline transition-colors duration-200"> {/* UPDATED CLASSES */}
+                        <Link
+                            href="#"
+                            className="text-spc-blue-light hover:text-spc-blue-DEFAULT hover:underline transition-colors duration-200"> {/* UPDATED CLASSES */}
                             Terms of Service
                         </Link>
                     </div>

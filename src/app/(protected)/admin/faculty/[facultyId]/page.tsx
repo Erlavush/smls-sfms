@@ -254,17 +254,20 @@ export default function AdminFacultyProfilePage() {
     if (error) { /* ... (error JSX remains the same) ... */
         return (
             <div className="p-6 bg-red-50 min-h-screen">
-                 <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow border border-red-200">
-                     <div className="flex items-center gap-3 text-red-700 mb-4">
-                        <ExclamationTriangleIcon className="h-6 w-6" />
-                        <h2 className="text-xl font-semibold">Error Loading Profile</h2>
-                     </div>
-                    <p className="text-red-600 mb-6">{error}</p>
-                    <Link href="/admin/faculty" className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline">
-                        <ArrowLeftIcon className="h-4 w-4" />
-                        Back to Faculty List
-                    </Link>
-                 </div>
+                <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow border border-red-200">
+                    <div className="flex items-center gap-3 text-red-700 mb-4">
+                       <ExclamationTriangleIcon className="h-6 w-6" />
+                       <h2 className="text-xl font-semibold">Error Loading Profile</h2>
+                    </div>
+                   <p className="text-red-600 mb-6">{error}</p>
+                   <Link
+                       href="/admin/faculty"
+                       className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                       legacyBehavior>
+                       <ArrowLeftIcon className="h-4 w-4" />
+                       Back to Faculty List
+                   </Link>
+                </div>
             </div>
         );
     }
@@ -281,12 +284,14 @@ export default function AdminFacultyProfilePage() {
         <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
             {/* Back Link */}
             <div className="mb-4">
-                <Link href="/admin/faculty" className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline">
+                <Link
+                    href="/admin/faculty"
+                    className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                    legacyBehavior>
                     <ArrowLeftIcon className="h-4 w-4" />
                     Back to Faculty List
                 </Link>
             </div>
-
             {/* Faculty Header Info */}
             <div className="mb-8 p-6 bg-white rounded-lg shadow border border-gray-200">
                 {/* ... (header content remains the same, including edit/delete buttons) ... */}
@@ -308,15 +313,13 @@ export default function AdminFacultyProfilePage() {
                     </div>
                 </div>
             </div>
-
-             {/* Link Error Display */}
-             {linkError && ( /* ... (error display remains the same) ... */
-                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded relative flex items-center gap-2" role="alert">
-                    <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />
-                    <span className="block sm:inline">{linkError}</span>
-                </div>
-             )}
-
+            {/* Link Error Display */}
+            {linkError && ( /* ... (error display remains the same) ... */
+               (<div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded relative flex items-center gap-2" role="alert">
+                   <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />
+                   <span className="block sm:inline">{linkError}</span>
+               </div>)
+            )}
             {/* Specializations Management Card */}
             <div className="mb-8 rounded-lg bg-white shadow border border-gray-200 overflow-hidden">
                  {/* ... (specialization management content remains the same) ... */}
@@ -337,7 +340,6 @@ export default function AdminFacultyProfilePage() {
                     )}
                 </div>
             </div>
-
             {/* --- *** NEW: Suggested Teaching Areas Card *** --- */}
             <div className="mb-8 rounded-lg bg-white shadow border border-gray-200 overflow-hidden">
                 {/* Enhanced header for this card */}
@@ -367,7 +369,6 @@ export default function AdminFacultyProfilePage() {
                 </div>
             </div>
             {/* --- *** END: Suggested Teaching Areas Card *** --- */}
-
             {/* --- *** NEW: Potential Courses Card *** --- */}
             <div className="mb-8 rounded-lg bg-white shadow border border-gray-200 overflow-hidden">
                 <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-green-50"> {/* Different color for distinction */}
@@ -437,7 +438,6 @@ export default function AdminFacultyProfilePage() {
                 </div>
             </div>
             {/* --- *** END: Potential Courses Card *** --- */}
-
             {/* Dynamic CV Sections Grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                 {(Object.keys(sectionMetadata) as SectionKey[]).map(sectionKey => {
@@ -461,15 +461,13 @@ export default function AdminFacultyProfilePage() {
                     );
                 })}
             </div>
-
             {/* --- Edit Name Modal --- */}
             {isEditNameModalOpen && facultyProfile?.user && ( /* ... (modal JSX remains the same) ... */
-                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4" aria-labelledby="edit-name-modal-title" role="dialog" aria-modal="true"> <div className="bg-white rounded-lg shadow-xl w-full max-w-md transform transition-all"> <form ref={editNameFormRef} onSubmit={handleNameUpdateSubmit}> <div className="flex justify-between items-center p-4 border-b border-gray-200"> <h2 className="text-lg font-semibold text-gray-800" id="edit-name-modal-title">Edit Faculty Name</h2> <button type="button" onClick={closeEditNameModal} disabled={isUpdatingName} className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" aria-label="Close modal"> <XMarkIcon className="h-5 w-5" /> </button> </div> <div className="p-5 space-y-4"> <div> <label htmlFor="faculty-name-edit" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label> <input type="text" id="faculty-name-edit" name="name" defaultValue={facultyProfile.user.name || ''} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-70" placeholder="Enter faculty name" disabled={isUpdatingName} /> </div> {editNameError && ( <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded text-sm flex items-center gap-2" role="alert"> <ExclamationTriangleIcon className="h-4 w-4" /> {editNameError} </div> )} </div> <div className="flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50"> <button type="button" onClick={closeEditNameModal} disabled={isUpdatingName} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"> Cancel </button> <button type="submit" disabled={isUpdatingName} className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-60" > {isUpdatingName ? 'Saving...' : 'Save Name'} </button> </div> </form> </div> </div>
+                 (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4" aria-labelledby="edit-name-modal-title" role="dialog" aria-modal="true"> <div className="bg-white rounded-lg shadow-xl w-full max-w-md transform transition-all"> <form ref={editNameFormRef} onSubmit={handleNameUpdateSubmit}> <div className="flex justify-between items-center p-4 border-b border-gray-200"> <h2 className="text-lg font-semibold text-gray-800" id="edit-name-modal-title">Edit Faculty Name</h2> <button type="button" onClick={closeEditNameModal} disabled={isUpdatingName} className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" aria-label="Close modal"> <XMarkIcon className="h-5 w-5" /> </button> </div> <div className="p-5 space-y-4"> <div> <label htmlFor="faculty-name-edit" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label> <input type="text" id="faculty-name-edit" name="name" defaultValue={facultyProfile.user.name || ''} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-70" placeholder="Enter faculty name" disabled={isUpdatingName} /> </div> {editNameError && ( <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded text-sm flex items-center gap-2" role="alert"> <ExclamationTriangleIcon className="h-4 w-4" /> {editNameError} </div> )} </div> <div className="flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50"> <button type="button" onClick={closeEditNameModal} disabled={isUpdatingName} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"> Cancel </button> <button type="submit" disabled={isUpdatingName} className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-60" > {isUpdatingName ? 'Saving...' : 'Save Name'} </button> </div> </form> </div> </div>)
             )}
-
             {/* --- Delete Confirmation Modal --- */}
             {isDeleteModalOpen && facultyProfile?.user && ( /* ... (modal JSX remains the same) ... */
-                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4" aria-labelledby="delete-faculty-modal-title" role="dialog" aria-modal="true"> <div className="bg-white rounded-lg shadow-xl w-full max-w-md transform transition-all"> <div className="flex justify-between items-center p-4 border-b border-gray-200"> <h2 className="text-lg font-semibold text-red-700 flex items-center gap-2" id="delete-faculty-modal-title"> <ExclamationTriangleIcon className="h-5 w-5 text-red-600"/> Confirm Deletion </h2> <button onClick={closeDeleteModal} disabled={isDeleting} className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" aria-label="Close modal"> <XMarkIcon className="h-5 w-5" /> </button> </div> <div className="p-5"> <p className="text-sm text-gray-700 mb-3"> Are you sure you want to permanently delete the faculty member: <br /> <strong className="text-gray-900">{facultyProfile.user.name || facultyProfile.user.email}?</strong> </p> <p className="text-xs text-red-600 bg-red-50 p-2 rounded border border-red-100"> This action cannot be undone. All associated profile data (qualifications, licenses, experience, etc.) will also be permanently deleted. </p> {deleteError && ( <div className="mt-3 bg-red-100 border border-red-300 text-red-800 px-3 py-2 rounded text-sm flex items-center gap-2" role="alert"> <ExclamationTriangleIcon className="h-4 w-4" /> {deleteError} </div> )} </div> <div className="flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50"> <button type="button" onClick={closeDeleteModal} disabled={isDeleting} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"> Cancel </button> <button type="button" onClick={handleDeleteConfirm} disabled={isDeleting} className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-60" > {isDeleting ? 'Deleting...' : 'Confirm Delete'} </button> </div> </div> </div>
+                 (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4" aria-labelledby="delete-faculty-modal-title" role="dialog" aria-modal="true"> <div className="bg-white rounded-lg shadow-xl w-full max-w-md transform transition-all"> <div className="flex justify-between items-center p-4 border-b border-gray-200"> <h2 className="text-lg font-semibold text-red-700 flex items-center gap-2" id="delete-faculty-modal-title"> <ExclamationTriangleIcon className="h-5 w-5 text-red-600"/> Confirm Deletion </h2> <button onClick={closeDeleteModal} disabled={isDeleting} className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" aria-label="Close modal"> <XMarkIcon className="h-5 w-5" /> </button> </div> <div className="p-5"> <p className="text-sm text-gray-700 mb-3"> Are you sure you want to permanently delete the faculty member: <br /> <strong className="text-gray-900">{facultyProfile.user.name || facultyProfile.user.email}?</strong> </p> <p className="text-xs text-red-600 bg-red-50 p-2 rounded border border-red-100"> This action cannot be undone. All associated profile data (qualifications, licenses, experience, etc.) will also be permanently deleted. </p> {deleteError && ( <div className="mt-3 bg-red-100 border border-red-300 text-red-800 px-3 py-2 rounded text-sm flex items-center gap-2" role="alert"> <ExclamationTriangleIcon className="h-4 w-4" /> {deleteError} </div> )} </div> <div className="flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50"> <button type="button" onClick={closeDeleteModal} disabled={isDeleting} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"> Cancel </button> <button type="button" onClick={handleDeleteConfirm} disabled={isDeleting} className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-60" > {isDeleting ? 'Deleting...' : 'Confirm Delete'} </button> </div> </div> </div>)
             )}
         </div>
     );

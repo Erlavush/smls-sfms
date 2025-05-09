@@ -100,77 +100,83 @@ export default function Header() {
     }
 
     return (
-<header className="bg-spc-blue-light text-white shadow-lg sticky top-0 z-50">     <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
-                {/* Left Side: Logo and Title */}
-                {/* ... (remains the same) ... */}
-                <div className="flex items-center">
-                    <Link href={userRole === 'ADMIN' ? '/admin/dashboard' : '/dashboard'} className="flex-shrink-0 flex items-center gap-3">
-                        <Image src="/smls-logo.png" alt="SMLS Logo" width={40} height={40} className="h-10 w-auto" />
-                        <span className="font-semibold text-xl text-white hidden sm:inline"> SMLS-SFMS </span>
-                    </Link>
-                </div>
+        <header className="bg-spc-blue-light text-white shadow-lg sticky top-0 z-50">     <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex h-16 items-center justify-between">
+                            {/* Left Side: Logo and Title */}
+                            {/* ... (remains the same) ... */}
+                            <div className="flex items-center">
+                                <Link
+                                    href={userRole === 'ADMIN' ? '/admin/dashboard' : '/dashboard'}
+                                    className="flex-shrink-0 flex items-center gap-3">
+                                    {/* legacyBehavior removed, <a> tag removed, className moved to Link */}
+                                    <Image src="/smls-logo.png" alt="SMLS Logo" width={40} height={40} className="h-10 w-auto" />
+                                    <span className="font-semibold text-xl text-white hidden sm:inline"> SMLS-SFMS </span>
+                                </Link>
+                            </div>
 
-                {/* Center: Navigation Links */}
-                {/* ... (remains the same) ... */}
-                <div className="hidden md:flex md:items-center md:space-x-2 lg:space-x-4">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className="flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/20 hover:text-white transition-colors duration-150"
-                        >
-                            <link.icon className="h-4 w-4 text-slate-300" /> {link.label}
-                        </Link>
-                    ))}
-                </div>
+                            {/* Center: Navigation Links */}
+                            {/* ... (remains the same) ... */}
+                            <div className="hidden md:flex md:items-center md:space-x-2 lg:space-x-4">
+                                {navLinks.map((link) => (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        className="flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/20 hover:text-white transition-colors duration-150"
+                                    >
+                                        <> {/* Single React Fragment as the child */}
+                                            <link.icon className="h-4 w-4 text-slate-300" />
+                                            {link.label}
+                                        </>
+                                    </Link>
+                                ))}
+                            </div>
 
-                {/* Right Side: User Info, Notifications & Logout */}
-                <div className="flex items-center">
-                    <div className="ml-4 flex items-center md:ml-6 gap-3">
+                            {/* Right Side: User Info, Notifications & Logout */}
+                            <div className="flex items-center">
+                                <div className="ml-4 flex items-center md:ml-6 gap-3">
 
-                        {/* Notification Bell */}
-                        <div className="relative">
-                            <button
-                                onClick={togglePanel}
-                                type="button"
-                                className="relative flex-shrink-0 rounded-full p-1.5 text-slate-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-spc-blue-DEFAULT transition-colors duration-150"
-                                title="Notifications"
-                            >
-                                <span className="absolute -inset-1.5" />
-                                <span className="sr-only">View notifications</span>
-                                <BellIcon className="h-5 w-5" aria-hidden="true" />
-                                {!isLoadingNotifications && unreadCount > 0 && (
-                                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white ring-2 ring-white">
-                                        {unreadCount > 9 ? '9+' : unreadCount}
-                                    </span>
-                                )}
-                            </button>
+                                    {/* Notification Bell */}
+                                    <div className="relative">
+                                        <button
+                                            onClick={togglePanel}
+                                            type="button"
+                                            className="relative flex-shrink-0 rounded-full p-1.5 text-slate-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-spc-blue-DEFAULT transition-colors duration-150"
+                                            title="Notifications"
+                                        >
+                                            <span className="absolute -inset-1.5" />
+                                            <span className="sr-only">View notifications</span>
+                                            <BellIcon className="h-5 w-5" aria-hidden="true" />
+                                            {!isLoadingNotifications && unreadCount > 0 && (
+                                                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white ring-2 ring-white">
+                                                    {unreadCount > 9 ? '9+' : unreadCount}
+                                                </span>
+                                            )}
+                                        </button>
 
-                            {/* *** Render NotificationPanel instead of Placeholder *** */}
-                            {showNotificationPanel && (
-                                <NotificationPanel
-                                    onClose={closePanel}
-                                    onUpdateCount={updateCount}
-                                />
-                            )}
-                            {/* *** End NotificationPanel *** */}
+                                        {/* *** Render NotificationPanel instead of Placeholder *** */}
+                                        {showNotificationPanel && (
+                                            <NotificationPanel
+                                                onClose={closePanel}
+                                                onUpdateCount={updateCount}
+                                            />
+                                        )}
+                                        {/* *** End NotificationPanel *** */}
+                                    </div>
+
+                                    {/* User Info with Initials/Icon */}
+                                    {/* ... (remains the same) ... */}
+                                    <div className="flex items-center gap-2 cursor-default" title={userName}>
+                                        <span className="relative inline-flex items-center justify-center h-8 w-8 rounded-full bg-white/10 text-sky-200 text-xs font-semibold ring-1 ring-white/30"> {userInitials} </span>
+                                        <span className="text-sm font-medium text-slate-100 hidden lg:inline"> {userName} </span>
+                                    </div>
+
+                                    {/* Logout Button */}
+                                    {/* ... (remains the same) ... */}
+                                    <button onClick={handleSignOut} type="button" className="relative flex-shrink-0 rounded-md p-1.5 text-slate-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-spc-blue-DEFAULT transition-colors duration-150" title="Sign Out" > <span className="absolute -inset-1.5" /> <span className="sr-only">Sign Out</span> <ArrowLeftStartOnRectangleIcon className="h-5 w-5" aria-hidden="true" /> </button>
+                                </div>
+                            </div>
                         </div>
-
-                        {/* User Info with Initials/Icon */}
-                        {/* ... (remains the same) ... */}
-                        <div className="flex items-center gap-2 cursor-default" title={userName}>
-                            <span className="relative inline-flex items-center justify-center h-8 w-8 rounded-full bg-white/10 text-sky-200 text-xs font-semibold ring-1 ring-white/30"> {userInitials} </span>
-                            <span className="text-sm font-medium text-slate-100 hidden lg:inline"> {userName} </span>
-                        </div>
-
-                        {/* Logout Button */}
-                        {/* ... (remains the same) ... */}
-                        <button onClick={handleSignOut} type="button" className="relative flex-shrink-0 rounded-md p-1.5 text-slate-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-spc-blue-DEFAULT transition-colors duration-150" title="Sign Out" > <span className="absolute -inset-1.5" /> <span className="sr-only">Sign Out</span> <ArrowLeftStartOnRectangleIcon className="h-5 w-5" aria-hidden="true" /> </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
+                    </nav>
         </header>
     );
 }

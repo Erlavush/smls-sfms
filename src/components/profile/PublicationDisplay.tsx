@@ -28,7 +28,6 @@ export default function PublicationDisplay({ item, isEditing, stagedFile }: Prop
             <h3 className="text-base font-bold text-gray-800 tracking-tight">
                 {item.researchTitle || 'N/A'}
             </h3>
-
             {/* Journal */}
             <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold italic">
                 <div className="flex items-center justify-center w-6 h-6 rounded-md bg-rose-50 text-rose-600 flex-shrink-0 not-italic">
@@ -37,7 +36,6 @@ export default function PublicationDisplay({ item, isEditing, stagedFile }: Prop
                 </div>
                 <span className='not-italic'>Journal: {item.journal || 'N/A'}</span>
             </div>
-
             {/* Details Row */}
             <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 pt-3 border-t border-gray-100 mt-2">
 
@@ -57,7 +55,7 @@ export default function PublicationDisplay({ item, isEditing, stagedFile }: Prop
                         </div>
                     ) : (
                         // Otherwise, show existing links
-                        <>
+                        (<>
                             {item.doiLink && (
                                 <a
                                     href={item.doiLink.startsWith('http') ? item.doiLink : `https://${item.doiLink}`}
@@ -80,9 +78,9 @@ export default function PublicationDisplay({ item, isEditing, stagedFile }: Prop
                                 </a>
                             )}
                             {!item.doiLink && !item.pdfUrl && !isEditing && ( // Only show "No links" if not editing
-                                 <span className="text-xs text-gray-400 italic">No links/file</span>
+                                 (<span className="text-xs text-gray-400 italic">No links/file</span>)
                             )}
-                        </>
+                        </>)
                     )}
                 </div>
 

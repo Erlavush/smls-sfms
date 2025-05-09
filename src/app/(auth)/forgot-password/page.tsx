@@ -36,8 +36,8 @@ export default function ForgotPasswordPage() {
 
     return (
         // Use a similar background and layout as the login page
+        // End Main Container
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 px-4 py-8 font-poppins">
-
             <div className="w-full max-w-md">
                  {/* Gradient border effect */}
                  <div className="rounded-3xl bg-gradient-to-r from-sky-400 to-blue-500 p-1 shadow-2xl">
@@ -96,7 +96,10 @@ export default function ForgotPasswordPage() {
 
                         {/* Back to Login Link */}
                        <div className="mt-6 text-center text-sm">
-                            <Link href="/login" className="inline-flex items-center gap-1 font-medium text-sky-600 hover:text-sky-700 hover:underline">
+                            <Link
+                                href="/login"
+                                className="inline-flex items-center gap-1 font-medium text-sky-600 hover:text-sky-700 hover:underline"
+                                legacyBehavior>
                                 <ArrowLeftIcon className="h-4 w-4"/>
                                 Back to Login
                             </Link>
@@ -105,7 +108,6 @@ export default function ForgotPasswordPage() {
                     </div> {/* End Inner Card */}
                 </div> {/* End Gradient Border */}
             </div> {/* End Form Container */}
-
-        </div> // End Main Container
+        </div>
     );
 }

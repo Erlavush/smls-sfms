@@ -178,9 +178,10 @@ export default function FacultyMatrixDetailPopup({ faculty, onClose, selectedCou
                     <Link
                         href={`/admin/faculty/${faculty.userId}`}
                         className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
-                        target="_blank" // Open profile in new tab
+                        // Open profile in new tab
+                        target="_blank"
                         rel="noopener noreferrer"
-                    >
+                        legacyBehavior>
                         View Full Profile
                         <ArrowTopRightOnSquareIcon className="h-4 w-4" />
                     </Link>

@@ -413,6 +413,7 @@ export default function ProfilePage() {
     const isNewItem = (item: any): boolean => !!item._isNew;
 
     return (
+        // End Page Container
         <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
             {/* === Page Header & Actions === */}
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
@@ -427,21 +428,17 @@ export default function ProfilePage() {
                  </div>
                  {isEditing && editingItemId !== null && ( <p className="mt-2 text-xs text-yellow-700 bg-yellow-50 p-2 rounded border border-yellow-200 w-full flex items-center gap-1"> <InformationCircleIcon className='h-4 w-4 flex-shrink-0'/> Finish editing the current item (<CheckIcon className='inline h-3 w-3 text-blue-600'/> <XMarkIcon className='inline h-3 w-3 text-gray-600'/>) before saving all profile changes. </p> )}
             </div>
-
             {/* === Status Messages === */}
             {editSuccess && <div className="mb-4 rounded-md bg-green-100 p-3 text-sm font-medium text-green-700 border border-green-200">{editSuccess}</div>}
             {editError && <div className="mb-4 rounded-md bg-red-100 p-3 text-sm font-medium text-red-700 border border-red-200">{editError}</div>}
             {pageError && !editError && <div className="mb-4 rounded-md bg-red-100 p-3 text-sm font-medium text-red-700 border border-red-200">{pageError}</div>}
-
             {/* === Basic Information Card === */}
             <div className="mb-8 rounded-2xl bg-white shadow-lg overflow-hidden transition duration-300 ease-in-out hover:shadow-xl">
                  <div className="flex items-center gap-5 p-6 sm:p-7 bg-gradient-to-r from-sky-600 to-cyan-500 text-white"> <div className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white/20 flex-shrink-0"> <InformationCircleIcon className="h-6 w-6 sm:h-7 sm:w-7" /> </div> <h2 className="font-extrabold text-lg sm:text-xl flex-grow tracking-tight text-shadow-sm">Basic Information</h2> </div>
                  <div className="p-6 sm:p-8"> <div className="grid grid-cols-1 gap-x-4 gap-y-3 text-sm sm:grid-cols-2 md:grid-cols-3"> <div><span className="font-medium text-gray-500">Name:</span> {profileData.user.name ?? 'N/A'}</div> <div><span className="font-medium text-gray-500">Email:</span> {profileData.user.email ?? 'N/A'}</div> <div><span className="font-medium text-gray-500">Role:</span> {profileData.user.role ?? 'N/A'}</div> </div> </div>
             </div>
-
             {/* === Dynamic CV Sections Grid === */}
             {visibleCategories.size === 0 && !isLoading && ( <div className="rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 p-8 text-center text-gray-500"> <p className="mb-2">No profile sections added yet.</p> <p className="text-sm">Click "Add Section" above to get started.</p> </div> )}
-
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                 {Array.from(visibleCategories).map(categoryKey => {
                     const categoryMeta = categoryMetadata[categoryKey];
@@ -450,10 +447,10 @@ export default function ProfilePage() {
                     const isCategoryEditable = true; // Assuming all categories are editable for faculty
 
                     return (
+                        // End Card Styling
                         <div key={categoryKey} className="flex flex-col rounded-2xl bg-white shadow-lg overflow-hidden transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1" >
                             {/* Card Header */}
                             <div className="flex items-center gap-5 p-6 sm:p-7 bg-gradient-to-r from-blue-600 to-sky-500 text-white"> <div className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white/20 flex-shrink-0"> <CategoryIcon className="h-6 w-6 sm:h-7 sm:w-7" aria-hidden="true" /> </div> <h2 className="font-extrabold text-lg sm:text-xl flex-grow tracking-tight text-shadow-sm"> {categoryMeta.title} </h2> {isEditing && ( <button onClick={() => handleAddItemLocally(categoryKey)} className="ml-auto flex-shrink-0 rounded-full bg-white/25 p-1.5 text-white hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600" title={`Add ${categoryMeta.title}`} disabled={editingItemId !== null || !isCategoryEditable || isPending} > <PlusIcon className="h-4 w-4 sm:h-5 sm:w-5" /> </button> )} </div>
-
                             {/* Card Body */}
                             <div className="flex-grow p-6 sm:p-8">
                                 {categoryData.length === 0 ? ( <p className="italic text-gray-400 text-center py-4">No items recorded.</p> ) : (
@@ -504,7 +501,7 @@ export default function ProfilePage() {
                                                         </>
                                                     ) : (
                                                         // --- RENDER DISPLAY (Pass item) ---
-                                                        <>
+                                                        (<>
                                                             {/* Render the correct display component */}
                                                             {/* *** PASS isEditing and stagedFile props *** */}
                                                             {categoryKey === 'academicQualifications' && ( <AcademicQualificationDisplay item={item as AcademicQualification} isEditing={isEditing} stagedFile={stagedFile} /> )}
@@ -516,9 +513,8 @@ export default function ProfilePage() {
                                                             {categoryKey === 'communityInvolvements' && ( <CommunityInvolvementDisplay item={item as CommunityInvolvement} isEditing={isEditing} stagedFile={stagedFile} /> )}
                                                             {categoryKey === 'publications' && ( <PublicationDisplay item={item as Publication} isEditing={isEditing} stagedFile={stagedFile} /> )}
                                                             {categoryKey === 'conferencePresentations' && ( <ConferencePresentationDisplay item={item as ConferencePresentation} isEditing={isEditing} stagedFile={stagedFile} /> )}
-                                                        </>
+                                                        </>)
                                                     )}
-
                                                     {/* Action Buttons (Edit/Delete) for EXISTING items in EDIT mode */}
                                                     {isEditing && item.id !== editingItemId && !isNewItem(item) && (
                                                         <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -529,15 +525,15 @@ export default function ProfilePage() {
                                                         </div>
                                                     )}
                                                 </li>
-                                            )
+                                            );
                                         })}
                                     </ul>
                                 )}
                             </div> {/* End Card Body */}
-                        </div> // End Card Styling
+                        </div>
                     );
                 })}
             </div> {/* End Grid */}
-        </div> // End Page Container
+        </div>
     );
 } // End ProfilePage Component

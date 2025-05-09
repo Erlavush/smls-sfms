@@ -178,6 +178,7 @@ export default function AdminSpecializationsPage() {
     const labelClass = "block text-sm font-medium text-gray-700 mb-1";
 
     return (
+        // End Page Container
         <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
             {/* Header Row */}
             <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
@@ -194,7 +195,6 @@ export default function AdminSpecializationsPage() {
                     Add Specialization
                 </button>
             </div>
-
             {/* Loading State */}
             {isLoading && (
                 <div className="text-center py-10">
@@ -207,7 +207,6 @@ export default function AdminSpecializationsPage() {
                     </div>
                 </div>
             )}
-
             {/* Error State for List */}
             {error && !isLoading && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative flex items-center gap-2 mb-4" role="alert">
@@ -215,7 +214,6 @@ export default function AdminSpecializationsPage() {
                     <span className="block sm:inline">{error}</span>
                 </div>
             )}
-
             {/* Specializations List/Table */}
             {!isLoading && !error && (
                 <div className="bg-white shadow overflow-hidden rounded-lg border border-gray-200">
@@ -263,7 +261,6 @@ export default function AdminSpecializationsPage() {
                     </ul>
                 </div>
             )}
-
             {/* --- Add Specialization Modal --- */}
             {isAddModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" aria-labelledby="add-modal-title" role="dialog" aria-modal="true">
@@ -297,7 +294,6 @@ export default function AdminSpecializationsPage() {
                     </div>
                 </div>
             )}
-
             {/* --- Edit Specialization Modal --- */}
             {isEditModalOpen && editingSpecialization && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" aria-labelledby="edit-modal-title" role="dialog" aria-modal="true">
@@ -333,47 +329,45 @@ export default function AdminSpecializationsPage() {
                     </div>
                 </div>
             )}
-
-             {/* --- Delete Confirmation Modal --- */}
-             {isDeleteModalOpen && deletingSpecialization && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" aria-labelledby="delete-modal-title" role="dialog" aria-modal="true">
-                    <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md transform transition-all">
-                        {/* Header */}
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-lg font-semibold text-gray-800" id="delete-modal-title">Confirm Deletion</h2>
-                            <button onClick={closeDeleteModal} disabled={isPending} className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" aria-label="Close modal">
-                                <XMarkIcon className="h-5 w-5" />
-                            </button>
-                        </div>
-                        {/* Confirmation Text */}
-                        <p className="text-sm text-gray-600 mb-4">
-                            Are you sure you want to delete the specialization: <strong className="text-gray-900">{deletingSpecialization.name}</strong>?
-                            This action cannot be undone. Faculty members currently linked to this specialization will be unlinked.
-                        </p>
-                         {/* Error Message Area */}
-                         {deleteModalError && (
-                            <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded text-sm flex items-center gap-2 mb-4" role="alert">
-                                <ExclamationTriangleIcon className="h-4 w-4" /> {deleteModalError}
-                            </div>
-                        )}
-                        {/* Footer Actions */}
-                        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 mt-6">
-                            <button type="button" onClick={closeDeleteModal} disabled={isPending} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50">
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleDeleteConfirm}
-                                disabled={isPending}
-                                className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-60"
-                            >
-                                {isPending ? 'Deleting...' : 'Delete'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-        </div> // End Page Container
+            {/* --- Delete Confirmation Modal --- */}
+            {isDeleteModalOpen && deletingSpecialization && (
+               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" aria-labelledby="delete-modal-title" role="dialog" aria-modal="true">
+                   <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md transform transition-all">
+                       {/* Header */}
+                       <div className="flex justify-between items-center mb-4">
+                           <h2 className="text-lg font-semibold text-gray-800" id="delete-modal-title">Confirm Deletion</h2>
+                           <button onClick={closeDeleteModal} disabled={isPending} className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" aria-label="Close modal">
+                               <XMarkIcon className="h-5 w-5" />
+                           </button>
+                       </div>
+                       {/* Confirmation Text */}
+                       <p className="text-sm text-gray-600 mb-4">
+                           Are you sure you want to delete the specialization: <strong className="text-gray-900">{deletingSpecialization.name}</strong>?
+                           This action cannot be undone. Faculty members currently linked to this specialization will be unlinked.
+                       </p>
+                        {/* Error Message Area */}
+                        {deleteModalError && (
+                           <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded text-sm flex items-center gap-2 mb-4" role="alert">
+                               <ExclamationTriangleIcon className="h-4 w-4" /> {deleteModalError}
+                           </div>
+                       )}
+                       {/* Footer Actions */}
+                       <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 mt-6">
+                           <button type="button" onClick={closeDeleteModal} disabled={isPending} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50">
+                               Cancel
+                           </button>
+                           <button
+                               type="button"
+                               onClick={handleDeleteConfirm}
+                               disabled={isPending}
+                               className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-60"
+                           >
+                               {isPending ? 'Deleting...' : 'Delete'}
+                           </button>
+                       </div>
+                   </div>
+               </div>
+           )}
+        </div>
     );
 }

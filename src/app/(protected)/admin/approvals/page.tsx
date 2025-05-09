@@ -144,15 +144,12 @@ export default function AdminApprovalsPage() {
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
             <h1 className="text-2xl font-semibold text-gray-800 mb-6">Pending Approvals</h1>
-
             {isLoading && <p className="text-gray-600">Loading pending items...</p>}
             {error && <p className="text-red-600 bg-red-50 p-3 rounded border border-red-200">{error}</p>}
             {actionError && <p className="text-red-600 bg-red-50 p-3 rounded border border-red-200 mb-4">{actionError}</p>}
-
             {!isLoading && !error && pendingItems.length === 0 && (
                 <p className="text-gray-500 italic">No items currently pending approval.</p>
             )}
-
             {pendingItems.length > 0 && (
                 <div className="space-y-6">
                     {pendingItems.map((item) => {
@@ -212,7 +209,6 @@ export default function AdminApprovalsPage() {
                                         </button>
                                     </div>
                                 </div>
-
                                 {/* Rejection Reason Input Area (Conditional) */}
                                 {isRejectingThis && (
                                     <div className="mt-4 pt-4 border-t border-dashed border-gray-300">

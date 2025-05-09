@@ -73,6 +73,7 @@ function ResetPasswordForm() {
 
     return (
         // Use a similar background and layout
+        // End Main Container
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 px-4 py-8 font-poppins">
             <div className="w-full max-w-md">
                 {/* Gradient border effect */}
@@ -152,7 +153,10 @@ function ResetPasswordForm() {
                         {/* Back to Login Link (Conditional) */}
                         {!successMessage && (
                             <div className="mt-6 text-center text-sm">
-                                <Link href="/login" className="inline-flex items-center gap-1 font-medium text-sky-600 hover:text-sky-700 hover:underline">
+                                <Link
+                                    href="/login"
+                                    className="inline-flex items-center gap-1 font-medium text-sky-600 hover:text-sky-700 hover:underline"
+                                    legacyBehavior>
                                     <ArrowLeftIcon className="h-4 w-4"/>
                                     Back to Login
                                 </Link>
@@ -162,7 +166,7 @@ function ResetPasswordForm() {
                     </div> {/* End Inner Card */}
                 </div> {/* End Gradient Border */}
             </div> {/* End Form Container */}
-        </div> // End Main Container
+        </div>
     );
 }
 

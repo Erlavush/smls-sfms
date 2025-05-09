@@ -18,7 +18,6 @@ export default function WorkExperienceDisplay({ item, isEditing, stagedFile }: P
             <h3 className="text-base font-bold text-gray-800 tracking-tight">
                 {item.position || 'N/A'}
             </h3>
-
             {/* Institution */}
             <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
                 <div className="flex items-center justify-center w-6 h-6 rounded-md bg-orange-50 text-orange-600 flex-shrink-0">
@@ -27,14 +26,12 @@ export default function WorkExperienceDisplay({ item, isEditing, stagedFile }: P
                 </div>
                 <span>{item.institution || 'N/A'}</span>
             </div>
-
-             {/* Nature of Work (Conditional) */}
-             {item.natureOfWork && (
-                <p className="text-xs text-gray-500 mt-1 pl-8"> {/* Indent slightly */}
-                    <span className="font-medium">Nature:</span> {item.natureOfWork}
-                 </p>
-            )}
-
+            {/* Nature of Work (Conditional) */}
+            {item.natureOfWork && (
+               <p className="text-xs text-gray-500 mt-1 pl-8"> {/* Indent slightly */}
+                   <span className="font-medium">Nature:</span> {item.natureOfWork}
+                </p>
+           )}
             {/* Details Row */}
             <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 pt-3 border-t border-gray-100 mt-2">
 

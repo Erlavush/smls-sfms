@@ -18,7 +18,6 @@ export default function ProfessionalDevelopmentDisplay({ item, isEditing, staged
             <h3 className="text-base font-bold text-gray-800 tracking-tight">
                 {item.title || 'N/A'}
             </h3>
-
             {/* Organizer */}
             <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
                 <div className="flex items-center justify-center w-6 h-6 rounded-md bg-yellow-50 text-yellow-600 flex-shrink-0">
@@ -27,7 +26,6 @@ export default function ProfessionalDevelopmentDisplay({ item, isEditing, staged
                 </div>
                 <span>Organizer: {item.organizer || 'N/A'}</span>
             </div>
-
             {/* Details Row */}
             <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 pt-3 border-t border-gray-100 mt-2">
 

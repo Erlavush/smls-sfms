@@ -57,8 +57,8 @@ export default function LoginPage() {
 
     return (
         // Main container: Apply gradient background
+        // End Main Container
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 px-4 py-8 font-poppins">
-
             {/* Wrapper for the three-column layout on larger screens */}
             <div className="flex w-full max-w-6xl items-center justify-center lg:justify-between">
 
@@ -170,7 +170,6 @@ export default function LoginPage() {
                  </div>
 
              </div> {/* End Three-column Wrapper */}
-
-        </div> // End Main Container
+        </div>
     );
 }

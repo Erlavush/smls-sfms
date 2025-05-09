@@ -34,29 +34,31 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ // Removed: & { animation
     statsPlaceholder, // Add statsPlaceholder back
     // animationDelayClass, // REMOVE
 }) => (
-    <Link href={link} legacyBehavior>
-        <a className={`group block rounded-xl border border-slate-200 bg-white p-6 shadow-md
+    <Link
+        href={link}
+        className={`group block rounded-xl border border-slate-200 bg-white p-6 shadow-md
                       transition-all duration-300 ease-in-out
-                      hover:shadow-xl hover:border-spc-blue-light hover:-translate-y-1`}>
-                      {/* REMOVED: animate-fade-in-scale ${animationDelayClass || ''} */}
-            <div className="flex items-start justify-between">
-                <span className={`inline-block rounded-lg p-3 ${iconColorClass} bg-opacity-10`}>
-                    <Icon className={`h-6 w-6 ${iconColorClass}`} />
-                </span>
-                <ArrowRightIcon className="ml-4 h-5 w-5 text-slate-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:text-spc-blue-light" />
-            </div>
+                      hover:shadow-xl hover:border-spc-blue-light hover:-translate-y-1`}
+    >
+        {/* REMOVED: animate-fade-in-scale ${animationDelayClass || ''} */}
+        {/* The content of the card now directly inside Link */}
+        <div className="flex items-start justify-between">
+            <span className={`inline-block rounded-lg p-3 ${iconColorClass} bg-opacity-10`}>
+                <Icon className={`h-6 w-6 ${iconColorClass}`} />
+            </span>
+            <ArrowRightIcon className="ml-4 h-5 w-5 text-slate-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:text-spc-blue-light" />
+        </div>
 
-            <div className="mt-4">
-                <h2 className="text-lg font-semibold text-spc-blue-darker group-hover:text-spc-blue-DEFAULT">
-                    {title}
-                </h2>
-                <p className="mt-1 text-sm text-slate-600">{description}</p>
-            </div>
+        <div className="mt-4">
+            <h2 className="text-lg font-semibold text-spc-blue-darker group-hover:text-spc-blue-DEFAULT">
+                {title}
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">{description}</p>
+        </div>
 
-            {statsPlaceholder && ( // Keep if you plan to use it
-                <p className="mt-4 text-xs font-medium text-slate-500">{statsPlaceholder}</p>
-            )}
-        </a>
+        {statsPlaceholder && ( // Keep if you plan to use it
+            (<p className="mt-4 text-xs font-medium text-slate-500">{statsPlaceholder}</p>)
+        )}
     </Link>
 );
 
