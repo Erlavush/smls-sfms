@@ -1,42 +1,39 @@
-// src/app/(protected)/admin/matrix/page.tsx
+// Action: Modify src/app/(protected)/admin/matrix/page.tsx
+
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react'; // Added useMemo
-import { getFacultySpecializationData } from '@/lib/actions/dashboardActions'; // Import the server action
-import { TableCellsIcon, ExclamationTriangleIcon, UserCircleIcon, FunnelIcon } from '@heroicons/react/24/outline'; // Added FunnelIcon
-// --- Import the actual Popup Component ---
-import FacultyMatrixDetailPopup from '@/components/admin/FacultyMatrixDetailPopup'; // Changed import
-// --- Import the CORRECT type for the new data structure ---
+import React, { useState, useEffect, useMemo, useTransition } from 'react';
+import { getFacultySpecializationData, generateMatrixCsv } from '@/lib/actions/dashboardActions'; // Import actions
+import { TableCellsIcon, ExclamationTriangleIcon, UserCircleIcon, FunnelIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import FacultyMatrixDetailPopup from '@/components/admin/FacultyMatrixDetailPopup';
 import type { FacultyLinkedSpecialization } from '@/types';
 
 export default function AdminMatrixPage() {
-    // --- State Declarations (Ensure no duplicates) ---
-    const [matrixData, setMatrixData] = useState<FacultyLinkedSpecialization[]>([]); // <-- Use new type
-    const [allSpecializations, setAllSpecializations] = useState<string[]>([]);
+    // --- State Declarations ---
+    const [matrixData, setMatrixData] = useState<FacultyLinkedSpecialization[]>([]);
+    const [allSpecializations, setAllSpecializations] = useState<string[]>([]); // For table headers
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [selectedFaculty, setSelectedFaculty] = useState<FacultyLinkedSpecialization | null>(null); // <-- Use new type
+    const [selectedFaculty, setSelectedFaculty] = useState<FacultyLinkedSpecialization | null>(null);
+    // const [filterSpecialization, setFilterSpecialization] = useState<string>(''); // Old single filter
+    const [selectedFilterSpecializations, setSelectedFilterSpecializations] = useState<Set<string>>(new Set()); // New multi-filter
+    const [isDownloading, startDownloadTransition] = useTransition();
+    const [downloadError, setDownloadError] = useState<string | null>(null);
 
-    // --- State for Filtering ---
-    const [filterSpecialization, setFilterSpecialization] = useState<string>(''); // Empty string = show all
-
+    // --- Fetch Initial Data ---
     useEffect(() => {
         setIsLoading(true);
         setError(null);
+        setDownloadError(null); // Clear download error on refresh
+
         getFacultySpecializationData()
             .then(response => {
-                if (response.success && response.data) {
+                if (response.success && response.data && response.allSpecializationNames) {
+                    // *** MODIFIED: Set both states from the single response ***
                     setMatrixData(response.data);
-                    // --- Adjust logic to extract unique specializations from the new structure ---
-                    const uniqueSpecializations = new Set<string>();
-                    response.data.forEach(faculty => {
-                        // Iterate over the array of linked names
-                        faculty.linkedSpecializationNames.forEach(specName => {
-                            uniqueSpecializations.add(specName); // <-- Fix: Use specName here
-                        });
-                    });
-                    setAllSpecializations(Array.from(uniqueSpecializations).sort());
+                    setAllSpecializations(response.allSpecializationNames);
+                    // *** END MODIFICATION ***
                 } else {
                     setError(response.error || 'Failed to load specialization data.');
                     setMatrixData([]);
@@ -51,30 +48,73 @@ export default function AdminMatrixPage() {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+        // *** REMOVED: Incorrect Prisma call and related logic ***
+    }, []); // Fetch on mount
 
     // --- Filtering Logic ---
-    // Use useMemo to recalculate filtered data only when matrixData or filter changes
     const filteredMatrixData = useMemo(() => {
-        if (!filterSpecialization) {
-            return matrixData; // No filter applied
+        // If no specializations are selected for filtering, return all data
+        if (selectedFilterSpecializations.size === 0) {
+            return matrixData;
         }
-        // --- Adjust filter logic for the new structure ---
+        // Filter faculty who have ALL of the selected specializations
         return matrixData.filter(faculty =>
-            // Check if the linkedSpecializationNames array includes the filter value
-            faculty.linkedSpecializationNames.includes(filterSpecialization)
+            // Check if every specialization in selectedFilterSpecializations is present in faculty.linkedSpecializationNames
+            Array.from(selectedFilterSpecializations).every(selSpec =>
+                faculty.linkedSpecializationNames.includes(selSpec)
+            )
         );
-    }, [matrixData, filterSpecialization]); // Dependencies for recalculation
+    }, [matrixData, selectedFilterSpecializations]);
 
-    const handleFacultyClick = (faculty: FacultyLinkedSpecialization) => { // <-- Fix: Use correct type here
+    // --- Handler for Specialization Filter Checkbox Change ---
+    const handleFilterChange = (specializationName: string, isChecked: boolean) => {
+        setSelectedFilterSpecializations(prevSelected => {
+            const newSelected = new Set(prevSelected);
+            if (isChecked) {
+                newSelected.add(specializationName);
+            } else {
+                newSelected.delete(specializationName);
+            }
+            return newSelected;
+        });
+    };
+
+    // --- Popup Handlers ---
+    const handleFacultyClick = (faculty: FacultyLinkedSpecialization) => {
         setSelectedFaculty(faculty);
         setIsPopupOpen(true);
     };
-
     const handleClosePopup = () => {
         setIsPopupOpen(false);
         setSelectedFaculty(null);
     };
+
+    // --- CSV Download Handler ---
+    const handleDownloadCsv = () => {
+        setDownloadError(null);
+        startDownloadTransition(async () => {
+            try {
+                const result = await generateMatrixCsv();
+                if (result.success && result.csvData) {
+                    const blob = new Blob([result.csvData], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', 'faculty_specialization_matrix.csv');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                } else {
+                    setDownloadError(result.error || 'Failed to generate CSV data.');
+                }
+            } catch (err: any) {
+                console.error("CSV download error:", err);
+                setDownloadError('An unexpected error occurred during download.');
+            }
+        });
+    };
+
 
     // --- Loading State ---
     if (isLoading) {
@@ -82,7 +122,6 @@ export default function AdminMatrixPage() {
             <div className="p-6 bg-gray-50 min-h-screen flex items-center justify-center">
                  <div className="flex items-center gap-3 text-gray-500">
                     <svg className="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        {/* ... svg paths ... */}
                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -90,7 +129,7 @@ export default function AdminMatrixPage() {
                 </div>
             </div>
         );
-    }
+     }
 
     // --- Error State ---
     if (error) {
@@ -105,49 +144,85 @@ export default function AdminMatrixPage() {
                  </div>
             </div>
         );
-    }
+     }
 
     // --- Render Matrix Table ---
     return (
-        // Ensure this div closes correctly at the very end
         <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen relative">
-            {/* --- Header and Filter Row --- */}
-            <div className="mb-6 md:flex md:items-center md:justify-between gap-4">
+            {/* --- Header, Filter, and Download Row --- */}
+            <div className="mb-6 md:flex md:items-center md:justify-between gap-4 flex-wrap">
+                {/* Title */}
                 <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-2 mb-4 md:mb-0 flex-shrink-0">
                     <TableCellsIcon className="h-7 w-7 text-purple-600" />
                     Faculty Specialization Matrix
                 </h1>
-                {/* --- Filter Dropdown --- */}
-                <div className="flex items-center gap-2">
-                     <label htmlFor="specFilter" className="text-sm font-medium text-gray-700 flex-shrink-0 flex items-center gap-1">
-                        <FunnelIcon className="h-4 w-4 text-gray-500"/>
-                        Filter by Specialization:
-                    </label>
-                    <select
-                        id="specFilter"
-                        name="specFilter"
-                        value={filterSpecialization}
-                        onChange={(e) => setFilterSpecialization(e.target.value)}
-                        className="block w-full md:w-auto rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-1.5 pl-3 pr-8" // Added padding
+
+                <div className="flex items-center gap-x-4 gap-y-2 flex-wrap"> {/* Wrapper for filter and download */}
+                    {/* Filter Section - Changed from Dropdown to Checkboxes */}
+                    <div className="flex items-start gap-2"> {/* Changed to items-start for better alignment with multi-line checkboxes */}
+                        <label className="text-sm font-medium text-gray-700 flex-shrink-0 flex items-center gap-1 pt-1"> {/* Added pt-1 for alignment */}
+                            <FunnelIcon className="h-4 w-4 text-gray-500"/>
+                            Filter:
+                        </label>
+                        {/* Container for Checkboxes - allowing wrap */}
+                        <div className="flex flex-wrap gap-x-3 gap-y-1.5 max-w-md"> {/* Added max-w-md for better control on wider screens */}
+                            {allSpecializations.length > 0 ? (
+                                allSpecializations.map(specName => (
+                                    <div key={specName} className="flex items-center">
+                                        <input
+                                            id={`filter-${specName}`}
+                                            type="checkbox"
+                                            checked={selectedFilterSpecializations.has(specName)}
+                                            onChange={(e) => handleFilterChange(specName, e.target.checked)}
+                                            className="h-3.5 w-3.5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                        />
+                                        <label htmlFor={`filter-${specName}`} className="ml-1.5 text-xs text-gray-700">
+                                            {specName}
+                                        </label>
+                                    </div>
+                                ))
+                            ) : (
+                                <span className="text-xs text-gray-500 italic">No specializations to filter by.</span>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Download Button */}
+                    <button
+                        onClick={handleDownloadCsv}
+                        disabled={isDownloading || isLoading}
+                        className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                        <option value="">-- All Specializations --</option>
-                        {allSpecializations.map(spec => (
-                            <option key={spec} value={spec}>
-                                {spec}
-                            </option>
-                        ))}
-                    </select>
+                        {isDownloading ? (
+                             <>
+                                <svg className="animate-spin -ml-0.5 mr-1.5 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"> <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle> <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path> </svg>
+                                Downloading...
+                             </>
+                        ) : (
+                            <>
+                                <ArrowDownTrayIcon className="h-4 w-4" />
+                                Download CSV
+                            </>
+                        )}
+                    </button>
                 </div>
-                 {/* --- End Filter Dropdown --- */}
             </div>
-            {/* --- End Header and Filter Row --- */}
+            {/* Download Error Display */}
+            {downloadError && (
+                 <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded relative flex items-center gap-2 text-sm" role="alert">
+                    <ExclamationTriangleIcon className="h-4 w-4 text-red-500" />
+                    <span className="block sm:inline">Error downloading CSV: {downloadError}</span>
+                </div>
+            )}
+            {/* --- End Header Row --- */}
 
 
             {/* --- Matrix Table --- */}
-            {/* Check filtered data length */}
             {filteredMatrixData.length === 0 && !isLoading ? (
-                 <p className="text-gray-500 italic text-center mt-10">
-                    {filterSpecialization ? `No faculty found with specialization: "${filterSpecialization}".` : 'No faculty data found.'}
+                 <p className="text-gray-500 italic text-center mt-10 py-5 bg-white rounded-md shadow-sm border border-gray-200">
+                    {selectedFilterSpecializations.size > 0
+                        ? `No faculty found matching all selected specializations: "${Array.from(selectedFilterSpecializations).join(' & ')}".`
+                        : 'No faculty data found or no filters applied.'}
                  </p>
             ) : (
                 <div className="overflow-x-auto bg-white shadow rounded-lg border border-gray-200">
@@ -155,8 +230,9 @@ export default function AdminMatrixPage() {
                         <thead className="bg-gray-100 sticky top-0 z-10">
                             <tr>
                                 <th scope="col" className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky left-0 bg-gray-100 z-20">
-                                    Faculty Name ({filteredMatrixData.length}) {/* Show count */}
+                                    Faculty Name ({filteredMatrixData.length})
                                 </th>
+                                {/* *** Uses allSpecializations state correctly *** */}
                                 {allSpecializations.map(spec => (
                                     <th key={spec} scope="col" className="px-3 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">
                                         {spec}
@@ -165,35 +241,37 @@ export default function AdminMatrixPage() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {/* Use filteredMatrixData for rendering rows */}
-                            {filteredMatrixData.map((faculty) => (
-                                <tr key={faculty.userId} className="hover:bg-gray-50">
-                                    <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 sticky left-0 bg-white hover:bg-gray-50 z-10">
-                                        <button
-                                            type="button" // <-- Pass the correct type here
-                                            onClick={() => handleFacultyClick(faculty)}
-                                            className="flex items-center gap-2 group text-left w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
-                                            title={`View details for ${faculty.name || 'Unnamed Faculty'}`}
-                                        >
-                                             <UserCircleIcon className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 flex-shrink-0"/>
-                                             <div>
-                                                <span className="group-hover:text-indigo-600 group-hover:font-semibold">{faculty.name || 'Unnamed Faculty'}</span>
-                                                <div className="text-xs text-gray-500">{faculty.email || 'No Email'}</div>
-                                             </div>
-                                        </button>
-                                    </td>
-                                    {allSpecializations.map(spec => (
-                                        // --- Adjust rendering logic for the new structure ---
-                                        <td key={`${faculty.userId}-${spec}`} className="px-3 py-3 text-center">
-                                            {faculty.linkedSpecializationNames.includes(spec) ? ( // Check if the name exists in the array
-                                                <span className="text-green-600" title={`${faculty.name} has specialization: ${spec}`}>✔️</span>
-                                            ) : (
-                                                <span className="text-gray-300">-</span>
-                                            )}
+                            {filteredMatrixData.map((faculty) => {
+                                const linkedSpecsSet = new Set(faculty.linkedSpecializationNames);
+                                return (
+                                    <tr key={faculty.userId} className="hover:bg-gray-50">
+                                        <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 sticky left-0 bg-white hover:bg-gray-50 z-10">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleFacultyClick(faculty)}
+                                                className="flex items-center gap-2 group text-left w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
+                                                title={`View details for ${faculty.name || 'Unnamed Faculty'}`}
+                                            >
+                                                <UserCircleIcon className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 flex-shrink-0"/>
+                                                <div>
+                                                    <span className="group-hover:text-indigo-600 group-hover:font-semibold">{faculty.name || 'Unnamed Faculty'}</span>
+                                                    <div className="text-xs text-gray-500">{faculty.email || 'No Email'}</div>
+                                                </div>
+                                            </button>
                                         </td>
-                                    ))}
-                                </tr>
-                            ))}
+                                        {/* *** Uses allSpecializations state correctly *** */}
+                                        {allSpecializations.map(spec => (
+                                            <td key={`${faculty.userId}-${spec}`} className="px-3 py-3 text-center">
+                                                {linkedSpecsSet.has(spec) ? (
+                                                    <span className="text-green-600" title={`${faculty.name} has specialization: ${spec}`}>✔️</span>
+                                                ) : (
+                                                    <span className="text-gray-300">-</span>
+                                                )}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
@@ -206,8 +284,6 @@ export default function AdminMatrixPage() {
                     onClose={handleClosePopup}
                  />
             )}
-            {/* --- End Pop-up --- */}
-
         </div>
     );
 }

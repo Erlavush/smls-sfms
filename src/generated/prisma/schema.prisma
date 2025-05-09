@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma" // Keep custom output path
@@ -29,6 +31,9 @@ model Specialization {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   faculty     User[]   @relation("FacultySpecializations")
+
+  // Relation to Course (Many-to-Many)
+  coursesRequiringThis Course[] @relation("CourseSpecializations")
 }
 
 // User model
@@ -54,9 +59,27 @@ model User {
   publications             Publication[]
   conferencePresentations  ConferencePresentation[]
 
-  // *** ADDED: Relation to Notifications ***
+  // Relation to Notifications
   notifications Notification[] // A user can have many notifications
+
+  // Relation to Password Reset Tokens
+  passwordResetTokens PasswordResetToken[]
 }
+
+// --- *** NEW: Course Model *** ---
+model Course {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  code        String?  @unique // Optional but recommended to be unique if used
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Many-to-many relation with Specialization
+  requiredSpecializations Specialization[] @relation("CourseSpecializations")
+}
+
+// --- *** END: Course Model *** ---
 
 // --- CV Related Models (Keep existing definitions) ---
 model AcademicQualification {
@@ -189,20 +212,28 @@ model ConferencePresentation {
   rejectionReason String?
 }
 
-// --- *** NEW: Notification Model *** ---
+// Notification Model
 model Notification {
   id        String   @id @default(cuid())
-  message   String // The content of the notification
-  link      String? // Optional link for navigation (e.g., to the item or page)
-  isRead    Boolean  @default(false) // Tracks if the user has seen it
-  createdAt DateTime @default(now()) // When the notification was created
+  message   String
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Relation to the User who should receive the notification
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete if user is deleted
-
-  // Optional: Add an index for faster querying of user notifications
   @@index([userId])
 }
 
-// --- *** END: Notification Model *** ---
+// Password Reset Token Model
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expires   DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}

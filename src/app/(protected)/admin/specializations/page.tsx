@@ -3,8 +3,7 @@
 
 import React, { useState, useEffect, useTransition, FormEvent, useRef } from 'react';
 // Import the new server actions
-import { getSpecializations, createSpecialization, updateSpecialization, deleteSpecialization } from '@/lib/adminActions';
-import { TagIcon, PlusIcon, ExclamationTriangleIcon, XMarkIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'; // Added PencilIcon, TrashIcon
+import { getSpecializations, createSpecialization, updateSpecialization, deleteSpecialization } from '@/lib/actions/specializationActions';import { TagIcon, PlusIcon, ExclamationTriangleIcon, XMarkIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'; // Added PencilIcon, TrashIcon
 import type { Specialization } from '@/generated/prisma';
 
 export default function AdminSpecializationsPage() {

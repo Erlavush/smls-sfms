@@ -15,7 +15,8 @@ import { getSpecializations } from '@/lib/actions/specializationActions';
 import type {
     User, Role, AcademicQualification, ProfessionalLicense, WorkExperience,
     ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
-    CommunityInvolvement, Publication, ConferencePresentation, Specialization
+    CommunityInvolvement, Publication, ConferencePresentation, Specialization,
+    Course // <-- Import Course type
 } from '@/generated/prisma/client';
 
 // Import Display Components
@@ -36,6 +37,8 @@ import {
     DocumentTextIcon, PresentationChartBarIcon,
     TagIcon,
     LightBulbIcon, // <-- Ensure this is imported
+    BookOpenIcon, // <-- Added for Potential Courses
+    CheckIcon, // Added CheckIcon
     TrashIcon, XMarkIcon,
     PencilIcon
 } from '@heroicons/react/24/outline';
@@ -51,6 +54,7 @@ interface FacultyProfileData {
         specializations: Specialization[]; // Keep raw data
     };
     // This array now holds the names derived from user.specializations
+    potentialCourses: (Course & { requiredSpecializations: Pick<Specialization, 'id' | 'name'>[] })[]; // <-- NEW: Add potential courses
     suggestedTeachingAreas: string[];
     academicQualifications: AcademicQualification[];
     professionalLicenses: ProfessionalLicense[];
@@ -264,7 +268,7 @@ export default function AdminFacultyProfilePage() {
     }
 
     const linkedSpecIds = new Set(facultyProfile.user.specializations.map(spec => spec.id));
-    const { user, suggestedTeachingAreas, ...cvSections } = facultyProfile; // Destructure suggestedTeachingAreas
+    const { user, suggestedTeachingAreas, potentialCourses, ...cvSections } = facultyProfile; // Destructure potentialCourses
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
@@ -329,28 +333,77 @@ export default function AdminFacultyProfilePage() {
 
             {/* --- *** NEW: Suggested Teaching Areas Card *** --- */}
             <div className="mb-8 rounded-lg bg-white shadow border border-gray-200 overflow-hidden">
-                <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-yellow-50"> {/* Changed background */}
-                    <LightBulbIcon className="h-5 w-5 text-yellow-600" /> {/* Changed color */}
-                    <h2 className="text-base font-semibold text-yellow-800"> {/* Changed color */}
-                        Suggested Teaching Areas / Expertise
+                {/* Enhanced header for this card */}
+                <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-indigo-50">
+                    <LightBulbIcon className="h-5 w-5 text-indigo-600" />
+                    <h2 className="text-base font-semibold text-indigo-800">
+                        Expertise / Suggested Teaching Areas
                     </h2>
                 </div>
                 <div className="p-4 sm:p-6">
                     {suggestedTeachingAreas.length === 0 ? (
                         <p className="text-sm text-gray-500 italic">No specializations linked to suggest teaching areas.</p>
                     ) : (
-                        <ul className="list-disc pl-5 space-y-1.5"> {/* Added slightly more space */}
+                        <ul className="space-y-2"> {/* Changed from list-disc for cleaner look with icons */}
                             {suggestedTeachingAreas.map((area, index) => (
-                                <li key={index} className="text-sm text-gray-800">
-                                    {area}
+                                <li key={index} className="flex items-center gap-2 text-sm text-gray-800">
+                                    <CheckIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                    <span>{area}</span>
                                 </li>
                             ))}
                         </ul>
                     )}
-                     <p className="text-xs text-gray-400 mt-4 italic">Note: Suggestions are based on explicitly linked specializations.</p>
+                     {/* More direct note for admins */}
+                     <p className="text-xs text-gray-500 mt-4 pt-3 border-t border-gray-100">
+                        These areas are derived from the faculty's linked specializations. Consider them when planning teaching assignments or other responsibilities.
+                     </p>
                 </div>
             </div>
             {/* --- *** END: Suggested Teaching Areas Card *** --- */}
+
+            {/* --- *** NEW: Potential Courses Card *** --- */}
+            <div className="mb-8 rounded-lg bg-white shadow border border-gray-200 overflow-hidden">
+                <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-green-50"> {/* Different color for distinction */}
+                    <BookOpenIcon className="h-5 w-5 text-green-600" />
+                    <h2 className="text-base font-semibold text-green-800">
+                        Potential Courses to Teach
+                    </h2>
+                </div>
+                <div className="p-4 sm:p-6">
+                    {facultyProfile.potentialCourses && facultyProfile.potentialCourses.length > 0 ? (
+                        <ul className="space-y-3">
+                            {facultyProfile.potentialCourses.map((course) => (
+                                <li key={course.id} className="pb-2 border-b border-gray-100 last:border-b-0 last:pb-0">
+                                    <p className="text-sm font-semibold text-gray-800">
+                                        {course.name} {course.code && `(${course.code})`}
+                                    </p>
+                                    {course.description && (
+                                        <p className="mt-0.5 text-xs text-gray-600">{course.description}</p>
+                                    )}
+                                    {course.requiredSpecializations && course.requiredSpecializations.length > 0 && (
+                                        <p className="mt-1 text-xs text-gray-500">
+                                            <span className="font-medium">Matches expertise in:</span>{' '}
+                                            {course.requiredSpecializations
+                                                .filter(reqSpec => facultyProfile.user.specializations.some(facultySpec => facultySpec.id === reqSpec.id))
+                                                .map(spec => spec.name)
+                                                .join(', ')}
+                                        </p>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-sm text-gray-500 italic">
+                            No specific course suggestions based on current specializations, or no courses defined that match this faculty's expertise.
+                        </p>
+                    )}
+                    <p className="text-xs text-gray-400 mt-4 pt-3 border-t border-gray-100">
+                        Note: Suggestions are based on faculty having at least one of the specializations required by a course.
+                        Review course details and faculty's full profile for comprehensive assessment.
+                    </p>
+                </div>
+            </div>
+            {/* --- *** END: Potential Courses Card *** --- */}
 
             {/* Dynamic CV Sections Grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">

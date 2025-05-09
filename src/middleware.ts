@@ -1,4 +1,5 @@
-// src/middleware.ts
+// Action: Modify src/middleware.ts
+
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -12,29 +13,20 @@ export default withAuth(
         const token = req.nextauth.token as JWT & { role?: string }; // Token is guaranteed here
         const { pathname } = req.nextUrl;
 
-        // --- NEW: Redirect authenticated users from homepage ---
-        // If the user is authenticated (which they are if this function runs)
-        // and they are trying to access the root path ('/'), redirect them.
+        // --- Redirect authenticated users from homepage ---
         if (pathname === '/') {
-            const userRole = token.role; // Get role from token
-            // Determine target dashboard based on role
+            const userRole = token.role;
             const targetUrl = userRole === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
             console.log(`Authenticated user on '/', redirecting to ${targetUrl}`);
-            // Redirect to the appropriate dashboard
             return NextResponse.redirect(new URL(targetUrl, req.url));
         }
-        // --- END NEW ---
 
         // --- Role-Based Access Control for /admin ---
-        // If user is trying to access an admin route
         if (pathname.startsWith('/admin')) {
-            // Check if the user has the ADMIN role
             if (token?.role !== 'ADMIN') {
-                // If not admin, redirect them to the faculty dashboard
                 console.warn(`Unauthorized access attempt to ${pathname} by user role: ${token?.role}`);
                  return NextResponse.redirect(new URL('/dashboard', req.url));
             }
-            // If user is ADMIN and accessing /admin, allow the request
              return NextResponse.next();
         }
 
@@ -45,19 +37,17 @@ export default withAuth(
     },
     {
         callbacks: {
-            // This callback ensures the middleware function above runs ONLY if a valid token exists.
             authorized: ({ token }) => !!token
         },
         pages: {
-            // Redirect users to /login if they need to sign in (UNCHANGED)
             signIn: "/login",
         },
     }
 );
 
 // --- Route Matching ---
-// Ensure this middleware runs on the homepage ('/') for authenticated users,
-// as well as the protected routes. Exclude API, static files, images, favicon, and the login page itself.
+// *** UPDATED MATCHER ***
+// Exclude API, static files, images, favicon, AND public auth pages.
 export const config = {
     matcher: [
         /*
@@ -67,14 +57,12 @@ export const config = {
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
          * - login (the login page itself)
+         * - forgot-password (password reset request page)
+         * - reset-password (password reset page)
          * The negative lookahead `(?!...)` correctly excludes these.
          * The pattern `.*` after the lookahead WILL match the root path '/'.
          */
-        '/((?!api|_next/static|_next/image|favicon.ico|login).*)',
-
-        // Explicitly adding '/' is not strictly necessary due to the pattern above,
-        // but doesn't hurt for clarity if preferred.
-        // '/',
+        '/((?!api|_next/static|_next/image|favicon.ico|login|forgot-password|reset-password).*)',
 
         // Keep explicit protected paths if you prefer strictness, though the pattern covers them.
         '/dashboard/:path*',

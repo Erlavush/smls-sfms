@@ -1,4 +1,5 @@
-// src/types/index.ts
+// Action: Modify src/types/index.ts
+
 import type {
     AcademicQualification, ProfessionalLicense, WorkExperience,
     ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
@@ -86,6 +87,8 @@ export interface FacultyLinkedSpecialization {
 export interface GetMatrixDataResponse { // Renamed from GetSpecializationResponse
     success: boolean;
     data?: FacultyLinkedSpecialization[]; // Use the new linked specialization type
+    // *** ADDED THIS LINE ***
+    allSpecializationNames?: string[]; // Add list of all specialization names
     error?: string;
 }
 

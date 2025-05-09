@@ -15,6 +15,7 @@ import {
     TableCellsIcon,
     ChevronDownIcon,
     BellIcon,
+    BookOpenIcon, // Added for Courses link
 } from '@heroicons/react/24/outline';
 // Import the server action
 import { getMyNotifications } from '../../lib/actions/notificationActions';
@@ -73,6 +74,7 @@ export default function Header() {
         { href: '/admin/faculty', label: 'Faculty', icon: UsersIcon },
         { href: '/admin/matrix', label: 'Matrix', icon: TableCellsIcon },
         { href: '/admin/specializations', label: 'Specializations', icon: UsersIcon },
+        { href: '/admin/courses', label: 'Courses', icon: BookOpenIcon },
     ];
     const navLinks = userRole === 'ADMIN' ? adminLinks : facultyLinks;
 

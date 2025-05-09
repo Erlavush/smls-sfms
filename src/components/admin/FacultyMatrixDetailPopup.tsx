@@ -60,24 +60,28 @@ export default function FacultyMatrixDetailPopup({ faculty, onClose }: Props) {
 
                     {/* Linked Specializations / Suggested Areas Section */}
                     <div>
-                        <h4 className="text-md font-semibold text-yellow-800 mb-3 border-b border-yellow-200 pb-1 flex items-center gap-2">
+                        {/* Made title slightly more prominent and changed icon/color for emphasis */}
+                        <h4 className="text-md font-semibold text-indigo-700 mb-2.5 border-b border-indigo-100 pb-1.5 flex items-center gap-2">
                             <LightBulbIcon className="h-5 w-5 text-yellow-600" />
-                            Linked Specializations / Suggested Areas ({specializations.length})
+                            Expertise / Suggested Teaching Areas ({specializations.length})
                         </h4>
                         {specializations.length === 0 ? (
                             <p className="italic text-gray-500 text-sm">No specializations linked.</p>
                         ) : (
-                            <ul className="space-y-1.5 pl-2">
+                            <ul className="space-y-1.5 pl-1">
                                 {specializations.map((specName, index) => (
                                     <li key={`${faculty.userId}-spec-${index}`} className="flex items-center gap-2 text-sm text-gray-800">
                                         {/* Using CheckIcon to indicate linkage */}
-                                        <CheckIcon className="h-4 w-4 text-green-600 flex-shrink-0"/>
+                                        <CheckIcon className="h-4 w-4 text-green-500 flex-shrink-0"/>
                                         <span>{specName}</span>
                                     </li>
                                 ))}
                             </ul>
                         )}
-                         <p className="text-xs text-gray-400 mt-3 italic">Suggestions based on explicitly linked specializations.</p>
+                         {/* Added a more direct note for admins */}
+                         <p className="text-xs text-gray-500 mt-3 pt-2 border-t border-gray-100">
+                            Consider these areas when assigning teaching loads or responsibilities.
+                         </p>
                     </div>
                 </div>
 

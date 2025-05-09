@@ -15,7 +15,11 @@ smls-sfms
 ├── src
 │   ├── app
 │   │   ├── (auth)
+│   │   │   ├── forgot-password
+│   │   │   │   └── page.tsx
 │   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   ├── reset-password
 │   │   │   │   └── page.tsx
 │   │   │   └── layout.tsx
 │   │   ├── (protected)
@@ -84,16 +88,18 @@ smls-sfms
 │   │   │   └── NextAuthProvider.tsx
 │   │   └── ui
 │   │       ├── Footer.tsx
-│   │       └── Header.tsx
+│   │       ├── Header.tsx
+│   │       └── NotificationPanel.tsx
 │   ├── contexts
 │   ├── hooks
 │   ├── lib
 │   │   ├── actions
 │   │   │   ├── approvalActions.ts
+│   │   │   ├── authActions.ts
 │   │   │   ├── dashboardActions.ts
 │   │   │   ├── facultyActions.ts
+│   │   │   ├── notificationActions.ts
 │   │   │   └── specializationActions.ts
-│   │   ├── adminActions.ts
 │   │   ├── auth.ts
 │   │   ├── db.ts
 │   │   ├── prisma.ts
@@ -110,8 +116,10 @@ smls-sfms
 ├── generate-tree.cjs
 ├── next.config.ts
 ├── package.json
+├── PaperSMLS.pdf
 ├── postcss.config.mjs
 ├── project_context.txt
+├── prompt.txt
 ├── README.md
 ├── seed-history.txt
 ├── tailwind.config.ts

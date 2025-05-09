@@ -9,7 +9,8 @@ import { Role, // Import Role enum
          // Import Prisma types for the return value definition
          User, AcademicQualification, ProfessionalLicense, WorkExperience,
          ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment, Specialization,
-         CommunityInvolvement, Publication, ConferencePresentation
+         CommunityInvolvement, Publication, ConferencePresentation,
+         Course // <-- ADD THIS LINE
        } from '@/generated/prisma';
 import bcrypt from 'bcrypt';
 
@@ -57,6 +58,7 @@ interface FacultyProfileData {
         // Add the specializations array here
         specializations: Specialization[]; // Keep this raw data
     };
+    potentialCourses: (Course & { requiredSpecializations: Pick<Specialization, 'id' | 'name'>[] })[]; // <-- ADD THIS LINE
     suggestedTeachingAreas: string[]; // Array of specialization names
     academicQualifications: AcademicQualification[];
     professionalLicenses: ProfessionalLicense[];
@@ -119,6 +121,13 @@ export async function getFacultyProfileById(facultyId: string): Promise<GetFacul
             },
         });
 
+        // --- *** NEW: Fetch all courses and their required specializations *** ---
+        const allCourses = await prisma.course.findMany({
+            include: {
+                requiredSpecializations: { select: { id: true, name: true } } // Fetch names of required specializations
+            },
+        });
+
         // 4. Handle Not Found
         if (!facultyUser) {
             console.warn(`Faculty profile not found for ID: ${facultyId}`);
@@ -134,6 +143,24 @@ export async function getFacultyProfileById(facultyId: string): Promise<GetFacul
         // --- *** MODIFY Structuring the Response *** ---
         // Extract specialization names for the suggestions
         const specializationNames = (facultyUser.specializations ?? []).map(spec => spec.name);
+        const facultySpecializationIds = new Set((facultyUser.specializations ?? []).map(spec => spec.id));
+
+        // --- *** NEW: Determine potential courses for the faculty member *** ---
+        const potentialCoursesList: (Course & { requiredSpecializations: Pick<Specialization, 'id' | 'name'>[] })[] = [];
+        if (facultySpecializationIds.size > 0) {
+            allCourses.forEach(course => {
+                if (course.requiredSpecializations && course.requiredSpecializations.length > 0) {
+                    // Suggest course if faculty has AT LEAST ONE of the required specializations
+                    // More advanced logic (e.g., requiring ALL) can be added later if needed.
+                    const hasMatchingSpec = course.requiredSpecializations.some(reqSpec =>
+                        facultySpecializationIds.has(reqSpec.id)
+                    );
+                    if (hasMatchingSpec) {
+                        potentialCoursesList.push(course);
+                    }
+                }
+            });
+        }
 
         // 5. Structure and Return Success Response
         const profileData: FacultyProfileData = {
@@ -145,9 +172,8 @@ export async function getFacultyProfileById(facultyId: string): Promise<GetFacul
                 createdAt: facultyUser.createdAt,
                 specializations: facultyUser.specializations ?? [], // Keep original data if needed elsewhere
             },
-            // --- POPULATE THE NEW FIELD ---
             suggestedTeachingAreas: specializationNames,
-            // --- END POPULATE ---
+            potentialCourses: potentialCoursesList.sort((a, b) => a.name.localeCompare(b.name)), // <-- ADD/MODIFY THIS LINE
             // Use nullish coalescing to ensure arrays are always returned
             academicQualifications: facultyUser.academicQualifications ?? [],
             professionalLicenses: facultyUser.professionalLicenses ?? [],

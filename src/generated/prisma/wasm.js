@@ -132,6 +132,15 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CourseScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AcademicQualificationScalarFieldEnum = {
   id: 'id',
   degree: 'degree',
@@ -262,6 +271,14 @@ exports.Prisma.NotificationScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  expires: 'expires',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -285,6 +302,7 @@ exports.ApprovalStatus = exports.$Enums.ApprovalStatus = {
 exports.Prisma.ModelName = {
   Specialization: 'Specialization',
   User: 'User',
+  Course: 'Course',
   AcademicQualification: 'AcademicQualification',
   ProfessionalLicense: 'ProfessionalLicense',
   WorkExperience: 'WorkExperience',
@@ -294,7 +312,8 @@ exports.Prisma.ModelName = {
   CommunityInvolvement: 'CommunityInvolvement',
   Publication: 'Publication',
   ConferencePresentation: 'ConferencePresentation',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  PasswordResetToken: 'PasswordResetToken'
 };
 
 /**

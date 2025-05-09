@@ -1,9 +1,11 @@
+// Action: Modify src/app/(auth)/login/page.tsx
+
 'use client';
 import React, { useState, FormEvent } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image'; // Ensure next/image is imported
+import Link from 'next/link'; // Ensure Link is imported
+import Image from 'next/image';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -14,7 +16,6 @@ export default function LoginPage() {
 
     // Handler for credential-based form submission (remains the same)
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        // ... (submission logic remains the same)
         event.preventDefault();
         setError(null);
         setIsLoading(true);
@@ -33,7 +34,10 @@ export default function LoginPage() {
                 const session = await getSession();
                 const userRole = (session?.user as any)?.role;
                 console.log("Login successful, Role:", userRole);
+                // Redirect based on role
                 router.push(userRole === 'ADMIN' ? '/admin/dashboard' : '/dashboard');
+                // Use router.replace if you don't want the login page in history
+                // router.replace(userRole === 'ADMIN' ? '/admin/dashboard' : '/dashboard');
             } else {
                 setIsLoading(false);
                 setError("Login failed due to an unknown error. Please try again.");
@@ -106,9 +110,9 @@ export default function LoginPage() {
                                             className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50" // Adjusted text color
                                         />
                                     </div>
-                                    {/* Forget Password Link - Adjusted color */}
+                                    {/* Forget Password Link - *** UPDATED href *** */}
                                     <div className="text-right">
-                                        <Link href="#" className="text-sm text-sky-600 hover:text-sky-700 hover:underline"> Forget your password? </Link>
+                                        <Link href="/forgot-password" className="text-sm text-sky-600 hover:text-sky-700 hover:underline"> Forget your password? </Link>
                                     </div>
                                     {/* Submit Button - Matching softer gradient */}
                                     <button
