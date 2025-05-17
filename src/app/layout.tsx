@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
     // Apply the font variable to the html tag
-    <html lang="en" className={`${inter.variable}`} suppressHydrationWarning={true}>
-      <body> {/* The font variable will cascade down */}
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={`${inter.variable}`}> {/* The font variable will cascade down */}
          <NextAuthProvider>
            {children}
          </NextAuthProvider>

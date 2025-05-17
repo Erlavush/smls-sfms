@@ -2,11 +2,19 @@ smls-sfms
 ├── .roo
 │   └── mcp.json
 ├── prisma
+│   ├── add_dummy_faculty_1.cjs
+│   ├── add_dummy_faculty_2.cjs
+│   ├── add_dummy_faculty_3.cjs
+│   ├── add_dummy_faculty_4.cjs
+│   ├── add_dummy_faculty_5.cjs
 │   ├── add_faculty_hematology.cjs
 │   ├── add_faculty.cjs
+│   ├── add_missing_specializations.cjs
 │   ├── create_admin.cjs
+│   ├── delete_all_faculty_accounts.cjs
 │   ├── delete_user.cjs
 │   ├── schema.prisma
+│   ├── seed_courses.cjs
 │   └── seed.cjs
 ├── public
 │   ├── dot.png
@@ -32,6 +40,8 @@ smls-sfms
 │   │   │   │       └── page.tsx
 │   │   │   ├── admin
 │   │   │   │   ├── approvals
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── courses
 │   │   │   │   │   └── page.tsx
 │   │   │   │   ├── dashboard
 │   │   │   │   │   └── page.tsx
@@ -73,6 +83,7 @@ smls-sfms
 │   │   │   ├── CommunityInvolvementForm.tsx
 │   │   │   ├── ConferencePresentationDisplay.tsx
 │   │   │   ├── ConferencePresentationForm.tsx
+│   │   │   ├── CvSection.tsx
 │   │   │   ├── ProfessionalAffiliationDisplay.tsx
 │   │   │   ├── ProfessionalAffiliationForm.tsx
 │   │   │   ├── ProfessionalDevelopmentDisplay.tsx
@@ -82,16 +93,19 @@ smls-sfms
 │   │   │   ├── PublicationDisplay.tsx
 │   │   │   ├── PublicationForm.tsx
 │   │   │   ├── StatusDisplay.tsx
+│   │   │   ├── UserProfileInfoCard.tsx
 │   │   │   ├── WorkExperienceDisplay.tsx
 │   │   │   └── WorkExperienceForm.tsx
 │   │   ├── providers
 │   │   │   └── NextAuthProvider.tsx
 │   │   └── ui
+│   │       ├── AestheticClock.tsx
 │   │       ├── Footer.tsx
 │   │       ├── Header.tsx
 │   │       └── NotificationPanel.tsx
 │   ├── contexts
 │   ├── hooks
+│   │   └── useProfileDataManagement.ts
 │   ├── lib
 │   │   ├── actions
 │   │   │   ├── approvalActions.ts
@@ -101,8 +115,10 @@ smls-sfms
 │   │   │   ├── notificationActions.ts
 │   │   │   └── specializationActions.ts
 │   │   ├── auth.ts
+│   │   ├── courseActions.ts
 │   │   ├── db.ts
 │   │   ├── prisma.ts
+│   │   ├── profileUtils.ts
 │   │   ├── userActions.ts
 │   │   └── utils.ts
 │   ├── types
@@ -116,11 +132,11 @@ smls-sfms
 ├── generate-tree.cjs
 ├── next.config.ts
 ├── package.json
-├── PaperSMLS.pdf
 ├── postcss.config.mjs
 ├── project_context.txt
 ├── prompt.txt
 ├── README.md
 ├── seed-history.txt
+├── SMLS-latestdraft.pdf
 ├── tailwind.config.ts
 └── tsconfig.json

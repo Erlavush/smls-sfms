@@ -1,13 +1,14 @@
-// Action: Modify src/types/index.ts
-
+// src/types/index.ts
 import type {
     AcademicQualification, ProfessionalLicense, WorkExperience,
     ProfessionalAffiliation, AwardRecognition, ProfessionalDevelopment,
     CommunityInvolvement, Publication, ConferencePresentation,
-    ApprovalStatus, Specialization // <-- Import the enum & Specialization
-} from '@/generated/prisma';
-import type { Role as PrismaRole } from '@/generated/prisma'; // Import Role if needed elsewhere
-import prisma from '@/lib/prisma';
+    SocialMediaLink,
+    ApprovalStatus, Specialization, Course // Added Course
+} from '@/generated/prisma'; // Assuming this is the correct path to your Prisma-generated types
+import type { Role as PrismaRole } from '@/generated/prisma';
+import prisma from '@/lib/prisma'; // Assuming prisma client is available for model key mapping
+
 // Common temporary properties used during editing state
 export type TempCommon = {
     _isNew?: boolean; // Flag to indicate if the item was added locally
@@ -15,7 +16,7 @@ export type TempCommon = {
 };
 
 // Specific temporary types for each section
-// Add status and rejectionReason, keep _selectedFile
+// Ensure these include all fields from Prisma types + TempCommon + _selectedFile + status + rejectionReason
 export type TempAcademicQualification = AcademicQualification & TempCommon & { _selectedFile?: File | null; status: ApprovalStatus; rejectionReason?: string | null; };
 export type TempProfessionalDevelopment = ProfessionalDevelopment & TempCommon & { _selectedFile?: File | null; status: ApprovalStatus; rejectionReason?: string | null; };
 export type TempProfessionalLicense = ProfessionalLicense & TempCommon & { _selectedFile?: File | null; status: ApprovalStatus; rejectionReason?: string | null; };
@@ -25,10 +26,11 @@ export type TempAwardRecognition = AwardRecognition & TempCommon & { _selectedFi
 export type TempCommunityInvolvement = CommunityInvolvement & TempCommon & { _selectedFile?: File | null; status: ApprovalStatus; rejectionReason?: string | null; };
 export type TempPublication = Publication & TempCommon & { _selectedFile?: File | null; status: ApprovalStatus; rejectionReason?: string | null; };
 export type TempConferencePresentation = ConferencePresentation & TempCommon & { _selectedFile?: File | null; status: ApprovalStatus; rejectionReason?: string | null; };
+export type TempSocialMediaLink = SocialMediaLink & TempCommon & { _isNew?: boolean; };
 
 
-// Union type representing any possible item within the editableData state arrays
-export type EditableItem =
+// Union type representing any possible item within the editableData state arrays for CV sections
+export type EditableCvItem =
     | TempAcademicQualification
     | TempProfessionalLicense
     | TempWorkExperience
@@ -39,7 +41,7 @@ export type EditableItem =
     | TempPublication
     | TempConferencePresentation;
 
-// Type mapping for item types used in admin actions
+// Type mapping for item types used in admin actions and profile page logic
 export type ItemType =
     | 'academicQualification'
     | 'professionalLicense'
@@ -51,44 +53,56 @@ export type ItemType =
     | 'publication'
     | 'conferencePresentation';
 
-// --- Define Evidence Source ---
+// Key type for CV categories, derived from the ItemType for consistency
+// This will be used for categoryMetadata and managing CV sections.
+export type CategoryKey =
+    | 'academicQualifications'
+    | 'professionalLicenses'
+    | 'workExperiences'
+    | 'professionalAffiliations'
+    | 'awardsRecognitions'
+    | 'professionalDevelopments'
+    | 'communityInvolvements'
+    | 'publications'
+    | 'conferencePresentations';
+
+
+// --- Define Evidence Source (Used by old keyword scanning, might be obsolete but kept from context) ---
 export interface EvidenceSource {
-    source: string; // e.g., "Academic Qualification - Degree"
-    evidence: string; // The actual text where the keyword was found
+    source: string;
+    evidence: string;
 }
 
-// --- Define Faculty Specialization Detail (Used by old keyword scanning, might be obsolete) ---
+// --- Define Faculty Specialization Detail (Used by old keyword scanning, might be obsolete but kept from context) ---
 export interface FacultySpecializationDetail {
     userId: string;
     name: string | null;
     email: string | null;
-    // Use the EvidenceSource interface defined above
     specializationDetails: {
         [specializationKeyword: string]: EvidenceSource[];
     };
 }
 
-// --- Define Admin Actions Response Type (For old keyword scanning, might be obsolete) ---
-export interface GetSpecializationResponse {
+// --- Define Admin Actions Response Type (For old keyword scanning, might be obsolete but kept from context) ---
+export interface GetSpecializationResponse { // This name might be confusing if it's for the matrix
     success: boolean;
-    data?: FacultySpecializationDetail[]; // Use the centralized type
+    data?: FacultySpecializationDetail[];
     error?: string;
 }
 
-// --- Type for data returned by the REVISED getFacultySpecializationData action ---
+// --- Type for data returned by the REVISED getFacultySpecializationData action for the matrix ---
 export interface FacultyLinkedSpecialization {
     userId: string;
     name: string | null;
     email: string | null;
-    linkedSpecializationNames: string[]; // Array of names of linked specializations
+    linkedSpecializationNames: string[];
 }
 
-// --- Renamed Response type for the REVISED getFacultySpecializationData action ---
-export interface GetMatrixDataResponse { // Renamed from GetSpecializationResponse
+// --- Response type for the REVISED getFacultySpecializationData action (Matrix Data) ---
+export interface GetMatrixDataResponse {
     success: boolean;
-    data?: FacultyLinkedSpecialization[]; // Use the new linked specialization type
-    // *** ADDED THIS LINE ***
-    allSpecializationNames?: string[]; // Add list of all specialization names
+    data?: FacultyLinkedSpecialization[];
+    allSpecializationNames?: string[];
     error?: string;
 }
 
@@ -109,9 +123,47 @@ export function getModelKeyFromItemType(itemType: ItemType): keyof typeof prisma
     return map[itemType];
 }
 
-// --- Keep the response type for the action that gets ALL specializations ---
-export interface GetSpecializationsResponse { // This is for getSpecializations()
+// --- Response type for the action that gets ALL specializations (Prisma Specialization type) ---
+export interface GetAllSpecializationsResponse { // Renamed for clarity
     success: boolean;
-    specializations?: Specialization[]; // Uses the Prisma Specialization type
+    specializations?: Specialization[];
     error?: string;
 }
+
+// Type for User object within ProfileData, including socialMediaLinks
+// This should align with what getMyProfileData and getFacultyProfileById return for the 'user' field.
+export interface ProfileUser extends Omit<import('@/generated/prisma').User, 'password' | 'emailVerified' | 'notifications' | 'passwordResetTokens' | 'specializations' | 'academicQualifications' | 'professionalLicenses' | 'workExperiences' | 'professionalAffiliations' | 'awardsRecognitions' | 'professionalDevelopments' | 'communityInvolvements' | 'publications' | 'conferencePresentations'> {
+    socialMediaLinks: SocialMediaLink[]; // Explicitly include this
+    // Add other fields if they are directly on the user object and needed, e.g., specializations if fetched directly with user
+}
+
+// Type for the overall profile data structure fetched by getMyProfileData
+export interface UserProfilePageData {
+    user: ProfileUser | null; // Use the more specific ProfileUser type
+    academicQualifications: AcademicQualification[];
+    professionalLicenses: ProfessionalLicense[];
+    workExperiences: WorkExperience[];
+    professionalAffiliations: ProfessionalAffiliation[];
+    awardsRecognitions: AwardRecognition[];
+    professionalDevelopments: ProfessionalDevelopment[];
+    communityInvolvements: CommunityInvolvement[];
+    publications: Publication[];
+    conferencePresentations: ConferencePresentation[];
+    // socialMediaLinks are part of the user object now
+    error?: string; // For actions returning this structure with a potential error
+}
+
+// Type for editable data on the profile page, mirroring UserProfilePageData but with Temp types
+export type EditableProfilePageData = {
+    user?: Partial<ProfileUser> | null; // User details can be partially updated
+    academicQualifications?: TempAcademicQualification[];
+    professionalLicenses?: TempProfessionalLicense[];
+    workExperiences?: TempWorkExperience[];
+    professionalAffiliations?: TempProfessionalAffiliation[];
+    awardsRecognitions?: TempAwardRecognition[];
+    professionalDevelopments?: TempProfessionalDevelopment[];
+    communityInvolvements?: TempCommunityInvolvement[];
+    publications?: TempPublication[];
+    conferencePresentations?: TempConferencePresentation[];
+    socialMediaLinks?: TempSocialMediaLink[]; // Social media links are also editable
+};

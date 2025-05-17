@@ -122,16 +122,6 @@ exports.Prisma.SpecializationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  password: 'password',
-  role: 'role',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.CourseScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -139,6 +129,33 @@ exports.Prisma.CourseScalarFieldEnum = {
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialMediaLinkScalarFieldEnum = {
+  id: 'id',
+  platform: 'platform',
+  url: 'url',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  profileImageUrl: 'profileImageUrl',
+  dateOfBirth: 'dateOfBirth',
+  civilStatus: 'civilStatus',
+  nationality: 'nationality',
+  contactNumber: 'contactNumber',
+  address: 'address',
+  employeeId: 'employeeId',
+  bio: 'bio'
 };
 
 exports.Prisma.AcademicQualificationScalarFieldEnum = {
@@ -301,8 +318,9 @@ exports.ApprovalStatus = exports.$Enums.ApprovalStatus = {
 
 exports.Prisma.ModelName = {
   Specialization: 'Specialization',
-  User: 'User',
   Course: 'Course',
+  SocialMediaLink: 'SocialMediaLink',
+  User: 'User',
   AcademicQualification: 'AcademicQualification',
   ProfessionalLicense: 'ProfessionalLicense',
   WorkExperience: 'WorkExperience',

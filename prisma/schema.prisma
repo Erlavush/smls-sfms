@@ -10,20 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Define the possible roles for users
+// --- Enums ---
 enum Role {
   FACULTY
   ADMIN
 }
 
-// Approval Status Enum
 enum ApprovalStatus {
   PENDING
   APPROVED
   REJECTED
 }
 
-// Specialization Model
+// --- Specialization Model ---
 model Specialization {
   id          String @id @default(cuid())
   name        String @unique
@@ -31,12 +30,35 @@ model Specialization {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   faculty   User[]     @relation("FacultySpecializations")
-
-  // Relation to Course (Many-to-Many)
   coursesRequiringThis Course[] @relation("CourseSpecializations")
 }
 
-// User model
+// --- Course Model ---
+model Course {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  code        String?  @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  requiredSpecializations Specialization[] @relation("CourseSpecializations")
+}
+
+// --- SOCIAL MEDIA LINK MODEL (Defined before User model) ---
+model SocialMediaLink {
+  id         String   @id @default(cuid())
+  platform   String   // e.g., "LinkedIn", "Facebook", "Personal Website", "GitHub", "ResearchGate"
+  url        String
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete if user is deleted
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId]) // Add an index on userId for better query performance
+}
+// --- END SOCIAL MEDIA LINK MODEL ---
+
+// --- User model ---
 model User {
   id        String   @id @default(cuid())
   name      String?
@@ -46,9 +68,22 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // --- PERSONAL INFORMATION FIELDS ---
+  profileImageUrl String?
+  dateOfBirth     DateTime?
+  civilStatus     String?
+  nationality     String?
+  contactNumber   String?
+  address         String?
+  employeeId      String?    @unique
+  bio             String?    // String is sufficient for long text in SQLite
+
+  // --- RELATION TO SOCIAL MEDIA LINKS ---
+  socialMediaLinks SocialMediaLink[] // Now references the defined model above
+
+  // --- EXISTING RELATIONS ---
   specializations Specialization[] @relation("FacultySpecializations")
 
-  // Relationships to CV items
   academicQualifications AcademicQualification[]
   professionalLicenses   ProfessionalLicense[]
   workExperiences        WorkExperience[]
@@ -59,28 +94,11 @@ model User {
   publications           Publication[]
   conferencePresentations ConferencePresentation[]
 
-  // Relation to Notifications
-  notifications          Notification[] // A user can have many notifications
-
-  // Relation to Password Reset Tokens
+  notifications          Notification[]
   passwordResetTokens    PasswordResetToken[]
 }
 
-// --- *** NEW: Course Model *** ---
-model Course {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  code        String?  @unique // Optional but recommended to be unique if used
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Many-to-many relation with Specialization
-  requiredSpecializations Specialization[] @relation("CourseSpecializations")
-}
-// --- *** END: Course Model *** ---
-
-// --- CV Related Models (Keep existing definitions) ---
+// --- CV Related Models ---
 model AcademicQualification {
   id            String   @id @default(cuid())
   degree        String
@@ -167,6 +185,8 @@ model ProfessionalDevelopment {
   status          ApprovalStatus @default(PENDING)
   rejectionReason String?
 }
+
+
 
 model CommunityInvolvement {
   id              String   @id @default(cuid())

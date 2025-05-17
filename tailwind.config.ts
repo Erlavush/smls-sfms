@@ -14,7 +14,7 @@ const config: Config = {
       },
       colors: {
         'spc-blue': {
-          DEFAULT: '#003153',
+          main: '#003153',
           light: '#004A7C',
           lighter: '#E0F2FE',
           darker: '#002742',

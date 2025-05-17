@@ -19,15 +19,20 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Specialization = $Result.DefaultSelection<Prisma.$SpecializationPayload>
 /**
- * Model User
- * 
- */
-export type User = $Result.DefaultSelection<Prisma.$UserPayload>
-/**
  * Model Course
  * 
  */
 export type Course = $Result.DefaultSelection<Prisma.$CoursePayload>
+/**
+ * Model SocialMediaLink
+ * 
+ */
+export type SocialMediaLink = $Result.DefaultSelection<Prisma.$SocialMediaLinkPayload>
+/**
+ * Model User
+ * 
+ */
+export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
  * Model AcademicQualification
  * 
@@ -250,16 +255,6 @@ export class PrismaClient<
   get specialization(): Prisma.SpecializationDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.user`: Exposes CRUD operations for the **User** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Users
-    * const users = await prisma.user.findMany()
-    * ```
-    */
-  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.course`: Exposes CRUD operations for the **Course** model.
     * Example usage:
     * ```ts
@@ -268,6 +263,26 @@ export class PrismaClient<
     * ```
     */
   get course(): Prisma.CourseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.socialMediaLink`: Exposes CRUD operations for the **SocialMediaLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SocialMediaLinks
+    * const socialMediaLinks = await prisma.socialMediaLink.findMany()
+    * ```
+    */
+  get socialMediaLink(): Prisma.SocialMediaLinkDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
+    * ```
+    */
+  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.academicQualification`: Exposes CRUD operations for the **AcademicQualification** model.
@@ -819,8 +834,9 @@ export namespace Prisma {
 
   export const ModelName: {
     Specialization: 'Specialization',
-    User: 'User',
     Course: 'Course',
+    SocialMediaLink: 'SocialMediaLink',
+    User: 'User',
     AcademicQualification: 'AcademicQualification',
     ProfessionalLicense: 'ProfessionalLicense',
     WorkExperience: 'WorkExperience',
@@ -850,7 +866,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "specialization" | "user" | "course" | "academicQualification" | "professionalLicense" | "workExperience" | "professionalAffiliation" | "awardRecognition" | "professionalDevelopment" | "communityInvolvement" | "publication" | "conferencePresentation" | "notification" | "passwordResetToken"
+      modelProps: "specialization" | "course" | "socialMediaLink" | "user" | "academicQualification" | "professionalLicense" | "workExperience" | "professionalAffiliation" | "awardRecognition" | "professionalDevelopment" | "communityInvolvement" | "publication" | "conferencePresentation" | "notification" | "passwordResetToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -928,80 +944,6 @@ export namespace Prisma {
           }
         }
       }
-      User: {
-        payload: Prisma.$UserPayload<ExtArgs>
-        fields: Prisma.UserFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.UserFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          findFirst: {
-            args: Prisma.UserFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          findMany: {
-            args: Prisma.UserFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
-          }
-          create: {
-            args: Prisma.UserCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          createMany: {
-            args: Prisma.UserCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
-          }
-          delete: {
-            args: Prisma.UserDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          update: {
-            args: Prisma.UserUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          deleteMany: {
-            args: Prisma.UserDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.UserUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
-          }
-          upsert: {
-            args: Prisma.UserUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          aggregate: {
-            args: Prisma.UserAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUser>
-          }
-          groupBy: {
-            args: Prisma.UserGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UserGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.UserCountArgs<ExtArgs>
-            result: $Utils.Optional<UserCountAggregateOutputType> | number
-          }
-        }
-      }
       Course: {
         payload: Prisma.$CoursePayload<ExtArgs>
         fields: Prisma.CourseFieldRefs
@@ -1073,6 +1015,154 @@ export namespace Prisma {
           count: {
             args: Prisma.CourseCountArgs<ExtArgs>
             result: $Utils.Optional<CourseCountAggregateOutputType> | number
+          }
+        }
+      }
+      SocialMediaLink: {
+        payload: Prisma.$SocialMediaLinkPayload<ExtArgs>
+        fields: Prisma.SocialMediaLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SocialMediaLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SocialMediaLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.SocialMediaLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SocialMediaLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>
+          }
+          findMany: {
+            args: Prisma.SocialMediaLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>[]
+          }
+          create: {
+            args: Prisma.SocialMediaLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>
+          }
+          createMany: {
+            args: Prisma.SocialMediaLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SocialMediaLinkCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>[]
+          }
+          delete: {
+            args: Prisma.SocialMediaLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>
+          }
+          update: {
+            args: Prisma.SocialMediaLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.SocialMediaLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SocialMediaLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SocialMediaLinkUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>[]
+          }
+          upsert: {
+            args: Prisma.SocialMediaLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialMediaLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.SocialMediaLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSocialMediaLink>
+          }
+          groupBy: {
+            args: Prisma.SocialMediaLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SocialMediaLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SocialMediaLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<SocialMediaLinkCountAggregateOutputType> | number
+          }
+        }
+      }
+      User: {
+        payload: Prisma.$UserPayload<ExtArgs>
+        fields: Prisma.UserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          findFirst: {
+            args: Prisma.UserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          findMany: {
+            args: Prisma.UserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
+          }
+          create: {
+            args: Prisma.UserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          createMany: {
+            args: Prisma.UserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
+          }
+          delete: {
+            args: Prisma.UserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          update: {
+            args: Prisma.UserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          aggregate: {
+            args: Prisma.UserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUser>
+          }
+          groupBy: {
+            args: Prisma.UserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserCountArgs<ExtArgs>
+            result: $Utils.Optional<UserCountAggregateOutputType> | number
           }
         }
       }
@@ -1975,8 +2065,9 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     specialization?: SpecializationOmit
-    user?: UserOmit
     course?: CourseOmit
+    socialMediaLink?: SocialMediaLinkOmit
+    user?: UserOmit
     academicQualification?: AcademicQualificationOmit
     professionalLicense?: ProfessionalLicenseOmit
     workExperience?: WorkExperienceOmit
@@ -2118,10 +2209,42 @@ export namespace Prisma {
 
 
   /**
+   * Count Type CourseCountOutputType
+   */
+
+  export type CourseCountOutputType = {
+    requiredSpecializations: number
+  }
+
+  export type CourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    requiredSpecializations?: boolean | CourseCountOutputTypeCountRequiredSpecializationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CourseCountOutputType
+     */
+    select?: CourseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountRequiredSpecializationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpecializationWhereInput
+  }
+
+
+  /**
    * Count Type UserCountOutputType
    */
 
   export type UserCountOutputType = {
+    socialMediaLinks: number
     specializations: number
     academicQualifications: number
     professionalLicenses: number
@@ -2137,6 +2260,7 @@ export namespace Prisma {
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    socialMediaLinks?: boolean | UserCountOutputTypeCountSocialMediaLinksArgs
     specializations?: boolean | UserCountOutputTypeCountSpecializationsArgs
     academicQualifications?: boolean | UserCountOutputTypeCountAcademicQualificationsArgs
     professionalLicenses?: boolean | UserCountOutputTypeCountProfessionalLicensesArgs
@@ -2160,6 +2284,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSocialMediaLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SocialMediaLinkWhereInput
   }
 
   /**
@@ -2244,37 +2375,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PasswordResetTokenWhereInput
-  }
-
-
-  /**
-   * Count Type CourseCountOutputType
-   */
-
-  export type CourseCountOutputType = {
-    requiredSpecializations: number
-  }
-
-  export type CourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    requiredSpecializations?: boolean | CourseCountOutputTypeCountRequiredSpecializationsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * CourseCountOutputType without action
-   */
-  export type CourseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CourseCountOutputType
-     */
-    select?: CourseCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * CourseCountOutputType without action
-   */
-  export type CourseCountOutputTypeCountRequiredSpecializationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SpecializationWhereInput
   }
 
 
@@ -3379,1408 +3479,6 @@ export namespace Prisma {
 
 
   /**
-   * Model User
-   */
-
-  export type AggregateUser = {
-    _count: UserCountAggregateOutputType | null
-    _min: UserMinAggregateOutputType | null
-    _max: UserMaxAggregateOutputType | null
-  }
-
-  export type UserMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    email: string | null
-    password: string | null
-    role: $Enums.Role | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type UserMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    email: string | null
-    password: string | null
-    role: $Enums.Role | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type UserCountAggregateOutputType = {
-    id: number
-    name: number
-    email: number
-    password: number
-    role: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type UserMinAggregateInputType = {
-    id?: true
-    name?: true
-    email?: true
-    password?: true
-    role?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type UserMaxAggregateInputType = {
-    id?: true
-    name?: true
-    email?: true
-    password?: true
-    role?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type UserCountAggregateInputType = {
-    id?: true
-    name?: true
-    email?: true
-    password?: true
-    role?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type UserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which User to aggregate.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Users
-    **/
-    _count?: true | UserCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: UserMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: UserMaxAggregateInputType
-  }
-
-  export type GetUserAggregateType<T extends UserAggregateArgs> = {
-        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUser[P]>
-      : GetScalarType<T[P], AggregateUser[P]>
-  }
-
-
-
-
-  export type UserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-    orderBy?: UserOrderByWithAggregationInput | UserOrderByWithAggregationInput[]
-    by: UserScalarFieldEnum[] | UserScalarFieldEnum
-    having?: UserScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserCountAggregateInputType | true
-    _min?: UserMinAggregateInputType
-    _max?: UserMaxAggregateInputType
-  }
-
-  export type UserGroupByOutputType = {
-    id: string
-    name: string | null
-    email: string
-    password: string
-    role: $Enums.Role
-    createdAt: Date
-    updatedAt: Date
-    _count: UserCountAggregateOutputType | null
-    _min: UserMinAggregateOutputType | null
-    _max: UserMaxAggregateOutputType | null
-  }
-
-  type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<UserGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserGroupByOutputType[P]>
-            : GetScalarType<T[P], UserGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    email?: boolean
-    password?: boolean
-    role?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    specializations?: boolean | User$specializationsArgs<ExtArgs>
-    academicQualifications?: boolean | User$academicQualificationsArgs<ExtArgs>
-    professionalLicenses?: boolean | User$professionalLicensesArgs<ExtArgs>
-    workExperiences?: boolean | User$workExperiencesArgs<ExtArgs>
-    professionalAffiliations?: boolean | User$professionalAffiliationsArgs<ExtArgs>
-    awardsRecognitions?: boolean | User$awardsRecognitionsArgs<ExtArgs>
-    professionalDevelopments?: boolean | User$professionalDevelopmentsArgs<ExtArgs>
-    communityInvolvements?: boolean | User$communityInvolvementsArgs<ExtArgs>
-    publications?: boolean | User$publicationsArgs<ExtArgs>
-    conferencePresentations?: boolean | User$conferencePresentationsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["user"]>
-
-  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    email?: boolean
-    password?: boolean
-    role?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["user"]>
-
-  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    email?: boolean
-    password?: boolean
-    role?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["user"]>
-
-  export type UserSelectScalar = {
-    id?: boolean
-    name?: boolean
-    email?: boolean
-    password?: boolean
-    role?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
-  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    specializations?: boolean | User$specializationsArgs<ExtArgs>
-    academicQualifications?: boolean | User$academicQualificationsArgs<ExtArgs>
-    professionalLicenses?: boolean | User$professionalLicensesArgs<ExtArgs>
-    workExperiences?: boolean | User$workExperiencesArgs<ExtArgs>
-    professionalAffiliations?: boolean | User$professionalAffiliationsArgs<ExtArgs>
-    awardsRecognitions?: boolean | User$awardsRecognitionsArgs<ExtArgs>
-    professionalDevelopments?: boolean | User$professionalDevelopmentsArgs<ExtArgs>
-    communityInvolvements?: boolean | User$communityInvolvementsArgs<ExtArgs>
-    publications?: boolean | User$publicationsArgs<ExtArgs>
-    conferencePresentations?: boolean | User$conferencePresentationsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "User"
-    objects: {
-      specializations: Prisma.$SpecializationPayload<ExtArgs>[]
-      academicQualifications: Prisma.$AcademicQualificationPayload<ExtArgs>[]
-      professionalLicenses: Prisma.$ProfessionalLicensePayload<ExtArgs>[]
-      workExperiences: Prisma.$WorkExperiencePayload<ExtArgs>[]
-      professionalAffiliations: Prisma.$ProfessionalAffiliationPayload<ExtArgs>[]
-      awardsRecognitions: Prisma.$AwardRecognitionPayload<ExtArgs>[]
-      professionalDevelopments: Prisma.$ProfessionalDevelopmentPayload<ExtArgs>[]
-      communityInvolvements: Prisma.$CommunityInvolvementPayload<ExtArgs>[]
-      publications: Prisma.$PublicationPayload<ExtArgs>[]
-      conferencePresentations: Prisma.$ConferencePresentationPayload<ExtArgs>[]
-      notifications: Prisma.$NotificationPayload<ExtArgs>[]
-      passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string | null
-      email: string
-      password: string
-      role: $Enums.Role
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["user"]>
-    composites: {}
-  }
-
-  type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
-
-  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: UserCountAggregateInputType | true
-    }
-
-  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
-    /**
-     * Find zero or one User that matches the filter.
-     * @param {UserFindUniqueArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one User that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first User that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserFindFirstArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first User that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Users that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Users
-     * const users = await prisma.user.findMany()
-     * 
-     * // Get first 10 Users
-     * const users = await prisma.user.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a User.
-     * @param {UserCreateArgs} args - Arguments to create a User.
-     * @example
-     * // Create one User
-     * const User = await prisma.user.create({
-     *   data: {
-     *     // ... data to create a User
-     *   }
-     * })
-     * 
-     */
-    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Users.
-     * @param {UserCreateManyArgs} args - Arguments to create many Users.
-     * @example
-     * // Create many Users
-     * const user = await prisma.user.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Users and returns the data saved in the database.
-     * @param {UserCreateManyAndReturnArgs} args - Arguments to create many Users.
-     * @example
-     * // Create many Users
-     * const user = await prisma.user.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a User.
-     * @param {UserDeleteArgs} args - Arguments to delete one User.
-     * @example
-     * // Delete one User
-     * const User = await prisma.user.delete({
-     *   where: {
-     *     // ... filter to delete one User
-     *   }
-     * })
-     * 
-     */
-    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one User.
-     * @param {UserUpdateArgs} args - Arguments to update one User.
-     * @example
-     * // Update one User
-     * const user = await prisma.user.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Users.
-     * @param {UserDeleteManyArgs} args - Arguments to filter Users to delete.
-     * @example
-     * // Delete a few Users
-     * const { count } = await prisma.user.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Users.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Users
-     * const user = await prisma.user.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Users and returns the data updated in the database.
-     * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
-     * @example
-     * // Update many Users
-     * const user = await prisma.user.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one User.
-     * @param {UserUpsertArgs} args - Arguments to update or create a User.
-     * @example
-     * // Update or create a User
-     * const user = await prisma.user.upsert({
-     *   create: {
-     *     // ... data to create a User
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the User we want to update
-     *   }
-     * })
-     */
-    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Users.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCountArgs} args - Arguments to filter Users to count.
-     * @example
-     * // Count the number of Users
-     * const count = await prisma.user.count({
-     *   where: {
-     *     // ... the filter for the Users we want to count
-     *   }
-     * })
-    **/
-    count<T extends UserCountArgs>(
-      args?: Subset<T, UserCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a User.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): Prisma.PrismaPromise<GetUserAggregateType<T>>
-
-    /**
-     * Group by User.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends UserGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserGroupByArgs['orderBy'] }
-        : { orderBy?: UserGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the User model
-   */
-  readonly fields: UserFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for User.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    specializations<T extends User$specializationsArgs<ExtArgs> = {}>(args?: Subset<T, User$specializationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    academicQualifications<T extends User$academicQualificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$academicQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    professionalLicenses<T extends User$professionalLicensesArgs<ExtArgs> = {}>(args?: Subset<T, User$professionalLicensesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalLicensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    workExperiences<T extends User$workExperiencesArgs<ExtArgs> = {}>(args?: Subset<T, User$workExperiencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    professionalAffiliations<T extends User$professionalAffiliationsArgs<ExtArgs> = {}>(args?: Subset<T, User$professionalAffiliationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalAffiliationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    awardsRecognitions<T extends User$awardsRecognitionsArgs<ExtArgs> = {}>(args?: Subset<T, User$awardsRecognitionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AwardRecognitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    professionalDevelopments<T extends User$professionalDevelopmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$professionalDevelopmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalDevelopmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    communityInvolvements<T extends User$communityInvolvementsArgs<ExtArgs> = {}>(args?: Subset<T, User$communityInvolvementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityInvolvementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    publications<T extends User$publicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$publicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    conferencePresentations<T extends User$conferencePresentationsArgs<ExtArgs> = {}>(args?: Subset<T, User$conferencePresentationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConferencePresentationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the User model
-   */
-  interface UserFieldRefs {
-    readonly id: FieldRef<"User", 'String'>
-    readonly name: FieldRef<"User", 'String'>
-    readonly email: FieldRef<"User", 'String'>
-    readonly password: FieldRef<"User", 'String'>
-    readonly role: FieldRef<"User", 'Role'>
-    readonly createdAt: FieldRef<"User", 'DateTime'>
-    readonly updatedAt: FieldRef<"User", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * User findUnique
-   */
-  export type UserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User findUniqueOrThrow
-   */
-  export type UserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User findFirst
-   */
-  export type UserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Users.
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Users.
-     */
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * User findFirstOrThrow
-   */
-  export type UserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Users.
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Users.
-     */
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * User findMany
-   */
-  export type UserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * Filter, which Users to fetch.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Users.
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * User create
-   */
-  export type UserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * The data needed to create a User.
-     */
-    data: XOR<UserCreateInput, UserUncheckedCreateInput>
-  }
-
-  /**
-   * User createMany
-   */
-  export type UserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Users.
-     */
-    data: UserCreateManyInput | UserCreateManyInput[]
-  }
-
-  /**
-   * User createManyAndReturn
-   */
-  export type UserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The data used to create many Users.
-     */
-    data: UserCreateManyInput | UserCreateManyInput[]
-  }
-
-  /**
-   * User update
-   */
-  export type UserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * The data needed to update a User.
-     */
-    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
-    /**
-     * Choose, which User to update.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User updateMany
-   */
-  export type UserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Users.
-     */
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
-    /**
-     * Filter which Users to update
-     */
-    where?: UserWhereInput
-    /**
-     * Limit how many Users to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * User updateManyAndReturn
-   */
-  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The data used to update Users.
-     */
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
-    /**
-     * Filter which Users to update
-     */
-    where?: UserWhereInput
-    /**
-     * Limit how many Users to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * User upsert
-   */
-  export type UserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * The filter to search for the User to update in case it exists.
-     */
-    where: UserWhereUniqueInput
-    /**
-     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
-     */
-    create: XOR<UserCreateInput, UserUncheckedCreateInput>
-    /**
-     * In case the User was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
-  }
-
-  /**
-   * User delete
-   */
-  export type UserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
-     * Filter which User to delete.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User deleteMany
-   */
-  export type UserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Users to delete
-     */
-    where?: UserWhereInput
-    /**
-     * Limit how many Users to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * User.specializations
-   */
-  export type User$specializationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Specialization
-     */
-    select?: SpecializationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Specialization
-     */
-    omit?: SpecializationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SpecializationInclude<ExtArgs> | null
-    where?: SpecializationWhereInput
-    orderBy?: SpecializationOrderByWithRelationInput | SpecializationOrderByWithRelationInput[]
-    cursor?: SpecializationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SpecializationScalarFieldEnum | SpecializationScalarFieldEnum[]
-  }
-
-  /**
-   * User.academicQualifications
-   */
-  export type User$academicQualificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AcademicQualification
-     */
-    select?: AcademicQualificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AcademicQualification
-     */
-    omit?: AcademicQualificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AcademicQualificationInclude<ExtArgs> | null
-    where?: AcademicQualificationWhereInput
-    orderBy?: AcademicQualificationOrderByWithRelationInput | AcademicQualificationOrderByWithRelationInput[]
-    cursor?: AcademicQualificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AcademicQualificationScalarFieldEnum | AcademicQualificationScalarFieldEnum[]
-  }
-
-  /**
-   * User.professionalLicenses
-   */
-  export type User$professionalLicensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ProfessionalLicense
-     */
-    select?: ProfessionalLicenseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ProfessionalLicense
-     */
-    omit?: ProfessionalLicenseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfessionalLicenseInclude<ExtArgs> | null
-    where?: ProfessionalLicenseWhereInput
-    orderBy?: ProfessionalLicenseOrderByWithRelationInput | ProfessionalLicenseOrderByWithRelationInput[]
-    cursor?: ProfessionalLicenseWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProfessionalLicenseScalarFieldEnum | ProfessionalLicenseScalarFieldEnum[]
-  }
-
-  /**
-   * User.workExperiences
-   */
-  export type User$workExperiencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkExperience
-     */
-    select?: WorkExperienceSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkExperience
-     */
-    omit?: WorkExperienceOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkExperienceInclude<ExtArgs> | null
-    where?: WorkExperienceWhereInput
-    orderBy?: WorkExperienceOrderByWithRelationInput | WorkExperienceOrderByWithRelationInput[]
-    cursor?: WorkExperienceWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WorkExperienceScalarFieldEnum | WorkExperienceScalarFieldEnum[]
-  }
-
-  /**
-   * User.professionalAffiliations
-   */
-  export type User$professionalAffiliationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ProfessionalAffiliation
-     */
-    select?: ProfessionalAffiliationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ProfessionalAffiliation
-     */
-    omit?: ProfessionalAffiliationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfessionalAffiliationInclude<ExtArgs> | null
-    where?: ProfessionalAffiliationWhereInput
-    orderBy?: ProfessionalAffiliationOrderByWithRelationInput | ProfessionalAffiliationOrderByWithRelationInput[]
-    cursor?: ProfessionalAffiliationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProfessionalAffiliationScalarFieldEnum | ProfessionalAffiliationScalarFieldEnum[]
-  }
-
-  /**
-   * User.awardsRecognitions
-   */
-  export type User$awardsRecognitionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AwardRecognition
-     */
-    select?: AwardRecognitionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AwardRecognition
-     */
-    omit?: AwardRecognitionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AwardRecognitionInclude<ExtArgs> | null
-    where?: AwardRecognitionWhereInput
-    orderBy?: AwardRecognitionOrderByWithRelationInput | AwardRecognitionOrderByWithRelationInput[]
-    cursor?: AwardRecognitionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AwardRecognitionScalarFieldEnum | AwardRecognitionScalarFieldEnum[]
-  }
-
-  /**
-   * User.professionalDevelopments
-   */
-  export type User$professionalDevelopmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ProfessionalDevelopment
-     */
-    select?: ProfessionalDevelopmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ProfessionalDevelopment
-     */
-    omit?: ProfessionalDevelopmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfessionalDevelopmentInclude<ExtArgs> | null
-    where?: ProfessionalDevelopmentWhereInput
-    orderBy?: ProfessionalDevelopmentOrderByWithRelationInput | ProfessionalDevelopmentOrderByWithRelationInput[]
-    cursor?: ProfessionalDevelopmentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProfessionalDevelopmentScalarFieldEnum | ProfessionalDevelopmentScalarFieldEnum[]
-  }
-
-  /**
-   * User.communityInvolvements
-   */
-  export type User$communityInvolvementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityInvolvement
-     */
-    select?: CommunityInvolvementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityInvolvement
-     */
-    omit?: CommunityInvolvementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CommunityInvolvementInclude<ExtArgs> | null
-    where?: CommunityInvolvementWhereInput
-    orderBy?: CommunityInvolvementOrderByWithRelationInput | CommunityInvolvementOrderByWithRelationInput[]
-    cursor?: CommunityInvolvementWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CommunityInvolvementScalarFieldEnum | CommunityInvolvementScalarFieldEnum[]
-  }
-
-  /**
-   * User.publications
-   */
-  export type User$publicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Publication
-     */
-    select?: PublicationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Publication
-     */
-    omit?: PublicationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PublicationInclude<ExtArgs> | null
-    where?: PublicationWhereInput
-    orderBy?: PublicationOrderByWithRelationInput | PublicationOrderByWithRelationInput[]
-    cursor?: PublicationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PublicationScalarFieldEnum | PublicationScalarFieldEnum[]
-  }
-
-  /**
-   * User.conferencePresentations
-   */
-  export type User$conferencePresentationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ConferencePresentation
-     */
-    select?: ConferencePresentationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ConferencePresentation
-     */
-    omit?: ConferencePresentationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ConferencePresentationInclude<ExtArgs> | null
-    where?: ConferencePresentationWhereInput
-    orderBy?: ConferencePresentationOrderByWithRelationInput | ConferencePresentationOrderByWithRelationInput[]
-    cursor?: ConferencePresentationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ConferencePresentationScalarFieldEnum | ConferencePresentationScalarFieldEnum[]
-  }
-
-  /**
-   * User.notifications
-   */
-  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    cursor?: NotificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
-  }
-
-  /**
-   * User.passwordResetTokens
-   */
-  export type User$passwordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PasswordResetToken
-     */
-    select?: PasswordResetTokenSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PasswordResetToken
-     */
-    omit?: PasswordResetTokenOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PasswordResetTokenInclude<ExtArgs> | null
-    where?: PasswordResetTokenWhereInput
-    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
-    cursor?: PasswordResetTokenWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
-  }
-
-  /**
-   * User without action
-   */
-  export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Course
    */
 
@@ -5858,6 +4556,2609 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: CourseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SocialMediaLink
+   */
+
+  export type AggregateSocialMediaLink = {
+    _count: SocialMediaLinkCountAggregateOutputType | null
+    _min: SocialMediaLinkMinAggregateOutputType | null
+    _max: SocialMediaLinkMaxAggregateOutputType | null
+  }
+
+  export type SocialMediaLinkMinAggregateOutputType = {
+    id: string | null
+    platform: string | null
+    url: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SocialMediaLinkMaxAggregateOutputType = {
+    id: string | null
+    platform: string | null
+    url: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SocialMediaLinkCountAggregateOutputType = {
+    id: number
+    platform: number
+    url: number
+    userId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SocialMediaLinkMinAggregateInputType = {
+    id?: true
+    platform?: true
+    url?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SocialMediaLinkMaxAggregateInputType = {
+    id?: true
+    platform?: true
+    url?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SocialMediaLinkCountAggregateInputType = {
+    id?: true
+    platform?: true
+    url?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SocialMediaLinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SocialMediaLink to aggregate.
+     */
+    where?: SocialMediaLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialMediaLinks to fetch.
+     */
+    orderBy?: SocialMediaLinkOrderByWithRelationInput | SocialMediaLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SocialMediaLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialMediaLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialMediaLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SocialMediaLinks
+    **/
+    _count?: true | SocialMediaLinkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SocialMediaLinkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SocialMediaLinkMaxAggregateInputType
+  }
+
+  export type GetSocialMediaLinkAggregateType<T extends SocialMediaLinkAggregateArgs> = {
+        [P in keyof T & keyof AggregateSocialMediaLink]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSocialMediaLink[P]>
+      : GetScalarType<T[P], AggregateSocialMediaLink[P]>
+  }
+
+
+
+
+  export type SocialMediaLinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SocialMediaLinkWhereInput
+    orderBy?: SocialMediaLinkOrderByWithAggregationInput | SocialMediaLinkOrderByWithAggregationInput[]
+    by: SocialMediaLinkScalarFieldEnum[] | SocialMediaLinkScalarFieldEnum
+    having?: SocialMediaLinkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SocialMediaLinkCountAggregateInputType | true
+    _min?: SocialMediaLinkMinAggregateInputType
+    _max?: SocialMediaLinkMaxAggregateInputType
+  }
+
+  export type SocialMediaLinkGroupByOutputType = {
+    id: string
+    platform: string
+    url: string
+    userId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: SocialMediaLinkCountAggregateOutputType | null
+    _min: SocialMediaLinkMinAggregateOutputType | null
+    _max: SocialMediaLinkMaxAggregateOutputType | null
+  }
+
+  type GetSocialMediaLinkGroupByPayload<T extends SocialMediaLinkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SocialMediaLinkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SocialMediaLinkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SocialMediaLinkGroupByOutputType[P]>
+            : GetScalarType<T[P], SocialMediaLinkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SocialMediaLinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    url?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["socialMediaLink"]>
+
+  export type SocialMediaLinkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    url?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["socialMediaLink"]>
+
+  export type SocialMediaLinkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    url?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["socialMediaLink"]>
+
+  export type SocialMediaLinkSelectScalar = {
+    id?: boolean
+    platform?: boolean
+    url?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SocialMediaLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "platform" | "url" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["socialMediaLink"]>
+  export type SocialMediaLinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SocialMediaLinkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SocialMediaLinkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SocialMediaLinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SocialMediaLink"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      platform: string
+      url: string
+      userId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["socialMediaLink"]>
+    composites: {}
+  }
+
+  type SocialMediaLinkGetPayload<S extends boolean | null | undefined | SocialMediaLinkDefaultArgs> = $Result.GetResult<Prisma.$SocialMediaLinkPayload, S>
+
+  type SocialMediaLinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SocialMediaLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SocialMediaLinkCountAggregateInputType | true
+    }
+
+  export interface SocialMediaLinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SocialMediaLink'], meta: { name: 'SocialMediaLink' } }
+    /**
+     * Find zero or one SocialMediaLink that matches the filter.
+     * @param {SocialMediaLinkFindUniqueArgs} args - Arguments to find a SocialMediaLink
+     * @example
+     * // Get one SocialMediaLink
+     * const socialMediaLink = await prisma.socialMediaLink.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SocialMediaLinkFindUniqueArgs>(args: SelectSubset<T, SocialMediaLinkFindUniqueArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SocialMediaLink that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SocialMediaLinkFindUniqueOrThrowArgs} args - Arguments to find a SocialMediaLink
+     * @example
+     * // Get one SocialMediaLink
+     * const socialMediaLink = await prisma.socialMediaLink.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SocialMediaLinkFindUniqueOrThrowArgs>(args: SelectSubset<T, SocialMediaLinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SocialMediaLink that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialMediaLinkFindFirstArgs} args - Arguments to find a SocialMediaLink
+     * @example
+     * // Get one SocialMediaLink
+     * const socialMediaLink = await prisma.socialMediaLink.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SocialMediaLinkFindFirstArgs>(args?: SelectSubset<T, SocialMediaLinkFindFirstArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SocialMediaLink that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialMediaLinkFindFirstOrThrowArgs} args - Arguments to find a SocialMediaLink
+     * @example
+     * // Get one SocialMediaLink
+     * const socialMediaLink = await prisma.socialMediaLink.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SocialMediaLinkFindFirstOrThrowArgs>(args?: SelectSubset<T, SocialMediaLinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SocialMediaLinks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialMediaLinkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SocialMediaLinks
+     * const socialMediaLinks = await prisma.socialMediaLink.findMany()
+     * 
+     * // Get first 10 SocialMediaLinks
+     * const socialMediaLinks = await prisma.socialMediaLink.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const socialMediaLinkWithIdOnly = await prisma.socialMediaLink.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SocialMediaLinkFindManyArgs>(args?: SelectSubset<T, SocialMediaLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SocialMediaLink.
+     * @param {SocialMediaLinkCreateArgs} args - Arguments to create a SocialMediaLink.
+     * @example
+     * // Create one SocialMediaLink
+     * const SocialMediaLink = await prisma.socialMediaLink.create({
+     *   data: {
+     *     // ... data to create a SocialMediaLink
+     *   }
+     * })
+     * 
+     */
+    create<T extends SocialMediaLinkCreateArgs>(args: SelectSubset<T, SocialMediaLinkCreateArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SocialMediaLinks.
+     * @param {SocialMediaLinkCreateManyArgs} args - Arguments to create many SocialMediaLinks.
+     * @example
+     * // Create many SocialMediaLinks
+     * const socialMediaLink = await prisma.socialMediaLink.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SocialMediaLinkCreateManyArgs>(args?: SelectSubset<T, SocialMediaLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SocialMediaLinks and returns the data saved in the database.
+     * @param {SocialMediaLinkCreateManyAndReturnArgs} args - Arguments to create many SocialMediaLinks.
+     * @example
+     * // Create many SocialMediaLinks
+     * const socialMediaLink = await prisma.socialMediaLink.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SocialMediaLinks and only return the `id`
+     * const socialMediaLinkWithIdOnly = await prisma.socialMediaLink.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SocialMediaLinkCreateManyAndReturnArgs>(args?: SelectSubset<T, SocialMediaLinkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SocialMediaLink.
+     * @param {SocialMediaLinkDeleteArgs} args - Arguments to delete one SocialMediaLink.
+     * @example
+     * // Delete one SocialMediaLink
+     * const SocialMediaLink = await prisma.socialMediaLink.delete({
+     *   where: {
+     *     // ... filter to delete one SocialMediaLink
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SocialMediaLinkDeleteArgs>(args: SelectSubset<T, SocialMediaLinkDeleteArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SocialMediaLink.
+     * @param {SocialMediaLinkUpdateArgs} args - Arguments to update one SocialMediaLink.
+     * @example
+     * // Update one SocialMediaLink
+     * const socialMediaLink = await prisma.socialMediaLink.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SocialMediaLinkUpdateArgs>(args: SelectSubset<T, SocialMediaLinkUpdateArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SocialMediaLinks.
+     * @param {SocialMediaLinkDeleteManyArgs} args - Arguments to filter SocialMediaLinks to delete.
+     * @example
+     * // Delete a few SocialMediaLinks
+     * const { count } = await prisma.socialMediaLink.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SocialMediaLinkDeleteManyArgs>(args?: SelectSubset<T, SocialMediaLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SocialMediaLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialMediaLinkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SocialMediaLinks
+     * const socialMediaLink = await prisma.socialMediaLink.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SocialMediaLinkUpdateManyArgs>(args: SelectSubset<T, SocialMediaLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SocialMediaLinks and returns the data updated in the database.
+     * @param {SocialMediaLinkUpdateManyAndReturnArgs} args - Arguments to update many SocialMediaLinks.
+     * @example
+     * // Update many SocialMediaLinks
+     * const socialMediaLink = await prisma.socialMediaLink.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SocialMediaLinks and only return the `id`
+     * const socialMediaLinkWithIdOnly = await prisma.socialMediaLink.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SocialMediaLinkUpdateManyAndReturnArgs>(args: SelectSubset<T, SocialMediaLinkUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SocialMediaLink.
+     * @param {SocialMediaLinkUpsertArgs} args - Arguments to update or create a SocialMediaLink.
+     * @example
+     * // Update or create a SocialMediaLink
+     * const socialMediaLink = await prisma.socialMediaLink.upsert({
+     *   create: {
+     *     // ... data to create a SocialMediaLink
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SocialMediaLink we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SocialMediaLinkUpsertArgs>(args: SelectSubset<T, SocialMediaLinkUpsertArgs<ExtArgs>>): Prisma__SocialMediaLinkClient<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SocialMediaLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialMediaLinkCountArgs} args - Arguments to filter SocialMediaLinks to count.
+     * @example
+     * // Count the number of SocialMediaLinks
+     * const count = await prisma.socialMediaLink.count({
+     *   where: {
+     *     // ... the filter for the SocialMediaLinks we want to count
+     *   }
+     * })
+    **/
+    count<T extends SocialMediaLinkCountArgs>(
+      args?: Subset<T, SocialMediaLinkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SocialMediaLinkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SocialMediaLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialMediaLinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SocialMediaLinkAggregateArgs>(args: Subset<T, SocialMediaLinkAggregateArgs>): Prisma.PrismaPromise<GetSocialMediaLinkAggregateType<T>>
+
+    /**
+     * Group by SocialMediaLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialMediaLinkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SocialMediaLinkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SocialMediaLinkGroupByArgs['orderBy'] }
+        : { orderBy?: SocialMediaLinkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SocialMediaLinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSocialMediaLinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SocialMediaLink model
+   */
+  readonly fields: SocialMediaLinkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SocialMediaLink.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SocialMediaLinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SocialMediaLink model
+   */
+  interface SocialMediaLinkFieldRefs {
+    readonly id: FieldRef<"SocialMediaLink", 'String'>
+    readonly platform: FieldRef<"SocialMediaLink", 'String'>
+    readonly url: FieldRef<"SocialMediaLink", 'String'>
+    readonly userId: FieldRef<"SocialMediaLink", 'String'>
+    readonly createdAt: FieldRef<"SocialMediaLink", 'DateTime'>
+    readonly updatedAt: FieldRef<"SocialMediaLink", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SocialMediaLink findUnique
+   */
+  export type SocialMediaLinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SocialMediaLink to fetch.
+     */
+    where: SocialMediaLinkWhereUniqueInput
+  }
+
+  /**
+   * SocialMediaLink findUniqueOrThrow
+   */
+  export type SocialMediaLinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SocialMediaLink to fetch.
+     */
+    where: SocialMediaLinkWhereUniqueInput
+  }
+
+  /**
+   * SocialMediaLink findFirst
+   */
+  export type SocialMediaLinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SocialMediaLink to fetch.
+     */
+    where?: SocialMediaLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialMediaLinks to fetch.
+     */
+    orderBy?: SocialMediaLinkOrderByWithRelationInput | SocialMediaLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SocialMediaLinks.
+     */
+    cursor?: SocialMediaLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialMediaLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialMediaLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SocialMediaLinks.
+     */
+    distinct?: SocialMediaLinkScalarFieldEnum | SocialMediaLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SocialMediaLink findFirstOrThrow
+   */
+  export type SocialMediaLinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SocialMediaLink to fetch.
+     */
+    where?: SocialMediaLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialMediaLinks to fetch.
+     */
+    orderBy?: SocialMediaLinkOrderByWithRelationInput | SocialMediaLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SocialMediaLinks.
+     */
+    cursor?: SocialMediaLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialMediaLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialMediaLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SocialMediaLinks.
+     */
+    distinct?: SocialMediaLinkScalarFieldEnum | SocialMediaLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SocialMediaLink findMany
+   */
+  export type SocialMediaLinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SocialMediaLinks to fetch.
+     */
+    where?: SocialMediaLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialMediaLinks to fetch.
+     */
+    orderBy?: SocialMediaLinkOrderByWithRelationInput | SocialMediaLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SocialMediaLinks.
+     */
+    cursor?: SocialMediaLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialMediaLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialMediaLinks.
+     */
+    skip?: number
+    distinct?: SocialMediaLinkScalarFieldEnum | SocialMediaLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SocialMediaLink create
+   */
+  export type SocialMediaLinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SocialMediaLink.
+     */
+    data: XOR<SocialMediaLinkCreateInput, SocialMediaLinkUncheckedCreateInput>
+  }
+
+  /**
+   * SocialMediaLink createMany
+   */
+  export type SocialMediaLinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SocialMediaLinks.
+     */
+    data: SocialMediaLinkCreateManyInput | SocialMediaLinkCreateManyInput[]
+  }
+
+  /**
+   * SocialMediaLink createManyAndReturn
+   */
+  export type SocialMediaLinkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * The data used to create many SocialMediaLinks.
+     */
+    data: SocialMediaLinkCreateManyInput | SocialMediaLinkCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SocialMediaLink update
+   */
+  export type SocialMediaLinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SocialMediaLink.
+     */
+    data: XOR<SocialMediaLinkUpdateInput, SocialMediaLinkUncheckedUpdateInput>
+    /**
+     * Choose, which SocialMediaLink to update.
+     */
+    where: SocialMediaLinkWhereUniqueInput
+  }
+
+  /**
+   * SocialMediaLink updateMany
+   */
+  export type SocialMediaLinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SocialMediaLinks.
+     */
+    data: XOR<SocialMediaLinkUpdateManyMutationInput, SocialMediaLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which SocialMediaLinks to update
+     */
+    where?: SocialMediaLinkWhereInput
+    /**
+     * Limit how many SocialMediaLinks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SocialMediaLink updateManyAndReturn
+   */
+  export type SocialMediaLinkUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * The data used to update SocialMediaLinks.
+     */
+    data: XOR<SocialMediaLinkUpdateManyMutationInput, SocialMediaLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which SocialMediaLinks to update
+     */
+    where?: SocialMediaLinkWhereInput
+    /**
+     * Limit how many SocialMediaLinks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SocialMediaLink upsert
+   */
+  export type SocialMediaLinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SocialMediaLink to update in case it exists.
+     */
+    where: SocialMediaLinkWhereUniqueInput
+    /**
+     * In case the SocialMediaLink found by the `where` argument doesn't exist, create a new SocialMediaLink with this data.
+     */
+    create: XOR<SocialMediaLinkCreateInput, SocialMediaLinkUncheckedCreateInput>
+    /**
+     * In case the SocialMediaLink was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SocialMediaLinkUpdateInput, SocialMediaLinkUncheckedUpdateInput>
+  }
+
+  /**
+   * SocialMediaLink delete
+   */
+  export type SocialMediaLinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    /**
+     * Filter which SocialMediaLink to delete.
+     */
+    where: SocialMediaLinkWhereUniqueInput
+  }
+
+  /**
+   * SocialMediaLink deleteMany
+   */
+  export type SocialMediaLinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SocialMediaLinks to delete
+     */
+    where?: SocialMediaLinkWhereInput
+    /**
+     * Limit how many SocialMediaLinks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SocialMediaLink without action
+   */
+  export type SocialMediaLinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model User
+   */
+
+  export type AggregateUser = {
+    _count: UserCountAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    password: string | null
+    role: $Enums.Role | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    profileImageUrl: string | null
+    dateOfBirth: Date | null
+    civilStatus: string | null
+    nationality: string | null
+    contactNumber: string | null
+    address: string | null
+    employeeId: string | null
+    bio: string | null
+  }
+
+  export type UserMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    password: string | null
+    role: $Enums.Role | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    profileImageUrl: string | null
+    dateOfBirth: Date | null
+    civilStatus: string | null
+    nationality: string | null
+    contactNumber: string | null
+    address: string | null
+    employeeId: string | null
+    bio: string | null
+  }
+
+  export type UserCountAggregateOutputType = {
+    id: number
+    name: number
+    email: number
+    password: number
+    role: number
+    createdAt: number
+    updatedAt: number
+    profileImageUrl: number
+    dateOfBirth: number
+    civilStatus: number
+    nationality: number
+    contactNumber: number
+    address: number
+    employeeId: number
+    bio: number
+    _all: number
+  }
+
+
+  export type UserMinAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    password?: true
+    role?: true
+    createdAt?: true
+    updatedAt?: true
+    profileImageUrl?: true
+    dateOfBirth?: true
+    civilStatus?: true
+    nationality?: true
+    contactNumber?: true
+    address?: true
+    employeeId?: true
+    bio?: true
+  }
+
+  export type UserMaxAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    password?: true
+    role?: true
+    createdAt?: true
+    updatedAt?: true
+    profileImageUrl?: true
+    dateOfBirth?: true
+    civilStatus?: true
+    nationality?: true
+    contactNumber?: true
+    address?: true
+    employeeId?: true
+    bio?: true
+  }
+
+  export type UserCountAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    password?: true
+    role?: true
+    createdAt?: true
+    updatedAt?: true
+    profileImageUrl?: true
+    dateOfBirth?: true
+    civilStatus?: true
+    nationality?: true
+    contactNumber?: true
+    address?: true
+    employeeId?: true
+    bio?: true
+    _all?: true
+  }
+
+  export type UserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which User to aggregate.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Users
+    **/
+    _count?: true | UserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserMaxAggregateInputType
+  }
+
+  export type GetUserAggregateType<T extends UserAggregateArgs> = {
+        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUser[P]>
+      : GetScalarType<T[P], AggregateUser[P]>
+  }
+
+
+
+
+  export type UserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithAggregationInput | UserOrderByWithAggregationInput[]
+    by: UserScalarFieldEnum[] | UserScalarFieldEnum
+    having?: UserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserCountAggregateInputType | true
+    _min?: UserMinAggregateInputType
+    _max?: UserMaxAggregateInputType
+  }
+
+  export type UserGroupByOutputType = {
+    id: string
+    name: string | null
+    email: string
+    password: string
+    role: $Enums.Role
+    createdAt: Date
+    updatedAt: Date
+    profileImageUrl: string | null
+    dateOfBirth: Date | null
+    civilStatus: string | null
+    nationality: string | null
+    contactNumber: string | null
+    address: string | null
+    employeeId: string | null
+    bio: string | null
+    _count: UserCountAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
+  }
+
+  type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserGroupByOutputType[P]>
+            : GetScalarType<T[P], UserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    profileImageUrl?: boolean
+    dateOfBirth?: boolean
+    civilStatus?: boolean
+    nationality?: boolean
+    contactNumber?: boolean
+    address?: boolean
+    employeeId?: boolean
+    bio?: boolean
+    socialMediaLinks?: boolean | User$socialMediaLinksArgs<ExtArgs>
+    specializations?: boolean | User$specializationsArgs<ExtArgs>
+    academicQualifications?: boolean | User$academicQualificationsArgs<ExtArgs>
+    professionalLicenses?: boolean | User$professionalLicensesArgs<ExtArgs>
+    workExperiences?: boolean | User$workExperiencesArgs<ExtArgs>
+    professionalAffiliations?: boolean | User$professionalAffiliationsArgs<ExtArgs>
+    awardsRecognitions?: boolean | User$awardsRecognitionsArgs<ExtArgs>
+    professionalDevelopments?: boolean | User$professionalDevelopmentsArgs<ExtArgs>
+    communityInvolvements?: boolean | User$communityInvolvementsArgs<ExtArgs>
+    publications?: boolean | User$publicationsArgs<ExtArgs>
+    conferencePresentations?: boolean | User$conferencePresentationsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["user"]>
+
+  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    profileImageUrl?: boolean
+    dateOfBirth?: boolean
+    civilStatus?: boolean
+    nationality?: boolean
+    contactNumber?: boolean
+    address?: boolean
+    employeeId?: boolean
+    bio?: boolean
+  }, ExtArgs["result"]["user"]>
+
+  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    profileImageUrl?: boolean
+    dateOfBirth?: boolean
+    civilStatus?: boolean
+    nationality?: boolean
+    contactNumber?: boolean
+    address?: boolean
+    employeeId?: boolean
+    bio?: boolean
+  }, ExtArgs["result"]["user"]>
+
+  export type UserSelectScalar = {
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    profileImageUrl?: boolean
+    dateOfBirth?: boolean
+    civilStatus?: boolean
+    nationality?: boolean
+    contactNumber?: boolean
+    address?: boolean
+    employeeId?: boolean
+    bio?: boolean
+  }
+
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "updatedAt" | "profileImageUrl" | "dateOfBirth" | "civilStatus" | "nationality" | "contactNumber" | "address" | "employeeId" | "bio", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    socialMediaLinks?: boolean | User$socialMediaLinksArgs<ExtArgs>
+    specializations?: boolean | User$specializationsArgs<ExtArgs>
+    academicQualifications?: boolean | User$academicQualificationsArgs<ExtArgs>
+    professionalLicenses?: boolean | User$professionalLicensesArgs<ExtArgs>
+    workExperiences?: boolean | User$workExperiencesArgs<ExtArgs>
+    professionalAffiliations?: boolean | User$professionalAffiliationsArgs<ExtArgs>
+    awardsRecognitions?: boolean | User$awardsRecognitionsArgs<ExtArgs>
+    professionalDevelopments?: boolean | User$professionalDevelopmentsArgs<ExtArgs>
+    communityInvolvements?: boolean | User$communityInvolvementsArgs<ExtArgs>
+    publications?: boolean | User$publicationsArgs<ExtArgs>
+    conferencePresentations?: boolean | User$conferencePresentationsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "User"
+    objects: {
+      socialMediaLinks: Prisma.$SocialMediaLinkPayload<ExtArgs>[]
+      specializations: Prisma.$SpecializationPayload<ExtArgs>[]
+      academicQualifications: Prisma.$AcademicQualificationPayload<ExtArgs>[]
+      professionalLicenses: Prisma.$ProfessionalLicensePayload<ExtArgs>[]
+      workExperiences: Prisma.$WorkExperiencePayload<ExtArgs>[]
+      professionalAffiliations: Prisma.$ProfessionalAffiliationPayload<ExtArgs>[]
+      awardsRecognitions: Prisma.$AwardRecognitionPayload<ExtArgs>[]
+      professionalDevelopments: Prisma.$ProfessionalDevelopmentPayload<ExtArgs>[]
+      communityInvolvements: Prisma.$CommunityInvolvementPayload<ExtArgs>[]
+      publications: Prisma.$PublicationPayload<ExtArgs>[]
+      conferencePresentations: Prisma.$ConferencePresentationPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string | null
+      email: string
+      password: string
+      role: $Enums.Role
+      createdAt: Date
+      updatedAt: Date
+      profileImageUrl: string | null
+      dateOfBirth: Date | null
+      civilStatus: string | null
+      nationality: string | null
+      contactNumber: string | null
+      address: string | null
+      employeeId: string | null
+      bio: string | null
+    }, ExtArgs["result"]["user"]>
+    composites: {}
+  }
+
+  type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
+
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserCountAggregateInputType | true
+    }
+
+  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
+    /**
+     * Find zero or one User that matches the filter.
+     * @param {UserFindUniqueArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one User that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindFirstArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Users that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Users
+     * const users = await prisma.user.findMany()
+     * 
+     * // Get first 10 Users
+     * const users = await prisma.user.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a User.
+     * @param {UserCreateArgs} args - Arguments to create a User.
+     * @example
+     * // Create one User
+     * const User = await prisma.user.create({
+     *   data: {
+     *     // ... data to create a User
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Users.
+     * @param {UserCreateManyArgs} args - Arguments to create many Users.
+     * @example
+     * // Create many Users
+     * const user = await prisma.user.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Users and returns the data saved in the database.
+     * @param {UserCreateManyAndReturnArgs} args - Arguments to create many Users.
+     * @example
+     * // Create many Users
+     * const user = await prisma.user.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a User.
+     * @param {UserDeleteArgs} args - Arguments to delete one User.
+     * @example
+     * // Delete one User
+     * const User = await prisma.user.delete({
+     *   where: {
+     *     // ... filter to delete one User
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one User.
+     * @param {UserUpdateArgs} args - Arguments to update one User.
+     * @example
+     * // Update one User
+     * const user = await prisma.user.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Users.
+     * @param {UserDeleteManyArgs} args - Arguments to filter Users to delete.
+     * @example
+     * // Delete a few Users
+     * const { count } = await prisma.user.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Users.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Users
+     * const user = await prisma.user.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Users and returns the data updated in the database.
+     * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
+     * @example
+     * // Update many Users
+     * const user = await prisma.user.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one User.
+     * @param {UserUpsertArgs} args - Arguments to update or create a User.
+     * @example
+     * // Update or create a User
+     * const user = await prisma.user.upsert({
+     *   create: {
+     *     // ... data to create a User
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the User we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Users.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCountArgs} args - Arguments to filter Users to count.
+     * @example
+     * // Count the number of Users
+     * const count = await prisma.user.count({
+     *   where: {
+     *     // ... the filter for the Users we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserCountArgs>(
+      args?: Subset<T, UserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a User.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): Prisma.PrismaPromise<GetUserAggregateType<T>>
+
+    /**
+     * Group by User.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserGroupByArgs['orderBy'] }
+        : { orderBy?: UserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the User model
+   */
+  readonly fields: UserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for User.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    socialMediaLinks<T extends User$socialMediaLinksArgs<ExtArgs> = {}>(args?: Subset<T, User$socialMediaLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialMediaLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    specializations<T extends User$specializationsArgs<ExtArgs> = {}>(args?: Subset<T, User$specializationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicQualifications<T extends User$academicQualificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$academicQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    professionalLicenses<T extends User$professionalLicensesArgs<ExtArgs> = {}>(args?: Subset<T, User$professionalLicensesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalLicensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    workExperiences<T extends User$workExperiencesArgs<ExtArgs> = {}>(args?: Subset<T, User$workExperiencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    professionalAffiliations<T extends User$professionalAffiliationsArgs<ExtArgs> = {}>(args?: Subset<T, User$professionalAffiliationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalAffiliationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    awardsRecognitions<T extends User$awardsRecognitionsArgs<ExtArgs> = {}>(args?: Subset<T, User$awardsRecognitionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AwardRecognitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    professionalDevelopments<T extends User$professionalDevelopmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$professionalDevelopmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalDevelopmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    communityInvolvements<T extends User$communityInvolvementsArgs<ExtArgs> = {}>(args?: Subset<T, User$communityInvolvementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityInvolvementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    publications<T extends User$publicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$publicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    conferencePresentations<T extends User$conferencePresentationsArgs<ExtArgs> = {}>(args?: Subset<T, User$conferencePresentationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConferencePresentationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the User model
+   */
+  interface UserFieldRefs {
+    readonly id: FieldRef<"User", 'String'>
+    readonly name: FieldRef<"User", 'String'>
+    readonly email: FieldRef<"User", 'String'>
+    readonly password: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
+    readonly createdAt: FieldRef<"User", 'DateTime'>
+    readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly profileImageUrl: FieldRef<"User", 'String'>
+    readonly dateOfBirth: FieldRef<"User", 'DateTime'>
+    readonly civilStatus: FieldRef<"User", 'String'>
+    readonly nationality: FieldRef<"User", 'String'>
+    readonly contactNumber: FieldRef<"User", 'String'>
+    readonly address: FieldRef<"User", 'String'>
+    readonly employeeId: FieldRef<"User", 'String'>
+    readonly bio: FieldRef<"User", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * User findUnique
+   */
+  export type UserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User findUniqueOrThrow
+   */
+  export type UserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User findFirst
+   */
+  export type UserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * User findFirstOrThrow
+   */
+  export type UserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * User findMany
+   */
+  export type UserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which Users to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * User create
+   */
+  export type UserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a User.
+     */
+    data: XOR<UserCreateInput, UserUncheckedCreateInput>
+  }
+
+  /**
+   * User createMany
+   */
+  export type UserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Users.
+     */
+    data: UserCreateManyInput | UserCreateManyInput[]
+  }
+
+  /**
+   * User createManyAndReturn
+   */
+  export type UserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * The data used to create many Users.
+     */
+    data: UserCreateManyInput | UserCreateManyInput[]
+  }
+
+  /**
+   * User update
+   */
+  export type UserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * The data needed to update a User.
+     */
+    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+    /**
+     * Choose, which User to update.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User updateMany
+   */
+  export type UserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Users.
+     */
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
+    /**
+     * Filter which Users to update
+     */
+    where?: UserWhereInput
+    /**
+     * Limit how many Users to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * User updateManyAndReturn
+   */
+  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * The data used to update Users.
+     */
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
+    /**
+     * Filter which Users to update
+     */
+    where?: UserWhereInput
+    /**
+     * Limit how many Users to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * User upsert
+   */
+  export type UserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * The filter to search for the User to update in case it exists.
+     */
+    where: UserWhereUniqueInput
+    /**
+     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
+     */
+    create: XOR<UserCreateInput, UserUncheckedCreateInput>
+    /**
+     * In case the User was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+  }
+
+  /**
+   * User delete
+   */
+  export type UserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter which User to delete.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User deleteMany
+   */
+  export type UserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Users to delete
+     */
+    where?: UserWhereInput
+    /**
+     * Limit how many Users to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * User.socialMediaLinks
+   */
+  export type User$socialMediaLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialMediaLink
+     */
+    select?: SocialMediaLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialMediaLink
+     */
+    omit?: SocialMediaLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SocialMediaLinkInclude<ExtArgs> | null
+    where?: SocialMediaLinkWhereInput
+    orderBy?: SocialMediaLinkOrderByWithRelationInput | SocialMediaLinkOrderByWithRelationInput[]
+    cursor?: SocialMediaLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SocialMediaLinkScalarFieldEnum | SocialMediaLinkScalarFieldEnum[]
+  }
+
+  /**
+   * User.specializations
+   */
+  export type User$specializationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    where?: SpecializationWhereInput
+    orderBy?: SpecializationOrderByWithRelationInput | SpecializationOrderByWithRelationInput[]
+    cursor?: SpecializationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SpecializationScalarFieldEnum | SpecializationScalarFieldEnum[]
+  }
+
+  /**
+   * User.academicQualifications
+   */
+  export type User$academicQualificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQualification
+     */
+    select?: AcademicQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQualification
+     */
+    omit?: AcademicQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQualificationInclude<ExtArgs> | null
+    where?: AcademicQualificationWhereInput
+    orderBy?: AcademicQualificationOrderByWithRelationInput | AcademicQualificationOrderByWithRelationInput[]
+    cursor?: AcademicQualificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicQualificationScalarFieldEnum | AcademicQualificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.professionalLicenses
+   */
+  export type User$professionalLicensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalLicense
+     */
+    select?: ProfessionalLicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalLicense
+     */
+    omit?: ProfessionalLicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalLicenseInclude<ExtArgs> | null
+    where?: ProfessionalLicenseWhereInput
+    orderBy?: ProfessionalLicenseOrderByWithRelationInput | ProfessionalLicenseOrderByWithRelationInput[]
+    cursor?: ProfessionalLicenseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProfessionalLicenseScalarFieldEnum | ProfessionalLicenseScalarFieldEnum[]
+  }
+
+  /**
+   * User.workExperiences
+   */
+  export type User$workExperiencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkExperienceInclude<ExtArgs> | null
+    where?: WorkExperienceWhereInput
+    orderBy?: WorkExperienceOrderByWithRelationInput | WorkExperienceOrderByWithRelationInput[]
+    cursor?: WorkExperienceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WorkExperienceScalarFieldEnum | WorkExperienceScalarFieldEnum[]
+  }
+
+  /**
+   * User.professionalAffiliations
+   */
+  export type User$professionalAffiliationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalAffiliation
+     */
+    select?: ProfessionalAffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalAffiliation
+     */
+    omit?: ProfessionalAffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalAffiliationInclude<ExtArgs> | null
+    where?: ProfessionalAffiliationWhereInput
+    orderBy?: ProfessionalAffiliationOrderByWithRelationInput | ProfessionalAffiliationOrderByWithRelationInput[]
+    cursor?: ProfessionalAffiliationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProfessionalAffiliationScalarFieldEnum | ProfessionalAffiliationScalarFieldEnum[]
+  }
+
+  /**
+   * User.awardsRecognitions
+   */
+  export type User$awardsRecognitionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AwardRecognition
+     */
+    select?: AwardRecognitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AwardRecognition
+     */
+    omit?: AwardRecognitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AwardRecognitionInclude<ExtArgs> | null
+    where?: AwardRecognitionWhereInput
+    orderBy?: AwardRecognitionOrderByWithRelationInput | AwardRecognitionOrderByWithRelationInput[]
+    cursor?: AwardRecognitionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AwardRecognitionScalarFieldEnum | AwardRecognitionScalarFieldEnum[]
+  }
+
+  /**
+   * User.professionalDevelopments
+   */
+  export type User$professionalDevelopmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalDevelopment
+     */
+    select?: ProfessionalDevelopmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalDevelopment
+     */
+    omit?: ProfessionalDevelopmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalDevelopmentInclude<ExtArgs> | null
+    where?: ProfessionalDevelopmentWhereInput
+    orderBy?: ProfessionalDevelopmentOrderByWithRelationInput | ProfessionalDevelopmentOrderByWithRelationInput[]
+    cursor?: ProfessionalDevelopmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProfessionalDevelopmentScalarFieldEnum | ProfessionalDevelopmentScalarFieldEnum[]
+  }
+
+  /**
+   * User.communityInvolvements
+   */
+  export type User$communityInvolvementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommunityInvolvement
+     */
+    select?: CommunityInvolvementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommunityInvolvement
+     */
+    omit?: CommunityInvolvementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommunityInvolvementInclude<ExtArgs> | null
+    where?: CommunityInvolvementWhereInput
+    orderBy?: CommunityInvolvementOrderByWithRelationInput | CommunityInvolvementOrderByWithRelationInput[]
+    cursor?: CommunityInvolvementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommunityInvolvementScalarFieldEnum | CommunityInvolvementScalarFieldEnum[]
+  }
+
+  /**
+   * User.publications
+   */
+  export type User$publicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Publication
+     */
+    select?: PublicationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Publication
+     */
+    omit?: PublicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicationInclude<ExtArgs> | null
+    where?: PublicationWhereInput
+    orderBy?: PublicationOrderByWithRelationInput | PublicationOrderByWithRelationInput[]
+    cursor?: PublicationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PublicationScalarFieldEnum | PublicationScalarFieldEnum[]
+  }
+
+  /**
+   * User.conferencePresentations
+   */
+  export type User$conferencePresentationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConferencePresentation
+     */
+    select?: ConferencePresentationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConferencePresentation
+     */
+    omit?: ConferencePresentationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConferencePresentationInclude<ExtArgs> | null
+    where?: ConferencePresentationWhereInput
+    orderBy?: ConferencePresentationOrderByWithRelationInput | ConferencePresentationOrderByWithRelationInput[]
+    cursor?: ConferencePresentationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConferencePresentationScalarFieldEnum | ConferencePresentationScalarFieldEnum[]
+  }
+
+  /**
+   * User.notifications
+   */
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.passwordResetTokens
+   */
+  export type User$passwordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    where?: PasswordResetTokenWhereInput
+    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
+    cursor?: PasswordResetTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
+  }
+
+  /**
+   * User without action
+   */
+  export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
   }
 
 
@@ -18217,19 +19518,6 @@ export namespace Prisma {
   export type SpecializationScalarFieldEnum = (typeof SpecializationScalarFieldEnum)[keyof typeof SpecializationScalarFieldEnum]
 
 
-  export const UserScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    email: 'email',
-    password: 'password',
-    role: 'role',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
   export const CourseScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -18240,6 +19528,39 @@ export namespace Prisma {
   };
 
   export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
+
+
+  export const SocialMediaLinkScalarFieldEnum: {
+    id: 'id',
+    platform: 'platform',
+    url: 'url',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SocialMediaLinkScalarFieldEnum = (typeof SocialMediaLinkScalarFieldEnum)[keyof typeof SocialMediaLinkScalarFieldEnum]
+
+
+  export const UserScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+    password: 'password',
+    role: 'role',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    profileImageUrl: 'profileImageUrl',
+    dateOfBirth: 'dateOfBirth',
+    civilStatus: 'civilStatus',
+    nationality: 'nationality',
+    contactNumber: 'contactNumber',
+    address: 'address',
+    employeeId: 'employeeId',
+    bio: 'bio'
+  };
+
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
   export const AcademicQualificationScalarFieldEnum: {
@@ -18544,104 +19865,6 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Specialization"> | Date | string
   }
 
-  export type UserWhereInput = {
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    id?: StringFilter<"User"> | string
-    name?: StringNullableFilter<"User"> | string | null
-    email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
-    role?: EnumRoleFilter<"User"> | $Enums.Role
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-    specializations?: SpecializationListRelationFilter
-    academicQualifications?: AcademicQualificationListRelationFilter
-    professionalLicenses?: ProfessionalLicenseListRelationFilter
-    workExperiences?: WorkExperienceListRelationFilter
-    professionalAffiliations?: ProfessionalAffiliationListRelationFilter
-    awardsRecognitions?: AwardRecognitionListRelationFilter
-    professionalDevelopments?: ProfessionalDevelopmentListRelationFilter
-    communityInvolvements?: CommunityInvolvementListRelationFilter
-    publications?: PublicationListRelationFilter
-    conferencePresentations?: ConferencePresentationListRelationFilter
-    notifications?: NotificationListRelationFilter
-    passwordResetTokens?: PasswordResetTokenListRelationFilter
-  }
-
-  export type UserOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrderInput | SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    role?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    specializations?: SpecializationOrderByRelationAggregateInput
-    academicQualifications?: AcademicQualificationOrderByRelationAggregateInput
-    professionalLicenses?: ProfessionalLicenseOrderByRelationAggregateInput
-    workExperiences?: WorkExperienceOrderByRelationAggregateInput
-    professionalAffiliations?: ProfessionalAffiliationOrderByRelationAggregateInput
-    awardsRecognitions?: AwardRecognitionOrderByRelationAggregateInput
-    professionalDevelopments?: ProfessionalDevelopmentOrderByRelationAggregateInput
-    communityInvolvements?: CommunityInvolvementOrderByRelationAggregateInput
-    publications?: PublicationOrderByRelationAggregateInput
-    conferencePresentations?: ConferencePresentationOrderByRelationAggregateInput
-    notifications?: NotificationOrderByRelationAggregateInput
-    passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
-  }
-
-  export type UserWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    email?: string
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    name?: StringNullableFilter<"User"> | string | null
-    password?: StringFilter<"User"> | string
-    role?: EnumRoleFilter<"User"> | $Enums.Role
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-    specializations?: SpecializationListRelationFilter
-    academicQualifications?: AcademicQualificationListRelationFilter
-    professionalLicenses?: ProfessionalLicenseListRelationFilter
-    workExperiences?: WorkExperienceListRelationFilter
-    professionalAffiliations?: ProfessionalAffiliationListRelationFilter
-    awardsRecognitions?: AwardRecognitionListRelationFilter
-    professionalDevelopments?: ProfessionalDevelopmentListRelationFilter
-    communityInvolvements?: CommunityInvolvementListRelationFilter
-    publications?: PublicationListRelationFilter
-    conferencePresentations?: ConferencePresentationListRelationFilter
-    notifications?: NotificationListRelationFilter
-    passwordResetTokens?: PasswordResetTokenListRelationFilter
-  }, "id" | "email">
-
-  export type UserOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrderInput | SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    role?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: UserCountOrderByAggregateInput
-    _max?: UserMaxOrderByAggregateInput
-    _min?: UserMinOrderByAggregateInput
-  }
-
-  export type UserScalarWhereWithAggregatesInput = {
-    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    OR?: UserScalarWhereWithAggregatesInput[]
-    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"User"> | string
-    name?: StringNullableWithAggregatesFilter<"User"> | string | null
-    email?: StringWithAggregatesFilter<"User"> | string
-    password?: StringWithAggregatesFilter<"User"> | string
-    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
-    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-  }
-
   export type CourseWhereInput = {
     AND?: CourseWhereInput | CourseWhereInput[]
     OR?: CourseWhereInput[]
@@ -18700,6 +19923,207 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Course"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
+  }
+
+  export type SocialMediaLinkWhereInput = {
+    AND?: SocialMediaLinkWhereInput | SocialMediaLinkWhereInput[]
+    OR?: SocialMediaLinkWhereInput[]
+    NOT?: SocialMediaLinkWhereInput | SocialMediaLinkWhereInput[]
+    id?: StringFilter<"SocialMediaLink"> | string
+    platform?: StringFilter<"SocialMediaLink"> | string
+    url?: StringFilter<"SocialMediaLink"> | string
+    userId?: StringFilter<"SocialMediaLink"> | string
+    createdAt?: DateTimeFilter<"SocialMediaLink"> | Date | string
+    updatedAt?: DateTimeFilter<"SocialMediaLink"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SocialMediaLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    url?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SocialMediaLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SocialMediaLinkWhereInput | SocialMediaLinkWhereInput[]
+    OR?: SocialMediaLinkWhereInput[]
+    NOT?: SocialMediaLinkWhereInput | SocialMediaLinkWhereInput[]
+    platform?: StringFilter<"SocialMediaLink"> | string
+    url?: StringFilter<"SocialMediaLink"> | string
+    userId?: StringFilter<"SocialMediaLink"> | string
+    createdAt?: DateTimeFilter<"SocialMediaLink"> | Date | string
+    updatedAt?: DateTimeFilter<"SocialMediaLink"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type SocialMediaLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    url?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SocialMediaLinkCountOrderByAggregateInput
+    _max?: SocialMediaLinkMaxOrderByAggregateInput
+    _min?: SocialMediaLinkMinOrderByAggregateInput
+  }
+
+  export type SocialMediaLinkScalarWhereWithAggregatesInput = {
+    AND?: SocialMediaLinkScalarWhereWithAggregatesInput | SocialMediaLinkScalarWhereWithAggregatesInput[]
+    OR?: SocialMediaLinkScalarWhereWithAggregatesInput[]
+    NOT?: SocialMediaLinkScalarWhereWithAggregatesInput | SocialMediaLinkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SocialMediaLink"> | string
+    platform?: StringWithAggregatesFilter<"SocialMediaLink"> | string
+    url?: StringWithAggregatesFilter<"SocialMediaLink"> | string
+    userId?: StringWithAggregatesFilter<"SocialMediaLink"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SocialMediaLink"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SocialMediaLink"> | Date | string
+  }
+
+  export type UserWhereInput = {
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    id?: StringFilter<"User"> | string
+    name?: StringNullableFilter<"User"> | string | null
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    profileImageUrl?: StringNullableFilter<"User"> | string | null
+    dateOfBirth?: DateTimeNullableFilter<"User"> | Date | string | null
+    civilStatus?: StringNullableFilter<"User"> | string | null
+    nationality?: StringNullableFilter<"User"> | string | null
+    contactNumber?: StringNullableFilter<"User"> | string | null
+    address?: StringNullableFilter<"User"> | string | null
+    employeeId?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
+    socialMediaLinks?: SocialMediaLinkListRelationFilter
+    specializations?: SpecializationListRelationFilter
+    academicQualifications?: AcademicQualificationListRelationFilter
+    professionalLicenses?: ProfessionalLicenseListRelationFilter
+    workExperiences?: WorkExperienceListRelationFilter
+    professionalAffiliations?: ProfessionalAffiliationListRelationFilter
+    awardsRecognitions?: AwardRecognitionListRelationFilter
+    professionalDevelopments?: ProfessionalDevelopmentListRelationFilter
+    communityInvolvements?: CommunityInvolvementListRelationFilter
+    publications?: PublicationListRelationFilter
+    conferencePresentations?: ConferencePresentationListRelationFilter
+    notifications?: NotificationListRelationFilter
+    passwordResetTokens?: PasswordResetTokenListRelationFilter
+  }
+
+  export type UserOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    profileImageUrl?: SortOrderInput | SortOrder
+    dateOfBirth?: SortOrderInput | SortOrder
+    civilStatus?: SortOrderInput | SortOrder
+    nationality?: SortOrderInput | SortOrder
+    contactNumber?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    employeeId?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    socialMediaLinks?: SocialMediaLinkOrderByRelationAggregateInput
+    specializations?: SpecializationOrderByRelationAggregateInput
+    academicQualifications?: AcademicQualificationOrderByRelationAggregateInput
+    professionalLicenses?: ProfessionalLicenseOrderByRelationAggregateInput
+    workExperiences?: WorkExperienceOrderByRelationAggregateInput
+    professionalAffiliations?: ProfessionalAffiliationOrderByRelationAggregateInput
+    awardsRecognitions?: AwardRecognitionOrderByRelationAggregateInput
+    professionalDevelopments?: ProfessionalDevelopmentOrderByRelationAggregateInput
+    communityInvolvements?: CommunityInvolvementOrderByRelationAggregateInput
+    publications?: PublicationOrderByRelationAggregateInput
+    conferencePresentations?: ConferencePresentationOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
+    passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
+  }
+
+  export type UserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    employeeId?: string
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    name?: StringNullableFilter<"User"> | string | null
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    profileImageUrl?: StringNullableFilter<"User"> | string | null
+    dateOfBirth?: DateTimeNullableFilter<"User"> | Date | string | null
+    civilStatus?: StringNullableFilter<"User"> | string | null
+    nationality?: StringNullableFilter<"User"> | string | null
+    contactNumber?: StringNullableFilter<"User"> | string | null
+    address?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
+    socialMediaLinks?: SocialMediaLinkListRelationFilter
+    specializations?: SpecializationListRelationFilter
+    academicQualifications?: AcademicQualificationListRelationFilter
+    professionalLicenses?: ProfessionalLicenseListRelationFilter
+    workExperiences?: WorkExperienceListRelationFilter
+    professionalAffiliations?: ProfessionalAffiliationListRelationFilter
+    awardsRecognitions?: AwardRecognitionListRelationFilter
+    professionalDevelopments?: ProfessionalDevelopmentListRelationFilter
+    communityInvolvements?: CommunityInvolvementListRelationFilter
+    publications?: PublicationListRelationFilter
+    conferencePresentations?: ConferencePresentationListRelationFilter
+    notifications?: NotificationListRelationFilter
+    passwordResetTokens?: PasswordResetTokenListRelationFilter
+  }, "id" | "email" | "employeeId">
+
+  export type UserOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    profileImageUrl?: SortOrderInput | SortOrder
+    dateOfBirth?: SortOrderInput | SortOrder
+    civilStatus?: SortOrderInput | SortOrder
+    nationality?: SortOrderInput | SortOrder
+    contactNumber?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    employeeId?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    _count?: UserCountOrderByAggregateInput
+    _max?: UserMaxOrderByAggregateInput
+    _min?: UserMinOrderByAggregateInput
+  }
+
+  export type UserScalarWhereWithAggregatesInput = {
+    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    OR?: UserScalarWhereWithAggregatesInput[]
+    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"User"> | string
+    name?: StringNullableWithAggregatesFilter<"User"> | string | null
+    email?: StringWithAggregatesFilter<"User"> | string
+    password?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    profileImageUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
+    dateOfBirth?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    civilStatus?: StringNullableWithAggregatesFilter<"User"> | string | null
+    nationality?: StringNullableWithAggregatesFilter<"User"> | string | null
+    contactNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
+    address?: StringNullableWithAggregatesFilter<"User"> | string | null
+    employeeId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    bio?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type AcademicQualificationWhereInput = {
@@ -19625,124 +21049,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCreateInput = {
-    id?: string
-    name?: string | null
-    email: string
-    password: string
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
-    academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
-    professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
-    workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
-    professionalAffiliations?: ProfessionalAffiliationCreateNestedManyWithoutUserInput
-    awardsRecognitions?: AwardRecognitionCreateNestedManyWithoutUserInput
-    professionalDevelopments?: ProfessionalDevelopmentCreateNestedManyWithoutUserInput
-    communityInvolvements?: CommunityInvolvementCreateNestedManyWithoutUserInput
-    publications?: PublicationCreateNestedManyWithoutUserInput
-    conferencePresentations?: ConferencePresentationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateInput = {
-    id?: string
-    name?: string | null
-    email: string
-    password: string
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
-    academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
-    professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
-    workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
-    professionalAffiliations?: ProfessionalAffiliationUncheckedCreateNestedManyWithoutUserInput
-    awardsRecognitions?: AwardRecognitionUncheckedCreateNestedManyWithoutUserInput
-    professionalDevelopments?: ProfessionalDevelopmentUncheckedCreateNestedManyWithoutUserInput
-    communityInvolvements?: CommunityInvolvementUncheckedCreateNestedManyWithoutUserInput
-    publications?: PublicationUncheckedCreateNestedManyWithoutUserInput
-    conferencePresentations?: ConferencePresentationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
-    academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
-    professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
-    workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
-    professionalAffiliations?: ProfessionalAffiliationUpdateManyWithoutUserNestedInput
-    awardsRecognitions?: AwardRecognitionUpdateManyWithoutUserNestedInput
-    professionalDevelopments?: ProfessionalDevelopmentUpdateManyWithoutUserNestedInput
-    communityInvolvements?: CommunityInvolvementUpdateManyWithoutUserNestedInput
-    publications?: PublicationUpdateManyWithoutUserNestedInput
-    conferencePresentations?: ConferencePresentationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
-    academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
-    professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
-    workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
-    professionalAffiliations?: ProfessionalAffiliationUncheckedUpdateManyWithoutUserNestedInput
-    awardsRecognitions?: AwardRecognitionUncheckedUpdateManyWithoutUserNestedInput
-    professionalDevelopments?: ProfessionalDevelopmentUncheckedUpdateManyWithoutUserNestedInput
-    communityInvolvements?: CommunityInvolvementUncheckedUpdateManyWithoutUserNestedInput
-    publications?: PublicationUncheckedUpdateManyWithoutUserNestedInput
-    conferencePresentations?: ConferencePresentationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateManyInput = {
-    id?: string
-    name?: string | null
-    email: string
-    password: string
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type CourseCreateInput = {
     id?: string
     name: string
@@ -19808,6 +21114,246 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialMediaLinkCreateInput = {
+    id?: string
+    platform: string
+    url: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutSocialMediaLinksInput
+  }
+
+  export type SocialMediaLinkUncheckedCreateInput = {
+    id?: string
+    platform: string
+    url: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SocialMediaLinkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSocialMediaLinksNestedInput
+  }
+
+  export type SocialMediaLinkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialMediaLinkCreateManyInput = {
+    id?: string
+    platform: string
+    url: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SocialMediaLinkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialMediaLinkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
+    academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
+    professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
+    workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
+    professionalAffiliations?: ProfessionalAffiliationCreateNestedManyWithoutUserInput
+    awardsRecognitions?: AwardRecognitionCreateNestedManyWithoutUserInput
+    professionalDevelopments?: ProfessionalDevelopmentCreateNestedManyWithoutUserInput
+    communityInvolvements?: CommunityInvolvementCreateNestedManyWithoutUserInput
+    publications?: PublicationCreateNestedManyWithoutUserInput
+    conferencePresentations?: ConferencePresentationCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
+    academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
+    professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
+    workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
+    professionalAffiliations?: ProfessionalAffiliationUncheckedCreateNestedManyWithoutUserInput
+    awardsRecognitions?: AwardRecognitionUncheckedCreateNestedManyWithoutUserInput
+    professionalDevelopments?: ProfessionalDevelopmentUncheckedCreateNestedManyWithoutUserInput
+    communityInvolvements?: CommunityInvolvementUncheckedCreateNestedManyWithoutUserInput
+    publications?: PublicationUncheckedCreateNestedManyWithoutUserInput
+    conferencePresentations?: ConferencePresentationUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
+    academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
+    professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
+    workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
+    professionalAffiliations?: ProfessionalAffiliationUpdateManyWithoutUserNestedInput
+    awardsRecognitions?: AwardRecognitionUpdateManyWithoutUserNestedInput
+    professionalDevelopments?: ProfessionalDevelopmentUpdateManyWithoutUserNestedInput
+    communityInvolvements?: CommunityInvolvementUpdateManyWithoutUserNestedInput
+    publications?: PublicationUpdateManyWithoutUserNestedInput
+    conferencePresentations?: ConferencePresentationUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
+    academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
+    professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
+    workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
+    professionalAffiliations?: ProfessionalAffiliationUncheckedUpdateManyWithoutUserNestedInput
+    awardsRecognitions?: AwardRecognitionUncheckedUpdateManyWithoutUserNestedInput
+    professionalDevelopments?: ProfessionalDevelopmentUncheckedUpdateManyWithoutUserNestedInput
+    communityInvolvements?: CommunityInvolvementUncheckedUpdateManyWithoutUserNestedInput
+    publications?: PublicationUncheckedUpdateManyWithoutUserNestedInput
+    conferencePresentations?: ConferencePresentationUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateManyInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+  }
+
+  export type UserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicQualificationCreateInput = {
@@ -20901,6 +22447,75 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type SpecializationListRelationFilter = {
+    every?: SpecializationWhereInput
+    some?: SpecializationWhereInput
+    none?: SpecializationWhereInput
+  }
+
+  export type SpecializationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CourseCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CourseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CourseMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type SocialMediaLinkCountOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    url?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SocialMediaLinkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    url?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SocialMediaLinkMinOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    url?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type EnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[]
@@ -20908,10 +22523,21 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
-  export type SpecializationListRelationFilter = {
-    every?: SpecializationWhereInput
-    some?: SpecializationWhereInput
-    none?: SpecializationWhereInput
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type SocialMediaLinkListRelationFilter = {
+    every?: SocialMediaLinkWhereInput
+    some?: SocialMediaLinkWhereInput
+    none?: SocialMediaLinkWhereInput
   }
 
   export type AcademicQualificationListRelationFilter = {
@@ -20980,7 +22606,7 @@ export namespace Prisma {
     none?: PasswordResetTokenWhereInput
   }
 
-  export type SpecializationOrderByRelationAggregateInput = {
+  export type SocialMediaLinkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21036,6 +22662,14 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    profileImageUrl?: SortOrder
+    dateOfBirth?: SortOrder
+    civilStatus?: SortOrder
+    nationality?: SortOrder
+    contactNumber?: SortOrder
+    address?: SortOrder
+    employeeId?: SortOrder
+    bio?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -21046,6 +22680,14 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    profileImageUrl?: SortOrder
+    dateOfBirth?: SortOrder
+    civilStatus?: SortOrder
+    nationality?: SortOrder
+    contactNumber?: SortOrder
+    address?: SortOrder
+    employeeId?: SortOrder
+    bio?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -21056,6 +22698,14 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    profileImageUrl?: SortOrder
+    dateOfBirth?: SortOrder
+    civilStatus?: SortOrder
+    nationality?: SortOrder
+    contactNumber?: SortOrder
+    address?: SortOrder
+    employeeId?: SortOrder
+    bio?: SortOrder
   }
 
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -21068,31 +22718,18 @@ export namespace Prisma {
     _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
-  export type CourseCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CourseMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CourseMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -21111,11 +22748,6 @@ export namespace Prisma {
     in?: $Enums.ApprovalStatus[]
     notIn?: $Enums.ApprovalStatus[]
     not?: NestedEnumApprovalStatusFilter<$PrismaModel> | $Enums.ApprovalStatus
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type AcademicQualificationCountOrderByAggregateInput = {
@@ -21675,6 +23307,65 @@ export namespace Prisma {
     deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
   }
 
+  export type SpecializationCreateNestedManyWithoutCoursesRequiringThisInput = {
+    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+  }
+
+  export type SpecializationUncheckedCreateNestedManyWithoutCoursesRequiringThisInput = {
+    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+  }
+
+  export type SpecializationUpdateManyWithoutCoursesRequiringThisNestedInput = {
+    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
+    upsert?: SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput[]
+    set?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    disconnect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    delete?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    update?: SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput[]
+    updateMany?: SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput | SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput[]
+    deleteMany?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
+  }
+
+  export type SpecializationUncheckedUpdateManyWithoutCoursesRequiringThisNestedInput = {
+    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
+    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
+    upsert?: SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput[]
+    set?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    disconnect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    delete?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
+    update?: SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput[]
+    updateMany?: SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput | SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput[]
+    deleteMany?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutSocialMediaLinksInput = {
+    create?: XOR<UserCreateWithoutSocialMediaLinksInput, UserUncheckedCreateWithoutSocialMediaLinksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSocialMediaLinksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSocialMediaLinksNestedInput = {
+    create?: XOR<UserCreateWithoutSocialMediaLinksInput, UserUncheckedCreateWithoutSocialMediaLinksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSocialMediaLinksInput
+    upsert?: UserUpsertWithoutSocialMediaLinksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSocialMediaLinksInput, UserUpdateWithoutSocialMediaLinksInput>, UserUncheckedUpdateWithoutSocialMediaLinksInput>
+  }
+
+  export type SocialMediaLinkCreateNestedManyWithoutUserInput = {
+    create?: XOR<SocialMediaLinkCreateWithoutUserInput, SocialMediaLinkUncheckedCreateWithoutUserInput> | SocialMediaLinkCreateWithoutUserInput[] | SocialMediaLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SocialMediaLinkCreateOrConnectWithoutUserInput | SocialMediaLinkCreateOrConnectWithoutUserInput[]
+    createMany?: SocialMediaLinkCreateManyUserInputEnvelope
+    connect?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+  }
+
   export type SpecializationCreateNestedManyWithoutFacultyInput = {
     create?: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput> | SpecializationCreateWithoutFacultyInput[] | SpecializationUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: SpecializationCreateOrConnectWithoutFacultyInput | SpecializationCreateOrConnectWithoutFacultyInput[]
@@ -21756,6 +23447,13 @@ export namespace Prisma {
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
     createMany?: PasswordResetTokenCreateManyUserInputEnvelope
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+  }
+
+  export type SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SocialMediaLinkCreateWithoutUserInput, SocialMediaLinkUncheckedCreateWithoutUserInput> | SocialMediaLinkCreateWithoutUserInput[] | SocialMediaLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SocialMediaLinkCreateOrConnectWithoutUserInput | SocialMediaLinkCreateOrConnectWithoutUserInput[]
+    createMany?: SocialMediaLinkCreateManyUserInputEnvelope
+    connect?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
   }
 
   export type SpecializationUncheckedCreateNestedManyWithoutFacultyInput = {
@@ -21843,6 +23541,24 @@ export namespace Prisma {
 
   export type EnumRoleFieldUpdateOperationsInput = {
     set?: $Enums.Role
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type SocialMediaLinkUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SocialMediaLinkCreateWithoutUserInput, SocialMediaLinkUncheckedCreateWithoutUserInput> | SocialMediaLinkCreateWithoutUserInput[] | SocialMediaLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SocialMediaLinkCreateOrConnectWithoutUserInput | SocialMediaLinkCreateOrConnectWithoutUserInput[]
+    upsert?: SocialMediaLinkUpsertWithWhereUniqueWithoutUserInput | SocialMediaLinkUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SocialMediaLinkCreateManyUserInputEnvelope
+    set?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    disconnect?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    delete?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    connect?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    update?: SocialMediaLinkUpdateWithWhereUniqueWithoutUserInput | SocialMediaLinkUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SocialMediaLinkUpdateManyWithWhereWithoutUserInput | SocialMediaLinkUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SocialMediaLinkScalarWhereInput | SocialMediaLinkScalarWhereInput[]
   }
 
   export type SpecializationUpdateManyWithoutFacultyNestedInput = {
@@ -22012,6 +23728,20 @@ export namespace Prisma {
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
   }
 
+  export type SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SocialMediaLinkCreateWithoutUserInput, SocialMediaLinkUncheckedCreateWithoutUserInput> | SocialMediaLinkCreateWithoutUserInput[] | SocialMediaLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SocialMediaLinkCreateOrConnectWithoutUserInput | SocialMediaLinkCreateOrConnectWithoutUserInput[]
+    upsert?: SocialMediaLinkUpsertWithWhereUniqueWithoutUserInput | SocialMediaLinkUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SocialMediaLinkCreateManyUserInputEnvelope
+    set?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    disconnect?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    delete?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    connect?: SocialMediaLinkWhereUniqueInput | SocialMediaLinkWhereUniqueInput[]
+    update?: SocialMediaLinkUpdateWithWhereUniqueWithoutUserInput | SocialMediaLinkUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SocialMediaLinkUpdateManyWithWhereWithoutUserInput | SocialMediaLinkUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SocialMediaLinkScalarWhereInput | SocialMediaLinkScalarWhereInput[]
+  }
+
   export type SpecializationUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<SpecializationCreateWithoutFacultyInput, SpecializationUncheckedCreateWithoutFacultyInput> | SpecializationCreateWithoutFacultyInput[] | SpecializationUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: SpecializationCreateOrConnectWithoutFacultyInput | SpecializationCreateOrConnectWithoutFacultyInput[]
@@ -22177,44 +23907,6 @@ export namespace Prisma {
     update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
-  }
-
-  export type SpecializationCreateNestedManyWithoutCoursesRequiringThisInput = {
-    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
-    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
-    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-  }
-
-  export type SpecializationUncheckedCreateNestedManyWithoutCoursesRequiringThisInput = {
-    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
-    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
-    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-  }
-
-  export type SpecializationUpdateManyWithoutCoursesRequiringThisNestedInput = {
-    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
-    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
-    upsert?: SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput[]
-    set?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    disconnect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    delete?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    update?: SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput[]
-    updateMany?: SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput | SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput[]
-    deleteMany?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
-  }
-
-  export type SpecializationUncheckedUpdateManyWithoutCoursesRequiringThisNestedInput = {
-    create?: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput> | SpecializationCreateWithoutCoursesRequiringThisInput[] | SpecializationUncheckedCreateWithoutCoursesRequiringThisInput[]
-    connectOrCreate?: SpecializationCreateOrConnectWithoutCoursesRequiringThisInput | SpecializationCreateOrConnectWithoutCoursesRequiringThisInput[]
-    upsert?: SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput[]
-    set?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    disconnect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    delete?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    connect?: SpecializationWhereUniqueInput | SpecializationWhereUniqueInput[]
-    update?: SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput | SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput[]
-    updateMany?: SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput | SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput[]
-    deleteMany?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAcademicQualificationsInput = {
@@ -22503,6 +24195,17 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[]
@@ -22511,6 +24214,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRoleFilter<$PrismaModel>
     _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumApprovalStatusFilter<$PrismaModel = never> = {
@@ -22578,6 +24295,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -22599,6 +24325,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -22667,6 +24402,14 @@ export namespace Prisma {
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    profileImageUrl?: StringNullableFilter<"User"> | string | null
+    dateOfBirth?: DateTimeNullableFilter<"User"> | Date | string | null
+    civilStatus?: StringNullableFilter<"User"> | string | null
+    nationality?: StringNullableFilter<"User"> | string | null
+    contactNumber?: StringNullableFilter<"User"> | string | null
+    address?: StringNullableFilter<"User"> | string | null
+    employeeId?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
   }
 
   export type CourseUpsertWithWhereUniqueWithoutRequiredSpecializationsInput = {
@@ -22695,6 +24438,217 @@ export namespace Prisma {
     description?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+  }
+
+  export type SpecializationCreateWithoutCoursesRequiringThisInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty?: UserCreateNestedManyWithoutSpecializationsInput
+  }
+
+  export type SpecializationUncheckedCreateWithoutCoursesRequiringThisInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty?: UserUncheckedCreateNestedManyWithoutSpecializationsInput
+  }
+
+  export type SpecializationCreateOrConnectWithoutCoursesRequiringThisInput = {
+    where: SpecializationWhereUniqueInput
+    create: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput>
+  }
+
+  export type SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput = {
+    where: SpecializationWhereUniqueInput
+    update: XOR<SpecializationUpdateWithoutCoursesRequiringThisInput, SpecializationUncheckedUpdateWithoutCoursesRequiringThisInput>
+    create: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput>
+  }
+
+  export type SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput = {
+    where: SpecializationWhereUniqueInput
+    data: XOR<SpecializationUpdateWithoutCoursesRequiringThisInput, SpecializationUncheckedUpdateWithoutCoursesRequiringThisInput>
+  }
+
+  export type SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput = {
+    where: SpecializationScalarWhereInput
+    data: XOR<SpecializationUpdateManyMutationInput, SpecializationUncheckedUpdateManyWithoutCoursesRequiringThisInput>
+  }
+
+  export type SpecializationScalarWhereInput = {
+    AND?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
+    OR?: SpecializationScalarWhereInput[]
+    NOT?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
+    id?: StringFilter<"Specialization"> | string
+    name?: StringFilter<"Specialization"> | string
+    description?: StringNullableFilter<"Specialization"> | string | null
+    createdAt?: DateTimeFilter<"Specialization"> | Date | string
+    updatedAt?: DateTimeFilter<"Specialization"> | Date | string
+  }
+
+  export type UserCreateWithoutSocialMediaLinksInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    specializations?: SpecializationCreateNestedManyWithoutFacultyInput
+    academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
+    professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
+    workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
+    professionalAffiliations?: ProfessionalAffiliationCreateNestedManyWithoutUserInput
+    awardsRecognitions?: AwardRecognitionCreateNestedManyWithoutUserInput
+    professionalDevelopments?: ProfessionalDevelopmentCreateNestedManyWithoutUserInput
+    communityInvolvements?: CommunityInvolvementCreateNestedManyWithoutUserInput
+    publications?: PublicationCreateNestedManyWithoutUserInput
+    conferencePresentations?: ConferencePresentationCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSocialMediaLinksInput = {
+    id?: string
+    name?: string | null
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
+    academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
+    professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
+    workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
+    professionalAffiliations?: ProfessionalAffiliationUncheckedCreateNestedManyWithoutUserInput
+    awardsRecognitions?: AwardRecognitionUncheckedCreateNestedManyWithoutUserInput
+    professionalDevelopments?: ProfessionalDevelopmentUncheckedCreateNestedManyWithoutUserInput
+    communityInvolvements?: CommunityInvolvementUncheckedCreateNestedManyWithoutUserInput
+    publications?: PublicationUncheckedCreateNestedManyWithoutUserInput
+    conferencePresentations?: ConferencePresentationUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSocialMediaLinksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSocialMediaLinksInput, UserUncheckedCreateWithoutSocialMediaLinksInput>
+  }
+
+  export type UserUpsertWithoutSocialMediaLinksInput = {
+    update: XOR<UserUpdateWithoutSocialMediaLinksInput, UserUncheckedUpdateWithoutSocialMediaLinksInput>
+    create: XOR<UserCreateWithoutSocialMediaLinksInput, UserUncheckedCreateWithoutSocialMediaLinksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSocialMediaLinksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSocialMediaLinksInput, UserUncheckedUpdateWithoutSocialMediaLinksInput>
+  }
+
+  export type UserUpdateWithoutSocialMediaLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
+    academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
+    professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
+    workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
+    professionalAffiliations?: ProfessionalAffiliationUpdateManyWithoutUserNestedInput
+    awardsRecognitions?: AwardRecognitionUpdateManyWithoutUserNestedInput
+    professionalDevelopments?: ProfessionalDevelopmentUpdateManyWithoutUserNestedInput
+    communityInvolvements?: CommunityInvolvementUpdateManyWithoutUserNestedInput
+    publications?: PublicationUpdateManyWithoutUserNestedInput
+    conferencePresentations?: ConferencePresentationUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSocialMediaLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
+    academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
+    professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
+    workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
+    professionalAffiliations?: ProfessionalAffiliationUncheckedUpdateManyWithoutUserNestedInput
+    awardsRecognitions?: AwardRecognitionUncheckedUpdateManyWithoutUserNestedInput
+    professionalDevelopments?: ProfessionalDevelopmentUncheckedUpdateManyWithoutUserNestedInput
+    communityInvolvements?: CommunityInvolvementUncheckedUpdateManyWithoutUserNestedInput
+    publications?: PublicationUncheckedUpdateManyWithoutUserNestedInput
+    conferencePresentations?: ConferencePresentationUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type SocialMediaLinkCreateWithoutUserInput = {
+    id?: string
+    platform: string
+    url: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SocialMediaLinkUncheckedCreateWithoutUserInput = {
+    id?: string
+    platform: string
+    url: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SocialMediaLinkCreateOrConnectWithoutUserInput = {
+    where: SocialMediaLinkWhereUniqueInput
+    create: XOR<SocialMediaLinkCreateWithoutUserInput, SocialMediaLinkUncheckedCreateWithoutUserInput>
+  }
+
+  export type SocialMediaLinkCreateManyUserInputEnvelope = {
+    data: SocialMediaLinkCreateManyUserInput | SocialMediaLinkCreateManyUserInput[]
   }
 
   export type SpecializationCreateWithoutFacultyInput = {
@@ -23073,6 +25027,34 @@ export namespace Prisma {
     data: PasswordResetTokenCreateManyUserInput | PasswordResetTokenCreateManyUserInput[]
   }
 
+  export type SocialMediaLinkUpsertWithWhereUniqueWithoutUserInput = {
+    where: SocialMediaLinkWhereUniqueInput
+    update: XOR<SocialMediaLinkUpdateWithoutUserInput, SocialMediaLinkUncheckedUpdateWithoutUserInput>
+    create: XOR<SocialMediaLinkCreateWithoutUserInput, SocialMediaLinkUncheckedCreateWithoutUserInput>
+  }
+
+  export type SocialMediaLinkUpdateWithWhereUniqueWithoutUserInput = {
+    where: SocialMediaLinkWhereUniqueInput
+    data: XOR<SocialMediaLinkUpdateWithoutUserInput, SocialMediaLinkUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SocialMediaLinkUpdateManyWithWhereWithoutUserInput = {
+    where: SocialMediaLinkScalarWhereInput
+    data: XOR<SocialMediaLinkUpdateManyMutationInput, SocialMediaLinkUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SocialMediaLinkScalarWhereInput = {
+    AND?: SocialMediaLinkScalarWhereInput | SocialMediaLinkScalarWhereInput[]
+    OR?: SocialMediaLinkScalarWhereInput[]
+    NOT?: SocialMediaLinkScalarWhereInput | SocialMediaLinkScalarWhereInput[]
+    id?: StringFilter<"SocialMediaLink"> | string
+    platform?: StringFilter<"SocialMediaLink"> | string
+    url?: StringFilter<"SocialMediaLink"> | string
+    userId?: StringFilter<"SocialMediaLink"> | string
+    createdAt?: DateTimeFilter<"SocialMediaLink"> | Date | string
+    updatedAt?: DateTimeFilter<"SocialMediaLink"> | Date | string
+  }
+
   export type SpecializationUpsertWithWhereUniqueWithoutFacultyInput = {
     where: SpecializationWhereUniqueInput
     update: XOR<SpecializationUpdateWithoutFacultyInput, SpecializationUncheckedUpdateWithoutFacultyInput>
@@ -23087,17 +25069,6 @@ export namespace Prisma {
   export type SpecializationUpdateManyWithWhereWithoutFacultyInput = {
     where: SpecializationScalarWhereInput
     data: XOR<SpecializationUpdateManyMutationInput, SpecializationUncheckedUpdateManyWithoutFacultyInput>
-  }
-
-  export type SpecializationScalarWhereInput = {
-    AND?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
-    OR?: SpecializationScalarWhereInput[]
-    NOT?: SpecializationScalarWhereInput | SpecializationScalarWhereInput[]
-    id?: StringFilter<"Specialization"> | string
-    name?: StringFilter<"Specialization"> | string
-    description?: StringNullableFilter<"Specialization"> | string | null
-    createdAt?: DateTimeFilter<"Specialization"> | Date | string
-    updatedAt?: DateTimeFilter<"Specialization"> | Date | string
   }
 
   export type AcademicQualificationUpsertWithWhereUniqueWithoutUserInput = {
@@ -23447,45 +25418,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
   }
 
-  export type SpecializationCreateWithoutCoursesRequiringThisInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    faculty?: UserCreateNestedManyWithoutSpecializationsInput
-  }
-
-  export type SpecializationUncheckedCreateWithoutCoursesRequiringThisInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    faculty?: UserUncheckedCreateNestedManyWithoutSpecializationsInput
-  }
-
-  export type SpecializationCreateOrConnectWithoutCoursesRequiringThisInput = {
-    where: SpecializationWhereUniqueInput
-    create: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput>
-  }
-
-  export type SpecializationUpsertWithWhereUniqueWithoutCoursesRequiringThisInput = {
-    where: SpecializationWhereUniqueInput
-    update: XOR<SpecializationUpdateWithoutCoursesRequiringThisInput, SpecializationUncheckedUpdateWithoutCoursesRequiringThisInput>
-    create: XOR<SpecializationCreateWithoutCoursesRequiringThisInput, SpecializationUncheckedCreateWithoutCoursesRequiringThisInput>
-  }
-
-  export type SpecializationUpdateWithWhereUniqueWithoutCoursesRequiringThisInput = {
-    where: SpecializationWhereUniqueInput
-    data: XOR<SpecializationUpdateWithoutCoursesRequiringThisInput, SpecializationUncheckedUpdateWithoutCoursesRequiringThisInput>
-  }
-
-  export type SpecializationUpdateManyWithWhereWithoutCoursesRequiringThisInput = {
-    where: SpecializationScalarWhereInput
-    data: XOR<SpecializationUpdateManyMutationInput, SpecializationUncheckedUpdateManyWithoutCoursesRequiringThisInput>
-  }
-
   export type UserCreateWithoutAcademicQualificationsInput = {
     id?: string
     name?: string | null
@@ -23494,6 +25426,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -23515,6 +25456,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -23552,6 +25502,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -23573,6 +25532,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -23594,6 +25562,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceCreateNestedManyWithoutUserInput
@@ -23615,6 +25592,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     workExperiences?: WorkExperienceUncheckedCreateNestedManyWithoutUserInput
@@ -23652,6 +25638,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -23673,6 +25668,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -23694,6 +25698,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -23715,6 +25728,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -23752,6 +25774,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -23773,6 +25804,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -23794,6 +25834,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -23815,6 +25864,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -23852,6 +25910,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -23873,6 +25940,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -23894,6 +25970,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -23915,6 +26000,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -23952,6 +26046,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -23973,6 +26076,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -23994,6 +26106,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -24015,6 +26136,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -24052,6 +26182,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -24073,6 +26212,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -24094,6 +26242,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -24115,6 +26272,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -24152,6 +26318,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -24173,6 +26348,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -24194,6 +26378,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -24215,6 +26408,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -24252,6 +26454,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -24273,6 +26484,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -24294,6 +26514,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -24315,6 +26544,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -24352,6 +26590,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -24373,6 +26620,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -24394,6 +26650,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -24415,6 +26680,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -24452,6 +26726,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -24473,6 +26756,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -24494,6 +26786,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkCreateNestedManyWithoutUserInput
     specializations?: SpecializationCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseCreateNestedManyWithoutUserInput
@@ -24515,6 +26816,15 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    profileImageUrl?: string | null
+    dateOfBirth?: Date | string | null
+    civilStatus?: string | null
+    nationality?: string | null
+    contactNumber?: string | null
+    address?: string | null
+    employeeId?: string | null
+    bio?: string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedCreateNestedManyWithoutUserInput
     specializations?: SpecializationUncheckedCreateNestedManyWithoutFacultyInput
     academicQualifications?: AcademicQualificationUncheckedCreateNestedManyWithoutUserInput
     professionalLicenses?: ProfessionalLicenseUncheckedCreateNestedManyWithoutUserInput
@@ -24552,6 +26862,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
@@ -24573,6 +26892,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     specializations?: SpecializationUncheckedUpdateManyWithoutFacultyNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
@@ -24594,6 +26922,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUpdateManyWithoutUserNestedInput
     academicQualifications?: AcademicQualificationUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUpdateManyWithoutUserNestedInput
@@ -24615,6 +26952,15 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    socialMediaLinks?: SocialMediaLinkUncheckedUpdateManyWithoutUserNestedInput
     academicQualifications?: AcademicQualificationUncheckedUpdateManyWithoutUserNestedInput
     professionalLicenses?: ProfessionalLicenseUncheckedUpdateManyWithoutUserNestedInput
     workExperiences?: WorkExperienceUncheckedUpdateManyWithoutUserNestedInput
@@ -24636,6 +26982,14 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    civilStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CourseUpdateWithoutRequiredSpecializationsInput = {
@@ -24663,6 +27017,40 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpecializationUpdateWithoutCoursesRequiringThisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: UserUpdateManyWithoutSpecializationsNestedInput
+  }
+
+  export type SpecializationUncheckedUpdateWithoutCoursesRequiringThisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: UserUncheckedUpdateManyWithoutSpecializationsNestedInput
+  }
+
+  export type SpecializationUncheckedUpdateManyWithoutCoursesRequiringThisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialMediaLinkCreateManyUserInput = {
+    id?: string
+    platform: string
+    url: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AcademicQualificationCreateManyUserInput = {
@@ -24790,6 +27178,30 @@ export namespace Prisma {
     token: string
     expires: Date | string
     createdAt?: Date | string
+  }
+
+  export type SocialMediaLinkUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialMediaLinkUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialMediaLinkUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SpecializationUpdateWithoutFacultyInput = {
@@ -25197,32 +27609,6 @@ export namespace Prisma {
     token?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SpecializationUpdateWithoutCoursesRequiringThisInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    faculty?: UserUpdateManyWithoutSpecializationsNestedInput
-  }
-
-  export type SpecializationUncheckedUpdateWithoutCoursesRequiringThisInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    faculty?: UserUncheckedUpdateManyWithoutSpecializationsNestedInput
-  }
-
-  export type SpecializationUncheckedUpdateManyWithoutCoursesRequiringThisInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
